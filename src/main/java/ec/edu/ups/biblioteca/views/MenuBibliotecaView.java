@@ -28,30 +28,31 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        EliminarLibro = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+
+        jMenuItem3.setText("jMenuItem3");
+
+        jMenuItem15.setText("jMenuItem15");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,96 +64,81 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(114, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(109, 109, 109))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(jLabel2)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(45, 45, 45)
+                .addComponent(jLabel3)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel1)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel2)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Libro");
+        jMenu1.setText("Libros");
 
-        jMenuItem4.setText("CrearLibro");
-        jMenu1.add(jMenuItem4);
-
-        EliminarLibro.setText("EliminarLibro");
-        EliminarLibro.addActionListener(this::EliminarLibroActionPerformed);
-        jMenu1.add(EliminarLibro);
-
-        jMenuItem6.setText("ActualizarLibro");
-        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
-        jMenu1.add(jMenuItem6);
-
-        jMenuItem5.setText("BuscarLibro");
+        jMenuItem5.setText("GestionarLibros");
         jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Autor");
+        jMenu2.setText("Autores");
 
-        jMenuItem1.setText("Crear Autor");
-        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
-        jMenu2.add(jMenuItem1);
-
-        jMenuItem2.setText("Eliminar Autor");
-        jMenu2.add(jMenuItem2);
-
-        jMenuItem13.setText("jMenuItem13");
-        jMenu2.add(jMenuItem13);
-
-        jMenuItem14.setText("jMenuItem14");
+        jMenuItem14.setText("Gestionar Autores");
         jMenu2.add(jMenuItem14);
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Prestamo");
+        jMenu3.setText("Prestamos");
 
-        jMenuItem7.setText("Iniciar Prestamo");
-        jMenu3.add(jMenuItem7);
-
-        jMenuItem8.setText("Devolucion");
-        jMenu3.add(jMenuItem8);
+        jMenuItem19.setText("Gestionar Prestamos");
+        jMenu3.add(jMenuItem19);
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Usuario");
+        jMenu4.setText("Usuarios");
 
-        jMenuItem9.setText("Crear Usuario");
-        jMenuItem9.addActionListener(this::jMenuItem9ActionPerformed);
-        jMenu4.add(jMenuItem9);
-
-        jMenuItem10.setText("Eliminar Usuario");
-        jMenuItem10.addActionListener(this::jMenuItem10ActionPerformed);
-        jMenu4.add(jMenuItem10);
-
-        jMenuItem11.setText("Actualizar Usuario");
+        jMenuItem11.setText("Gestionar Usuarios");
         jMenu4.add(jMenuItem11);
 
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Bibliotecario");
+        jMenu5.setText("Devoluciones");
 
-        jMenuItem12.setText("jMenuItem12");
+        jMenuItem12.setText("Gestionar Devoluciones");
         jMenu5.add(jMenuItem12);
 
         jMenuBar1.add(jMenu5);
+
+        jMenu6.setText("Idioma");
+
+        jMenuItem16.setText("Ingles");
+        jMenuItem16.addActionListener(this::jMenuItem16ActionPerformed);
+        jMenu6.add(jMenuItem16);
+
+        jMenuItem17.setText("Español");
+        jMenu6.add(jMenuItem17);
+
+        jMenuItem18.setText("Portugues");
+        jMenuItem18.setToolTipText("");
+        jMenu6.add(jMenuItem18);
+
+        jMenuBar1.add(jMenu6);
 
         setJMenuBar(jMenuBar1);
 
@@ -178,25 +164,9 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void EliminarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarLibroActionPerformed
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EliminarLibroActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,29 +194,26 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem EliminarLibro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
