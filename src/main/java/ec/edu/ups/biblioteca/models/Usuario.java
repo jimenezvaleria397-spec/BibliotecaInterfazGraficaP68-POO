@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.models;
 
+import java.util.Objects;
+
 /**
  *
  * @author jimen
@@ -56,4 +58,44 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.cedula);
+        hash = 29 * hash + Objects.hashCode(this.nombre);
+        hash = 29 * hash + Objects.hashCode(this.correo);
+        hash = 29 * hash + Objects.hashCode(this.estado);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.cedula, other.cedula)) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.correo, other.correo)) {
+            return false;
+        }
+        return Objects.equals(this.estado, other.estado);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "cedula=" + cedula + ", nombre=" + nombre + ", correo=" + correo + ", estado=" + estado + '}';
+    }
+    
 }

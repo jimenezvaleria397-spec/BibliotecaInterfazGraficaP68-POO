@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.models;
 
+import java.util.Objects;
+
 /**
  *
  * @author jimen
@@ -87,5 +89,57 @@ public class Libro {
     public void setEjemplares(int ejemplares) {
         this.ejemplares = ejemplares;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.codigo);
+        hash = 97 * hash + Objects.hashCode(this.titulo);
+        hash = 97 * hash + Objects.hashCode(this.autor);
+        hash = 97 * hash + Objects.hashCode(this.editorial);
+        hash = 97 * hash + Objects.hashCode(this.genero);
+        hash = 97 * hash + this.anio;
+        hash = 97 * hash + this.ejemplares;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Libro other = (Libro) obj;
+        if (this.anio != other.anio) {
+            return false;
+        }
+        if (this.ejemplares != other.ejemplares) {
+            return false;
+        }
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.titulo, other.titulo)) {
+            return false;
+        }
+        if (!Objects.equals(this.autor, other.autor)) {
+            return false;
+        }
+        if (!Objects.equals(this.editorial, other.editorial)) {
+            return false;
+        }
+        return Objects.equals(this.genero, other.genero);
+    }
+
+    @Override
+    public String toString() {
+        return "Libro{" + "codigo=" + codigo + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial + ", genero=" + genero + ", anio=" + anio + ", ejemplares=" + ejemplares + '}';
+    }
+    
 }
     

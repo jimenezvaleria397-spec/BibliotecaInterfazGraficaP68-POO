@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package ec.edu.ups.bibliotecainterfazgraficap68;
+package ec.edu.ups.biblioteca.dao;
 
 /**
  *

@@ -5,6 +5,7 @@
 package ec.edu.ups.biblioteca.models;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -79,4 +80,52 @@ public class Prestamo {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.codigo);
+        hash = 29 * hash + Objects.hashCode(this.usuario);
+        hash = 29 * hash + Objects.hashCode(this.libro);
+        hash = 29 * hash + Objects.hashCode(this.fechaPrestamo);
+        hash = 29 * hash + Objects.hashCode(this.fechaDevolucion);
+        hash = 29 * hash + Objects.hashCode(this.estado);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Prestamo other = (Prestamo) obj;
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.estado, other.estado)) {
+            return false;
+        }
+        if (!Objects.equals(this.usuario, other.usuario)) {
+            return false;
+        }
+        if (!Objects.equals(this.libro, other.libro)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaPrestamo, other.fechaPrestamo)) {
+            return false;
+        }
+        return Objects.equals(this.fechaDevolucion, other.fechaDevolucion);
+    }
+
+    @Override
+    public String toString() {
+        return "Prestamo{" + "codigo=" + codigo + ", usuario=" + usuario + ", libro=" + libro + ", fechaPrestamo=" + fechaPrestamo + ", fechaDevolucion=" + fechaDevolucion + ", estado=" + estado + '}';
+    }
+    
 }
