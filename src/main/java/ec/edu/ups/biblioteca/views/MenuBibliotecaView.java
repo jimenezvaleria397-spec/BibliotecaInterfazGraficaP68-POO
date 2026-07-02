@@ -35,17 +35,17 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        btnLibro = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        btnAutores = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        btnPrestamos = new javax.swing.JMenu();
         jMenuItem19 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        btnUsuario = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
+        btnDevuluciones = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
+        btnIdioma = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
@@ -90,55 +90,55 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
                 .addContainerGap(125, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Libros");
+        btnLibro.setText("Libros");
 
         jMenuItem5.setText("GestionarLibros");
-        jMenu1.add(jMenuItem5);
+        btnLibro.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(btnLibro);
 
-        jMenu2.setText("Autores");
+        btnAutores.setText("Autores");
 
         jMenuItem14.setText("Gestionar Autores");
-        jMenu2.add(jMenuItem14);
+        btnAutores.add(jMenuItem14);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(btnAutores);
 
-        jMenu3.setText("Prestamos");
+        btnPrestamos.setText("Prestamos");
 
         jMenuItem19.setText("Gestionar Prestamos");
-        jMenu3.add(jMenuItem19);
+        btnPrestamos.add(jMenuItem19);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(btnPrestamos);
 
-        jMenu4.setText("Usuarios");
+        btnUsuario.setText("Usuarios");
 
         jMenuItem11.setText("Gestionar Usuarios");
-        jMenu4.add(jMenuItem11);
+        btnUsuario.add(jMenuItem11);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(btnUsuario);
 
-        jMenu5.setText("Devoluciones");
+        btnDevuluciones.setText("Devoluciones");
 
         jMenuItem12.setText("Gestionar Devoluciones");
-        jMenu5.add(jMenuItem12);
+        btnDevuluciones.add(jMenuItem12);
 
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(btnDevuluciones);
 
-        jMenu6.setText("Idioma");
+        btnIdioma.setText("Idioma");
 
         jMenuItem16.setText("Ingles");
         jMenuItem16.addActionListener(this::jMenuItem16ActionPerformed);
-        jMenu6.add(jMenuItem16);
+        btnIdioma.add(jMenuItem16);
 
         jMenuItem17.setText("Español");
-        jMenu6.add(jMenuItem17);
+        btnIdioma.add(jMenuItem17);
 
         jMenuItem18.setText("Portugues");
         jMenuItem18.setToolTipText("");
-        jMenu6.add(jMenuItem18);
+        btnIdioma.add(jMenuItem18);
 
-        jMenuBar1.add(jMenu6);
+        jMenuBar1.add(btnIdioma);
 
         setJMenuBar(jMenuBar1);
 
@@ -194,15 +194,15 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu btnAutores;
+    private javax.swing.JMenu btnDevuluciones;
+    private javax.swing.JMenu btnIdioma;
+    private javax.swing.JMenu btnLibro;
+    private javax.swing.JMenu btnPrestamos;
+    private javax.swing.JMenu btnUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;

@@ -14,7 +14,7 @@
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="btnLibro">
           <Properties>
             <Property name="text" type="java.lang.String" value="Libros"/>
           </Properties>
@@ -26,7 +26,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="btnAutores">
           <Properties>
             <Property name="text" type="java.lang.String" value="Autores"/>
           </Properties>
@@ -38,7 +38,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
+        <Menu class="javax.swing.JMenu" name="btnPrestamos">
           <Properties>
             <Property name="text" type="java.lang.String" value="Prestamos"/>
           </Properties>
@@ -50,7 +50,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="btnUsuario">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usuarios"/>
           </Properties>
@@ -62,7 +62,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu5">
+        <Menu class="javax.swing.JMenu" name="btnDevuluciones">
           <Properties>
             <Property name="text" type="java.lang.String" value="Devoluciones"/>
           </Properties>
@@ -74,7 +74,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu6">
+        <Menu class="javax.swing.JMenu" name="btnIdioma">
           <Properties>
             <Property name="text" type="java.lang.String" value="Idioma"/>
           </Properties>
