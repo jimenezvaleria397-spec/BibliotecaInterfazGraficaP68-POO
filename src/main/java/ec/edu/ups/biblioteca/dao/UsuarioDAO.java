@@ -21,27 +21,43 @@ public class UsuarioDAO implements DAO<Usuario>{
 
     @Override
     public void agregar(Usuario objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        usuarios.add(objeto);
     }
 
     @Override
     public Usuario buscarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Usuario usuario : usuarios) {
+            if(usuario.getCedula().equals(codigo)){
+                return usuario;
+            }
+        }
+        return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    public void actualizar(Usuario usuarioAC){
+        Usuario existente = buscarPorCodigo(usuarioAC.getCedula());
+        if(existente != null){
+            existente.setCedula(usuarioAC.getCedula());
+            existente.setCorreo(usuarioAC.getCorreo());
+            existente.setNombre(usuarioAC.getNombre());
+            existente.setEstado(usuarioAC.getEstado());
+        }
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Usuario existente = buscarPorCodigo(codigo);
+        if(existente != null){
+            usuarios.remove(existente);
+        }
     }
 
     @Override
     public List<Usuario> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return usuarios;
     }
     
 }

@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jimen
@@ -11,13 +13,16 @@ package ec.edu.ups.biblioteca.views;
 public class MenuBibliotecaView extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuBibliotecaView.class.getName());
-
+    
+    
     /**
      * Creates new form MenuBibliotecarioView
      */
     public MenuBibliotecaView() {
         initComponents();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,102 +33,80 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnLibro = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        gestionarLibrosMenuItem = new javax.swing.JMenuItem();
         btnAutores = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        gestionarAutoresMenuItem = new javax.swing.JMenuItem();
         btnPrestamos = new javax.swing.JMenu();
-        jMenuItem19 = new javax.swing.JMenuItem();
+        gestionarPrestamosMenuItem = new javax.swing.JMenuItem();
         btnUsuario = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        btnDevuluciones = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
+        gestionarUsuariosMenuItem = new javax.swing.JMenuItem();
+        btnDevoluciones = new javax.swing.JMenu();
+        gestionarDevolucionesMenuItem = new javax.swing.JMenuItem();
         btnIdioma = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
 
-        jMenuItem3.setText("jMenuItem3");
-
-        jMenuItem15.setText("jMenuItem15");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jLabel1.setText("BIENVENIDO A LA BIBLIOTECA !");
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setText("Que quieres realizar hoy?");
+        jDesktopPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(114, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(109, 109, 109))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel3)
-                .addGap(34, 34, 34)
-                .addComponent(jLabel1)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel2)
-                .addContainerGap(125, Short.MAX_VALUE))
-        );
+        jLabel2.setText("¿Qué quieres realizar hoy?");
+        jDesktopPane1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 420, 20));
+
+        jLabel1.setText("¡ BIENVENIDO A LA BIBLIOTECA !");
+        jDesktopPane1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 1000, 700));
+
+        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -60, 714, 474));
 
         btnLibro.setText("Libros");
 
-        jMenuItem5.setText("GestionarLibros");
-        btnLibro.add(jMenuItem5);
+        gestionarLibrosMenuItem.setText("GestionarLibros");
+        gestionarLibrosMenuItem.addActionListener(this::gestionarLibrosMenuItemActionPerformed);
+        btnLibro.add(gestionarLibrosMenuItem);
 
         jMenuBar1.add(btnLibro);
 
         btnAutores.setText("Autores");
 
-        jMenuItem14.setText("Gestionar Autores");
-        btnAutores.add(jMenuItem14);
+        gestionarAutoresMenuItem.setText("Gestionar Autores");
+        gestionarAutoresMenuItem.addActionListener(this::gestionarAutoresMenuItemActionPerformed);
+        btnAutores.add(gestionarAutoresMenuItem);
 
         jMenuBar1.add(btnAutores);
 
         btnPrestamos.setText("Prestamos");
 
-        jMenuItem19.setText("Gestionar Prestamos");
-        btnPrestamos.add(jMenuItem19);
+        gestionarPrestamosMenuItem.setText("Gestionar Prestamos");
+        gestionarPrestamosMenuItem.addActionListener(this::gestionarPrestamosMenuItemActionPerformed);
+        btnPrestamos.add(gestionarPrestamosMenuItem);
 
         jMenuBar1.add(btnPrestamos);
 
         btnUsuario.setText("Usuarios");
 
-        jMenuItem11.setText("Gestionar Usuarios");
-        btnUsuario.add(jMenuItem11);
+        gestionarUsuariosMenuItem.setText("Gestionar Usuarios");
+        gestionarUsuariosMenuItem.addActionListener(this::gestionarUsuariosMenuItemActionPerformed);
+        btnUsuario.add(gestionarUsuariosMenuItem);
 
         jMenuBar1.add(btnUsuario);
 
-        btnDevuluciones.setText("Devoluciones");
+        btnDevoluciones.setText("Devoluciones");
 
-        jMenuItem12.setText("Gestionar Devoluciones");
-        btnDevuluciones.add(jMenuItem12);
+        gestionarDevolucionesMenuItem.setText("Gestionar Devoluciones");
+        gestionarDevolucionesMenuItem.addActionListener(this::gestionarDevolucionesMenuItemActionPerformed);
+        btnDevoluciones.add(gestionarDevolucionesMenuItem);
 
-        jMenuBar1.add(btnDevuluciones);
+        jMenuBar1.add(btnDevoluciones);
 
         btnIdioma.setText("Idioma");
 
@@ -148,15 +131,12 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("Menu Biblioteca-POO");
@@ -167,6 +147,42 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void gestionarAutoresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarAutoresMenuItemActionPerformed
+        JOptionPane.showMessageDialog(this, "Botón presionado");
+        AutorView autorView = new AutorView();
+        jDesktopPane1.add(autorView);  
+        autorView.setLocation(20, 20);
+        autorView.setVisible(true);
+    }//GEN-LAST:event_gestionarAutoresMenuItemActionPerformed
+
+    private void gestionarLibrosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarLibrosMenuItemActionPerformed
+        LibroView libroView = new LibroView();
+        jDesktopPane1.add(libroView);
+        libroView.setLocation(20, 20);
+        libroView.setVisible(true);
+    }//GEN-LAST:event_gestionarLibrosMenuItemActionPerformed
+
+    private void gestionarUsuariosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarUsuariosMenuItemActionPerformed
+        UsuarioView usuarioView = new UsuarioView();
+        jDesktopPane1.add(usuarioView);
+        usuarioView.setLocation(20, 20);
+        usuarioView.setVisible(true);
+    }//GEN-LAST:event_gestionarUsuariosMenuItemActionPerformed
+
+    private void gestionarDevolucionesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarDevolucionesMenuItemActionPerformed
+        DevolucionView devolucionView = new DevolucionView();
+        jDesktopPane1.add(devolucionView);
+        devolucionView.setLocation(20, 20);
+        devolucionView.setVisible(true);
+    }//GEN-LAST:event_gestionarDevolucionesMenuItemActionPerformed
+
+    private void gestionarPrestamosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarPrestamosMenuItemActionPerformed
+        PrestamoView prestamoView = new PrestamoView();
+        jDesktopPane1.add(prestamoView);
+        prestamoView.setLocation(20, 20);
+        prestamoView.setVisible(true);
+    }//GEN-LAST:event_gestionarPrestamosMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,30 +206,33 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MenuBibliotecaView().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            MenuBibliotecaView menu = new MenuBibliotecaView();
+            menu.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+            menu.setVisible(true);
+        });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu btnAutores;
-    private javax.swing.JMenu btnDevuluciones;
+    private javax.swing.JMenu btnDevoluciones;
     private javax.swing.JMenu btnIdioma;
     private javax.swing.JMenu btnLibro;
     private javax.swing.JMenu btnPrestamos;
     private javax.swing.JMenu btnUsuario;
+    private javax.swing.JMenuItem gestionarAutoresMenuItem;
+    private javax.swing.JMenuItem gestionarDevolucionesMenuItem;
+    private javax.swing.JMenuItem gestionarLibrosMenuItem;
+    private javax.swing.JMenuItem gestionarPrestamosMenuItem;
+    private javax.swing.JMenuItem gestionarUsuariosMenuItem;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

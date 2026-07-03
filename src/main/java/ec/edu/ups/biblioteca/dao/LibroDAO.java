@@ -21,30 +21,45 @@ public class LibroDAO implements DAO<Libro> {
 
     @Override
     public void agregar(Libro objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        libros.add(objeto);
     }
 
     @Override
     public Libro buscarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Libro libro : libros) {
+            if(libro.getCodigo().equals(codigo)){
+                return libro;
+            }
+        }
+        return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    public void actualizar(Libro libroAc){
+        Libro existente = buscarPorCodigo(libroAc.getCodigo());
+        if(existente != null){
+            existente.setAnio(libroAc.getAnio());
+            existente.setAutor(libroAc.getAutor());
+            existente.setCodigo(libroAc.getCodigo());
+            existente.setEditorial(libroAc.getEditorial());
+            existente.setEjemplares(libroAc.getEjemplares());
+            existente.setGenero(libroAc.getGenero());
+            existente.setTitulo(libroAc.getTitulo());
+        }
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Libro existente = buscarPorCodigo(codigo);
+        if (existente != null) {
+            libros.remove(existente);
+        }
     }
 
     @Override
     public List<Libro> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return libros;
     }
-    
-    
-    
-    
 }

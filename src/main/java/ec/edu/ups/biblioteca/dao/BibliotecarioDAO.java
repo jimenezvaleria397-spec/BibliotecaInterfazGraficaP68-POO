@@ -13,35 +13,49 @@ import java.util.List;
  * @author USER
  */
 public class BibliotecarioDAO implements DAO<Bibliotecario>{
-    private List<Bibliotecario> bibliotecario;
+    private List<Bibliotecario> bibliotecarios;
     
     public BibliotecarioDAO(){
-        this.bibliotecario = new ArrayList<>();
+        this.bibliotecarios = new ArrayList<>();
     }
 
     @Override
     public void agregar(Bibliotecario objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        bibliotecarios.add(objeto);
     }
 
     @Override
     public Bibliotecario buscarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Bibliotecario bibliotecario : bibliotecarios) {
+            if(String.valueOf(bibliotecario.getIdBibliotecario()).equals(codigo)){
+                return bibliotecario;
+            }
+            
+        }
+        return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    public void actualizar(Bibliotecario bAC){
+        Bibliotecario existente = buscarPorCodigo(String.valueOf(bAC.getIdBibliotecario()));
+        if(existente != null){
+            existente.setEmail(bAC.getEmail());
+        }
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Bibliotecario existente = buscarPorCodigo(codigo);
+        if(existente != null){
+            bibliotecarios.remove(existente);
+        }
     }
 
     @Override
     public List<Bibliotecario> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return bibliotecarios;
     }
     
 }

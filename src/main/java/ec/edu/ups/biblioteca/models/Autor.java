@@ -15,15 +15,17 @@ import java.util.Objects;
 public class Autor {
     private String nombre;
     private String nacionalidad;
+    private String codigoAutor;
     private LocalDate fechadeNac;
     private ArrayList<String> titulos; 
 
     public Autor() {
     }
 
-    public Autor(String nombre, String nacionalidad, LocalDate fechadeNac, ArrayList titulos) {
+    public Autor(String nombre, String nacionalidad, String codigoAutor, LocalDate fechadeNac, ArrayList<String> titulos) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
+        this.codigoAutor = codigoAutor;
         this.fechadeNac = fechadeNac;
         this.titulos = titulos;
     }
@@ -42,6 +44,14 @@ public class Autor {
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
+    }
+
+    public String getCodigoAutor() {
+        return codigoAutor;
+    }
+
+    public void setCodigoAutor(String codigoAutor) {
+        this.codigoAutor = codigoAutor;
     }
 
     public LocalDate getFechadeNac() {
@@ -63,10 +73,11 @@ public class Autor {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.nombre);
-        hash = 41 * hash + Objects.hashCode(this.nacionalidad);
-        hash = 41 * hash + Objects.hashCode(this.fechadeNac);
-        hash = 41 * hash + Objects.hashCode(this.titulos);
+        hash = 53 * hash + Objects.hashCode(this.nombre);
+        hash = 53 * hash + Objects.hashCode(this.nacionalidad);
+        hash = 53 * hash + Objects.hashCode(this.codigoAutor);
+        hash = 53 * hash + Objects.hashCode(this.fechadeNac);
+        hash = 53 * hash + Objects.hashCode(this.titulos);
         return hash;
     }
 
@@ -88,6 +99,9 @@ public class Autor {
         if (!Objects.equals(this.nacionalidad, other.nacionalidad)) {
             return false;
         }
+        if (!Objects.equals(this.codigoAutor, other.codigoAutor)) {
+            return false;
+        }
         if (!Objects.equals(this.fechadeNac, other.fechadeNac)) {
             return false;
         }
@@ -96,7 +110,6 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "Autor{" + "nombre=" + nombre + ", nacionalidad=" + nacionalidad + ", fechadeNac=" + fechadeNac + ", titulos=" + titulos + '}';
+        return "Autor{" + "nombre=" + nombre + ", nacionalidad=" + nacionalidad + ", codigoAutor=" + codigoAutor + ", fechadeNac=" + fechadeNac + ", titulos=" + titulos + '}';
     }
-    
 }

@@ -22,28 +22,43 @@ public class AutorDAO implements DAO<Autor>{
 
     @Override
     public void agregar(Autor objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        autores.add(objeto);
     }
 
     @Override
     public Autor buscarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (Autor autor : autores) {
+            if (autor.getCodigoAutor().equals(codigo)) {
+                return autor;
+            }
+        }
+        return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    public void actualizar(Autor autorAc){
+        Autor existente = buscarPorCodigo(autorAc.getCodigoAutor());
+        if(existente != null){
+            existente.setNombre(autorAc.getNombre());
+            existente.setFechadeNac(autorAc.getFechadeNac());
+            existente.setNacionalidad(autorAc.getNacionalidad());
+            existente.setTitulos(autorAc.getTitulos());
+        }
+        
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Autor existente = buscarPorCodigo(codigo);
+        if(existente != null){
+            autores.remove(existente);
+        }
     }
 
     @Override
     public List<Autor> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return autores;
     }
-    
-    
 }

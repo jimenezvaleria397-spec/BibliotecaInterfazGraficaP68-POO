@@ -21,27 +21,42 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
 
     @Override
     public void agregar(EjemplarLibro objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ejemplarLibro.add(objeto);
     }
 
     @Override
     public EjemplarLibro buscarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (EjemplarLibro eL : ejemplarLibro) {
+            if (eL.getCodigoBarras().equals(codigo)) {
+                return eL;
+            }
+        }
+        return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    public void actualizar(EjemplarLibro ejemplarAC){
+        EjemplarLibro existente = buscarPorCodigo(ejemplarAC.getCodigoBarras());
+        if(existente != null){
+            existente.setCodigoBarras(ejemplarAC.getCodigoBarras());
+            existente.setEstadoL(ejemplarAC.getEstadoL());
+            existente.setUbicacion(ejemplarAC.getUbicacion());
+        }
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EjemplarLibro existente = buscarPorCodigo(codigo);
+        if(existente != null){
+            ejemplarLibro.remove(existente);
+        }
     }
 
     @Override
     public List<EjemplarLibro> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return ejemplarLibro;
     }
     
 }

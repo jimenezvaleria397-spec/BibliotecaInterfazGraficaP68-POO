@@ -17,7 +17,7 @@ public class PrestamoDAO implements DAO<Prestamo>{
     private LibroDAO libroDAO;
     private UsuarioDAO usuarioDAO;
 
-    public PrestamoDAO(List prestamos, LibroDAO libroDAO, UsuarioDAO usuarioDAO) {
+    public PrestamoDAO(LibroDAO libroDAO, UsuarioDAO usuarioDAO) {
         this.prestamos = new ArrayList<>();
         this.libroDAO = libroDAO;
         this.usuarioDAO = usuarioDAO;
@@ -39,20 +39,28 @@ public class PrestamoDAO implements DAO<Prestamo>{
     }
 
     @Override
-    public void actualizar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void actualizar(String codigo){
+    }
+    
+    public void actualizar(Prestamo prestamo) {
+        Prestamo existente = buscarPorCodigo(prestamo.getCodigo());
+        if (existente!= null){
+            existente.setFechaPrestamo(prestamo.getFechaPrestamo());
+            existente.setFechaDevolucion(prestamo.getFechaDevolucion());
+            existente.setEstado(prestamo.getEstado());
+        }
     }
 
     @Override
     public void eliminar(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Prestamo existente = buscarPorCodigo(codigo);
+        if(existente != null){
+            prestamos.remove(existente);
+        }
     }
 
     @Override
     public List<Prestamo> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return prestamos;
     }
-    
-    
-    
 }

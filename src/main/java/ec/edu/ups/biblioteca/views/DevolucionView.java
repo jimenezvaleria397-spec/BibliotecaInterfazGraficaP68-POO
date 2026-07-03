@@ -30,21 +30,22 @@ public class DevolucionView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtCodigoPrestamo = new javax.swing.JTextField();
+        btnPrestamo = new javax.swing.JButton();
+        btnDevolucion = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("Codigo del prestamo:");
+        jLabel1.setText("Código del prestamo:");
 
-        jButton1.setText("Buscar Prestamo");
+        btnPrestamo.setText("Buscar Prestamo");
 
-        jButton2.setText("Registrar Devolucion");
+        btnDevolucion.setText("Registrar Devolucion");
+        btnDevolucion.addActionListener(this::btnDevolucionActionPerformed);
 
-        jLabel2.setText("Porfavor ingrese el codigo");
+        jLabel2.setText("Por favor ingrese el código:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -54,12 +55,12 @@ public class DevolucionView extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Usuario", "Libro", "Fecha de prestamo", "Fecha devolucion", "Estado"
+                "Código", "Usuario", "Libro", "Fecha de prestamo", "Fecha devolución:", "Estado"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel3.setText("Que accion deseas realizar?");
+        jLabel3.setText("¿Qué acción deseas realizar?");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -72,9 +73,9 @@ public class DevolucionView extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(202, 202, 202)
-                        .addComponent(jButton1)
+                        .addComponent(btnPrestamo)
                         .addGap(37, 37, 37)
-                        .addComponent(jButton2))
+                        .addComponent(btnDevolucion))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(275, 275, 275)
                         .addComponent(jLabel2))
@@ -82,7 +83,7 @@ public class DevolucionView extends javax.swing.JInternalFrame {
                         .addGap(151, 151, 151)
                         .addComponent(jLabel1)
                         .addGap(38, 38, 38)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtCodigoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 52, Short.MAX_VALUE)
@@ -96,14 +97,14 @@ public class DevolucionView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnPrestamo)
+                    .addComponent(btnDevolucion))
                 .addGap(32, 32, 32)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -145,10 +146,14 @@ public class DevolucionView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolucionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDevolucionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnDevolucion;
+    private javax.swing.JButton btnPrestamo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -156,6 +161,6 @@ public class DevolucionView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtCodigoPrestamo;
     // End of variables declaration//GEN-END:variables
 }
