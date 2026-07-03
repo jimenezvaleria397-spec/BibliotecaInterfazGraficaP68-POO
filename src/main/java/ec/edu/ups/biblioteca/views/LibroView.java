@@ -4,18 +4,121 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.models.Libro;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jimen
  */
 public class LibroView extends javax.swing.JInternalFrame {
+    private LibroController libroController;
 
     /**
      * Creates new form LibroView
      */
+
+    // 2. Constructor
     public LibroView() {
         initComponents();
+
+        libroController = new LibroController();
+
+        inicializarVista();
     }
+    //Para que se visualice la ventana 
+    private void inicializarVista(){
+
+    bloquearCampos();
+
+    txtCodigo.setEditable(true);
+
+    btnActualizar.setEnabled(false);
+    btnEliminar.setEnabled(false);
+
+    listarLibros();
+
+    }
+    private void bloquearCampos(){
+
+    txtTitulo.setEditable(false);
+    txtAutor.setEditable(false);
+    txtEditorial.setEditable(false);
+    txtGenero.setEditable(false);
+    txtAnio.setEditable(false);
+    txtEjemplares.setEditable(false);
+
+    }
+    private void habilitarCampos(){
+
+    txtTitulo.setEditable(true);
+    txtAutor.setEditable(true);
+    txtEditorial.setEditable(true);
+    txtGenero.setEditable(true);
+    txtAnio.setEditable(true);
+    txtEjemplares.setEditable(true);
+
+    }
+    private void limpiarCampos(){
+
+    txtCodigo.setText("");
+    txtTitulo.setText("");
+    txtAutor.setText("");
+    txtEditorial.setText("");
+    txtGenero.setText("");
+    txtAnio.setText("");
+    txtEjemplares.setText("");
+
+    }
+    private void modoCrear(){
+    limpiarCampos();
+    habilitarCampos();
+    txtCodigo.setEditable(true);
+    btnActualizar.setEnabled(false);
+    btnEliminar.setEnabled(false);
+
+    }
+    private void modoBuscar(){
+
+    limpiarCampos();
+
+    bloquearCampos();
+
+    txtCodigo.setEditable(true);
+
+    }
+    private void modoActualizar(){
+    habilitarCampos();
+    txtCodigo.setEditable(false);
+    btnActualizar.setEnabled(true);
+    }
+    
+    private void listarLibros(){
+
+    DefaultTableModel modelo =
+            (DefaultTableModel) tblLibros.getModel();
+
+    modelo.setRowCount(0);
+
+    for(Libro libro : libroController.listar()){
+
+        modelo.addRow(new Object[]{
+
+            libro.getCodigo(),
+            libro.getTitulo(),
+            libro.getAutor(),
+            libro.getEditorial(),
+            libro.getGenero(),
+            libro.getAnio(),
+            libro.getEjemplares()
+
+        });
+
+    }
+
+}
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,12 +136,12 @@ public class LibroView extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lblCodigo = new javax.swing.JTextField();
-        lblTitulo = new javax.swing.JTextField();
-        lblAutor = new javax.swing.JTextField();
-        lblEditorial = new javax.swing.JTextField();
-        lblGenero = new javax.swing.JTextField();
-        lblAnio = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
+        txtTitulo = new javax.swing.JTextField();
+        txtAutor = new javax.swing.JTextField();
+        txtEditorial = new javax.swing.JTextField();
+        txtGenero = new javax.swing.JTextField();
+        txtAnio = new javax.swing.JTextField();
         btnNuevo = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
@@ -46,9 +149,9 @@ public class LibroView extends javax.swing.JInternalFrame {
         btnListar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabLibro = new javax.swing.JTable();
+        tblLibros = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
-        lblEjemplares = new javax.swing.JTextField();
+        txtEjemplares = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         btnLimpiar = new javax.swing.JButton();
 
@@ -64,19 +167,19 @@ public class LibroView extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Año:");
 
-        lblCodigo.setEditable(false);
+        txtCodigo.setEditable(false);
 
-        lblTitulo.setEditable(false);
+        txtTitulo.setEditable(false);
 
-        lblAutor.setEditable(false);
+        txtAutor.setEditable(false);
 
-        lblEditorial.setEditable(false);
+        txtEditorial.setEditable(false);
 
-        lblGenero.setEditable(false);
-        lblGenero.addActionListener(this::lblGeneroActionPerformed);
+        txtGenero.setEditable(false);
+        txtGenero.addActionListener(this::txtGeneroActionPerformed);
 
-        lblAnio.setEditable(false);
-        lblAnio.addActionListener(this::lblAnioActionPerformed);
+        txtAnio.setEditable(false);
+        txtAnio.addActionListener(this::txtAnioActionPerformed);
 
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(this::btnNuevoActionPerformed);
@@ -95,7 +198,7 @@ public class LibroView extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Elija la opcioón que desea utilizar:");
 
-        tabLibro.setModel(new javax.swing.table.DefaultTableModel(
+        tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -117,15 +220,16 @@ public class LibroView extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tabLibro);
+        jScrollPane1.setViewportView(tblLibros);
 
         jLabel8.setText("Ejemplares:");
 
-        lblEjemplares.setEditable(false);
+        txtEjemplares.setEditable(false);
 
         jLabel9.setText("Los campos se habilitaran segun la accion.");
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,25 +261,25 @@ public class LibroView extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(lblAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jLabel8))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jLabel6))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(86, 86, 86)
                                             .addComponent(jLabel5)))
                                     .addGap(27, 27, 27)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(btnEliminar)
-                                            .addComponent(lblGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(227, 227, 227)
                                     .addComponent(btnActualizar)
@@ -207,30 +311,30 @@ public class LibroView extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel6)
-                    .addComponent(lblAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(lblAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(lblEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addComponent(btnLimpiar)
                 .addGap(18, 18, 18)
@@ -257,33 +361,93 @@ public class LibroView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblAnioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblAnioActionPerformed
+    private void txtAnioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lblAnioActionPerformed
+    }//GEN-LAST:event_txtAnioActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+    int codigo = Integer.parseInt(txtCodigo.getText());
+
+    libroController.eliminar(codigo);
+
+    listarLibros();
+
+    limpiarCampos();
+
+}
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        // TODO add your handling code here:
+    listarLibros();  // TODO add your handling code here:
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
+    Libro libro = new Libro();
+
+    // llenar objeto
+
+    libroController.actualizar(libro);
+
+    listarLibros();
+
+}
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+    modoBuscar();
+
+    int codigo = Integer.parseInt(txtCodigo.getText());
+
+    Libro libro = libroController.buscar(codigo);
+
+    if(libro != null){
+
+        txtTitulo.setText(libro.getTitulo());
+        txtAutor.setText(libro.getAutor());
+        txtEditorial.setText(libro.getEditorial());
+        txtGenero.setText(libro.getGenero());
+        txtAnio.setText(String.valueOf(libro.getAnioPublicacion()));
+        txtEjemplares.setText(String.valueOf(libro.getNumEjemplares()));
+
+        modoActualizar();
+
+        btnEliminar.setEnabled(true);
+
+    }
+
+}
+      // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void lblGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblGeneroActionPerformed
+    private void txtGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lblGeneroActionPerformed
+    }//GEN-LAST:event_txtGeneroActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // TODO add your handling code here:
+        Libro libro = new Libro();
+
+    libro.setCodigo(Integer.parseInt(txtCodigo.getText()));
+    libro.setTitulo(txtTitulo.getText());
+    libro.setAutor(txtAutor.getText());
+    libro.setEditorial(txtEditorial.getText());
+    libro.setGenero(txtGenero.getText());
+    libro.setAnio(Integer.parseInt(txtAnio.getText()));
+    libro.setEjemplares(Integer.parseInt(txtEjemplares.getText()));
+
+    libroController.crear(libro);
+
+    JOptionPane.showMessageDialog(this,
+            "Libro registrado correctamente");
+
+    listarLibros();
+
+    limpiarCampos();
+        } // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+    // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -304,13 +468,13 @@ public class LibroView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField lblAnio;
-    private javax.swing.JTextField lblAutor;
-    private javax.swing.JTextField lblCodigo;
-    private javax.swing.JTextField lblEditorial;
-    private javax.swing.JTextField lblEjemplares;
-    private javax.swing.JTextField lblGenero;
-    private javax.swing.JTextField lblTitulo;
-    private javax.swing.JTable tabLibro;
+    private javax.swing.JTable tblLibros;
+    private javax.swing.JTextField txtAnio;
+    private javax.swing.JTextField txtAutor;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtEditorial;
+    private javax.swing.JTextField txtEjemplares;
+    private javax.swing.JTextField txtGenero;
+    private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
