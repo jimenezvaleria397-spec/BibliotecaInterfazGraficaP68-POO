@@ -4,7 +4,11 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.controllers.UsuarioController;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.Usuario;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,14 +16,64 @@ import ec.edu.ups.biblioteca.dao.UsuarioDAO;
  */
 public class UsuarioView extends javax.swing.JInternalFrame {
     private UsuarioDAO usuarioDAO;
-
+    private UsuarioController usuarioController;
     /**
      * Creates new form UsuarioView
      */
     public UsuarioView() {
         initComponents();
         usuarioDAO = new UsuarioDAO();
+        usuarioController = new UsuarioController();
+        inicializar();
     }
+   
+
+    private void inicializar() {
+        bloquear();
+        txtCedula.setEditable(true);
+        listar();
+    }
+
+    private void bloquear() {
+        txtNombre.setEditable(false);
+        txtCorreo.setEditable(false);
+        txtEstado.setEditable(false);
+    }
+
+    private void habilitar() {
+        txtNombre.setEditable(true);
+        txtCorreo.setEditable(true);
+        txtEstado.setEditable(true);
+    }
+
+    private void limpiar() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtCorreo.setText("");
+        txtEstado.setText("");
+    }
+    private void modoActualizar() {
+    habilitar();
+    btnActualizar.setEnabled(true);
+    btnEliminar.setEnabled(true);
+    btnCrear.setEnabled(false);
+}
+
+private void listar() {
+    javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    modelo.setRowCount(0);
+
+    List<Usuario> usuarios = usuarioController.listar();
+
+    for (Usuario u : usuarios) {
+        modelo.addRow(new Object[]{
+            u.getCedula(),
+            u.getNombre(),
+            u.getCorreo(),
+            u.getEstado()
+        });
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,19 +91,18 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        btnCrear = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        txtCedula = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        choice1 = new java.awt.Choice();
-        list1 = new java.awt.List();
+        txtEstado = new javax.swing.JTextField();
 
         jLabel1.setText("Cédula:");
 
@@ -72,21 +125,25 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Crear");
+        btnCrear.setText("Crear");
 
-        jButton2.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
-        jButton3.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
 
-        jButton4.setText("Actualizar");
+        btnActualizar.setText("Actualizar");
 
-        jButton5.setText("Listar");
+        btnListar.setText("Listar");
 
-        jButton6.setText("Limpiar");
+        btnLimpiar.setText("Limpiar");
 
         jLabel5.setText("Elija primero que accion desea realizar");
 
         jLabel6.setText("Los siguientes campos se habilitaran segun la accion seleccionada");
+
+        txtEstado.setText("Activo/Suspendido");
+        txtEstado.addActionListener(this::txtEstadoActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,31 +158,30 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnCrear)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnBuscar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnEliminar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnActualizar))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
                                             .addComponent(jLabel2)
                                             .addComponent(jLabel3)
                                             .addComponent(jLabel4))
                                         .addGap(46, 46, 46)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                                .addComponent(jTextField2)
-                                                .addComponent(jTextField3))
-                                            .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton4)))
+                                                .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                                .addComponent(txtNombre)
+                                                .addComponent(txtCorreo)))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton5)
+                                .addComponent(btnListar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton6)))
+                                .addComponent(btnLimpiar)))
                         .addGap(43, 43, 43))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -141,33 +197,31 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(btnCrear)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnListar)
+                    .addComponent(btnLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
-                .addComponent(list1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(94, 94, 94)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -192,15 +246,39 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        String cedula = txtCedula.getText();
+
+        Usuario usuario = usuarioController.buscarPorCodigo(cedula);
+
+        if (usuario != null) {
+
+            txtNombre.setText(usuario.getNombre());
+            txtCorreo.setText(usuario.getCorreo());
+            txtEstado.setText(usuario.getEstado());
+
+            modoActualizar();
+
+            btnEliminar.setEnabled(true);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEstadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Choice choice1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnListar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -210,9 +288,9 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private java.awt.List list1;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtEstado;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

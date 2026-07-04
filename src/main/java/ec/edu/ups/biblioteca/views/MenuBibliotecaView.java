@@ -4,7 +4,9 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.utils.Idioma;
 import javax.swing.JOptionPane;
+        
 
 /**
  *
@@ -20,10 +22,36 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
      */
     public MenuBibliotecaView() {
         initComponents();
+        aplicarIdioma();
+        
     }
+   
+    private void aplicarIdioma() {
+    java.util.ResourceBundle bundle = Idioma.getBundle();
     
-    
+    jLabel3.setText(bundle.getString("menu.bienvenida"));
+    jLabel2.setText(bundle.getString("menu.pregunta"));
 
+    btnLibro.setText(bundle.getString("menu.libros"));
+    gestionarLibrosMenuItem.setText(bundle.getString("menu.gestionarLibros"));
+
+    btnAutores.setText(bundle.getString("menu.autores"));
+    gestionarAutoresMenuItem.setText(bundle.getString("menu.gestionarAutores"));
+
+    btnPrestamos.setText(bundle.getString("menu.prestamos"));
+    gestionarPrestamosMenuItem.setText(bundle.getString("menu.gestionarPrestamos"));
+
+    btnUsuario.setText(bundle.getString("menu.usuarios"));
+    gestionarUsuariosMenuItem.setText(bundle.getString("menu.gestionarUsuarios"));
+
+    btnDevoluciones.setText(bundle.getString("menu.devoluciones"));
+    gestionarDevolucionesMenuItem.setText(bundle.getString("menu.gestionarDevoluciones"));
+
+    btnIdioma.setText(bundle.getString("menu.idioma"));
+    
+        }
+   
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,10 +61,10 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
+        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnLibro = new javax.swing.JMenu();
         gestionarLibrosMenuItem = new javax.swing.JMenuItem();
@@ -56,17 +84,57 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
-        jDesktopPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jDesktopPane1.setBackground(new java.awt.Color(255, 204, 204));
 
-        jLabel2.setText("¿Qué quieres realizar hoy?");
-        jDesktopPane1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 420, 20));
+        jLabel3.setText("===== BIENVENIDO A LA BIBLIOTECA =====");
 
-        jLabel1.setText("¡ BIENVENIDO A LA BIBLIOTECA !");
-        jDesktopPane1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 1000, 700));
+        jLabel2.setText("Que quieres realizar hoy?");
 
-        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -60, 714, 474));
+        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(254, 254, 254)
+                        .addComponent(jLabel2))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(jLabel3)))
+                .addContainerGap(472, Short.MAX_VALUE))
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(jLabel3)
+                .addGap(63, 63, 63)
+                .addComponent(jLabel2)
+                .addContainerGap(387, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jDesktopPane1)
+                .addContainerGap())
+        );
 
         btnLibro.setText("Libros");
 
@@ -115,10 +183,12 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         btnIdioma.add(jMenuItem16);
 
         jMenuItem17.setText("Español");
+        jMenuItem17.addActionListener(this::jMenuItem17ActionPerformed);
         btnIdioma.add(jMenuItem17);
 
         jMenuItem18.setText("Portugues");
         jMenuItem18.setToolTipText("");
+        jMenuItem18.addActionListener(this::jMenuItem18ActionPerformed);
         btnIdioma.add(jMenuItem18);
 
         jMenuBar1.add(btnIdioma);
@@ -131,25 +201,27 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
-
-        jPanel1.getAccessibleContext().setAccessibleName("Menu Biblioteca-POO");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         // TODO add your handling code here:
+        Idioma.setIdioma("en");
+        aplicarIdioma();
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void gestionarAutoresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarAutoresMenuItemActionPerformed
-        JOptionPane.showMessageDialog(this, "Botón presionado");
         AutorView autorView = new AutorView();
         jDesktopPane1.add(autorView);  
         autorView.setLocation(20, 20);
@@ -183,6 +255,18 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         prestamoView.setLocation(20, 20);
         prestamoView.setVisible(true);
     }//GEN-LAST:event_gestionarPrestamosMenuItemActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        // TODO add your handling code here:
+        Idioma.setIdioma("es");
+        aplicarIdioma();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        // TODO add your handling code here:
+        Idioma.setIdioma("pt");
+        aplicarIdioma();
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,12 +311,12 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private javax.swing.JMenuItem gestionarPrestamosMenuItem;
     private javax.swing.JMenuItem gestionarUsuariosMenuItem;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

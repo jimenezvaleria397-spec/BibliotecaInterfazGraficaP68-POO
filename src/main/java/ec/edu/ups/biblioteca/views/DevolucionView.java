@@ -1,5 +1,10 @@
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.controllers.DevolucionController; 
+import ec.edu.ups.biblioteca.models.Prestamo;
+import ec.edu.ups.biblioteca.utils.Idioma;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -10,13 +15,45 @@ package ec.edu.ups.biblioteca.views;
  * @author jimen
  */
 public class DevolucionView extends javax.swing.JInternalFrame {
+    
+    private DevolucionController devolucionController = new DevolucionController();
+    private Prestamo prestamo;
 
     /**
      * Creates new form DevolucionLibroView
      */
     public DevolucionView() {
         initComponents();
+        inicializarVista();
     }
+    private void inicializarVista() {
+        txtCodigoPrestamo.setEditable(true);
+    }
+
+    private void aplicarIdioma() {
+        java.util.ResourceBundle bundle = Idioma.getBundle();
+
+        jLabel3.setText(bundle.getString("devolucion.lbl.pregunta"));
+        jLabel2.setText(bundle.getString("devolucion.lbl.instruccion"));
+        jLabel1.setText(bundle.getString("devolucion.lbl.codigo"));
+
+        btnPrestamo.setText(bundle.getString("devolucion.btn.buscar"));
+        btnDevolucion.setText(bundle.getString("devolucion.btn.registrar"));
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setColumnIdentifiers(new Object[]{
+            bundle.getString("devolucion.col.codigo"),
+            bundle.getString("devolucion.col.usuario"),
+            bundle.getString("devolucion.col.libro"),
+            bundle.getString("devolucion.col.fechaPrestamo"),
+            bundle.getString("devolucion.col.fechaDevolucion"),
+            bundle.getString("devolucion.col.estado")
+        });
+    }
+
+   
+  
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,6 +78,7 @@ public class DevolucionView extends javax.swing.JInternalFrame {
         jLabel1.setText("Código del prestamo:");
 
         btnPrestamo.setText("Buscar Prestamo");
+        btnPrestamo.addActionListener(this::btnPrestamoActionPerformed);
 
         btnDevolucion.setText("Registrar Devolucion");
         btnDevolucion.addActionListener(this::btnDevolucionActionPerformed);
@@ -147,8 +185,20 @@ public class DevolucionView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolucionActionPerformed
-        // TODO add your handling code here:
+        devolucionController.registrarDevolucion(prestamo);
+        
+        JOptionPane.showMessageDialog(this,"Devolución registrada correctamente");
+        
     }//GEN-LAST:event_btnDevolucionActionPerformed
+
+    private void btnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrestamoActionPerformed
+        int codigo = Integer.parseInt(txtCodigoPrestamo.getText());
+        prestamo = devolucionController.buscarPorCodigo(String.valueOf(codigo));
+    
+         if (prestamo == null) {
+        JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
+    }
+    }//GEN-LAST:event_btnPrestamoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

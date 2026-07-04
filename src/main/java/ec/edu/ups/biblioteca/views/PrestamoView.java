@@ -4,9 +4,14 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.controllers.PrestamoController;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.Prestamo;
+import ec.edu.ups.biblioteca.utils.Idioma;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +21,7 @@ public class PrestamoView extends javax.swing.JInternalFrame {
     private LibroDAO libroDAO;
     private UsuarioDAO usuarioDAO;
     private PrestamoDAO prestamoDAO;
+    private PrestamoController prestamoController = new PrestamoController();
 
     /**
      * Creates new form RealizarPrestamoView
@@ -25,7 +31,90 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         libroDAO = new LibroDAO();
         usuarioDAO = new UsuarioDAO();
         prestamoDAO = new PrestamoDAO(libroDAO, usuarioDAO);
+        inicializarVista();
     }
+    private void inicializarVista() {
+    bloquearCampos();
+    txtCodigo.setEditable(true);
+    btnActualizar.setEnabled(false);
+    btnEliminar.setEnabled(false);
+    listarPrestamos();
+}
+
+    private void bloquearCampos() {
+
+        txtUsuario.setEditable(false);
+        txtLibro.setEditable(false);
+        txtFechaPrestamo.setEditable(false);
+        txtFechaDevolucion.setEditable(false);
+        txtEstado.setEditable(false);
+
+    }
+
+    private void modoActualizar() {
+        habilitarCampos();
+        btnActualizar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnRegistrarPrestamo.setEnabled(false);
+    }
+
+    private void habilitarCampos() {
+
+        txtUsuario.setEditable(true);
+        txtLibro.setEditable(true);
+        txtFechaPrestamo.setEditable(true);
+        txtFechaDevolucion.setEditable(true);
+        txtEstado.setEditable(true);
+
+    }
+
+    private void limpiarCampos() {
+
+        txtCodigo.setText("");
+        txtUsuario.setText("");
+        txtLibro.setText("");
+        txtFechaPrestamo.setText("");
+        txtFechaDevolucion.setText("");
+        txtEstado.setText("");
+
+    }
+
+    private void listarPrestamos() {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+
+        List<Prestamo> prestamos = prestamoController.listar();
+
+        for (Prestamo p : prestamos) {
+            modelo.addRow(new Object[]{
+                p.getCodigo(),
+                p.getUsuario().getNombre(),
+                p.getLibro().getTitulo(),
+                p.getFechaPrestamo(),
+                p.getFechaDevolucion(),
+                p.getEstado()
+            });
+        }
+    }
+    private void aplicarIdioma() {
+        java.util.ResourceBundle bundle = Idioma.getBundle();
+        jLabel1.setText(bundle.getString("prestamo.lbl.codigo"));
+        jLabel2.setText(bundle.getString("prestamo.lbl.usuario"));
+        jLabel3.setText(bundle.getString("prestamo.lbl.libro"));
+        jLabel4.setText(bundle.getString("prestamo.lbl.fechaPrestamo"));
+        jLabel5.setText(bundle.getString("prestamo.lbl.fechaDevolucion"));
+        jLabel6.setText(bundle.getString("prestamo.lbl.estado"));
+        jLabel7.setText(bundle.getString("prestamo.lbl.accion"));
+        jLabel8.setText(bundle.getString("prestamo.lbl.camposInfo"));
+
+        btnRegistrarPrestamo.setText(bundle.getString("prestamo.btn.registrar"));
+        btnBuscar.setText(bundle.getString("prestamo.btn.buscar"));
+        btnActualizar.setText(bundle.getString("prestamo.btn.actualizar"));
+        btnEliminar.setText(bundle.getString("prestamo.btn.eliminar"));
+        btnListar.setText(bundle.getString("prestamo.btn.listar"));
+        jButton6.setText(bundle.getString("prestamo.btn.limpiar"));
+    
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,22 +132,22 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        txtCodigo = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
+        txtLibro = new javax.swing.JTextField();
+        txtFechaPrestamo = new javax.swing.JTextField();
+        txtFechaDevolucion = new javax.swing.JTextField();
+        btnRegistrarPrestamo = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        txtEstado = new javax.swing.JTextField();
 
         jLabel1.setText("Codigo del Prestamo:");
 
@@ -72,29 +161,27 @@ public class PrestamoView extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Estado");
 
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        txtCodigo.addActionListener(this::txtCodigoActionPerformed);
 
-        jTextField4.setText("DD/MM/AA");
+        txtFechaPrestamo.setText("DD/MM/AA");
 
-        jTextField5.setText("DD/MM/AA");
+        txtFechaDevolucion.setText("DD/MM/AA");
 
-        jButton1.setText("Registrar Prestamo");
+        btnRegistrarPrestamo.setText("Registrar Prestamo");
 
-        jButton2.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
-        jButton3.setText("Actualizar");
+        btnActualizar.setText("Actualizar");
 
-        jButton4.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
 
-        jButton5.setText("Listar");
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        btnListar.setText("Listar");
+        btnListar.addActionListener(this::btnListarActionPerformed);
 
         jButton6.setText("Limpiar");
 
         jLabel7.setText("Elija la opción que desea utilizar:");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2" }));
-        jComboBox1.setToolTipText("Activo");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -113,6 +200,8 @@ public class PrestamoView extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Los campos se habilitaran segun la accion");
 
+        txtEstado.setText("Activo/Suspendido");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,13 +219,14 @@ public class PrestamoView extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(70, 70, 70)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtEstado)
+                                    .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
                                 .addGap(34, 34, 34)
                                 .addComponent(jButton6))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -152,15 +242,15 @@ public class PrestamoView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnRegistrarPrestamo)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(btnBuscar)
                         .addGap(34, 34, 34)
-                        .addComponent(jButton3)
+                        .addComponent(btnActualizar)
                         .addGap(28, 28, 28)
-                        .addComponent(jButton4)
+                        .addComponent(btnEliminar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5)))
+                        .addComponent(btnListar)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -170,38 +260,38 @@ public class PrestamoView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnRegistrarPrestamo)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnListar))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6))
+                    .addComponent(jButton6)
+                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(71, Short.MAX_VALUE))
@@ -224,23 +314,45 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnListarActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String codigo = txtCodigo.getText();
+        
+
+        Prestamo prestamo = prestamoController.buscarPorCodigo(codigo);
+
+        if (prestamo != null) {
+            
+            txtUsuario.setText(prestamo.getUsuario().getNombre());
+            txtLibro.setText(prestamo.getLibro().getTitulo());
+            txtFechaPrestamo.setText(String.valueOf(prestamo.getFechaPrestamo()));
+            txtFechaDevolucion.setText(String.valueOf(prestamo.getFechaDevolucion()));
+            txtEstado.setText(prestamo.getEstado());
+
+            modoActualizar();
+
+            btnEliminar.setEnabled(true);
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnRegistrarPrestamo;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -252,10 +364,11 @@ public class PrestamoView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtEstado;
+    private javax.swing.JTextField txtFechaDevolucion;
+    private javax.swing.JTextField txtFechaPrestamo;
+    private javax.swing.JTextField txtLibro;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
