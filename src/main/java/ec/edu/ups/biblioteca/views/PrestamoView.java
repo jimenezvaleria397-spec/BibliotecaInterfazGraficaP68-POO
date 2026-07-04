@@ -113,6 +113,7 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         btnEliminar.setText(bundle.getString("prestamo.btn.eliminar"));
         btnListar.setText(bundle.getString("prestamo.btn.listar"));
         jButton6.setText(bundle.getString("prestamo.btn.limpiar"));
+        //jdksjdklsj
     
 }
 
