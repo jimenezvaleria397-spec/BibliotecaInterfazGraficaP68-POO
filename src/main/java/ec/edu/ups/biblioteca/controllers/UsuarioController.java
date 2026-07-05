@@ -17,8 +17,8 @@ public class UsuarioController {
 
     private UsuarioDAO usuarioDAO;
 
-    public UsuarioController() {
-        usuarioDAO = new UsuarioDAO();
+    public UsuarioController() { // constructor publico en controller
+        usuarioDAO = UsuarioDAO.getUsuarioDAO();
     }
 
     public void agregar(Usuario usuario) {

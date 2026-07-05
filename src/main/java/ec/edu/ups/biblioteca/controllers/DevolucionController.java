@@ -17,9 +17,9 @@ public class DevolucionController {
     private PrestamoDAO prestamoDAO;
 
     public DevolucionController() {
-        LibroDAO libroDAO = new LibroDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        prestamoDAO = new PrestamoDAO(libroDAO, usuarioDAO);
+        LibroDAO libroDAO = LibroDAO.getLibroDAO();
+        UsuarioDAO usuarioDAO = UsuarioDAO.getUsuarioDAO();
+        prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
     }
 
     public Prestamo buscarPorCodigo(String codigo) {
@@ -27,7 +27,7 @@ public class DevolucionController {
     }
 
     public void registrarDevolucion(Prestamo prestamo) {
-        prestamo.setEstado("Devuelto");
+        prestamo.setEstado(false); // false cuando el préstamo ya se acabo (devolucion)
         prestamoDAO.actualizar(prestamo);
     }
 }

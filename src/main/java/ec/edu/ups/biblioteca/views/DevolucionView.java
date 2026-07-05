@@ -75,6 +75,11 @@ public class DevolucionView extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("Código del prestamo:");
 
         btnPrestamo.setText("Buscar Prestamo");

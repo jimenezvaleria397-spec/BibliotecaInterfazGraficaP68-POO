@@ -13,10 +13,18 @@ import java.util.List;
  * @author USER
  */
 public class LibroDAO implements DAO<Libro> {
+    private static LibroDAO libroDAO;
     private List<Libro> libros;  
     
-    public LibroDAO(){
+    private LibroDAO(){
         this.libros = new ArrayList<>();
+    }
+    
+    public static LibroDAO getLibroDAO() {
+        if (libroDAO == null) {
+            libroDAO = new LibroDAO();
+        }
+        return libroDAO;
     }
 
     @Override

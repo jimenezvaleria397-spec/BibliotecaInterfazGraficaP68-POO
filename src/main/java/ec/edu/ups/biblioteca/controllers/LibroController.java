@@ -12,12 +12,10 @@ import java.util.List;
  */
 
 public class LibroController {
-    
-
     private LibroDAO libroDAO;
 
     public LibroController() {
-        libroDAO = new LibroDAO();
+        libroDAO = LibroDAO.getLibroDAO();
     }
 
     public void agregar(Libro libro) {

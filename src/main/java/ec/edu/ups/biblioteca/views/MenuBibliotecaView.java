@@ -4,8 +4,7 @@
  */
 package ec.edu.ups.biblioteca.views;
 
-import ec.edu.ups.biblioteca.utils.Idioma;
-import javax.swing.JOptionPane;
+import ec.edu.ups.biblioteca.utils.Idioma;                         
         
 
 /**
@@ -22,7 +21,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
      */
     public MenuBibliotecaView() {
         initComponents();
-        aplicarIdioma();
+          aplicarIdioma();
         
     }
    
@@ -49,7 +48,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
     btnIdioma.setText(bundle.getString("menu.idioma"));
     
-        }
+    }
    
   
     /**
@@ -90,7 +89,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
         jLabel3.setText("===== BIENVENIDO A LA BIBLIOTECA =====");
 
-        jLabel2.setText("Que quieres realizar hoy?");
+        jLabel2.setText("¿Qué quieres realizar hoy?");
 
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -100,23 +99,22 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                        .addGap(254, 254, 254)
-                        .addComponent(jLabel2))
-                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                        .addGap(217, 217, 217)
-                        .addComponent(jLabel3)))
-                .addContainerGap(472, Short.MAX_VALUE))
+                .addGap(483, 483, 483)
+                .addComponent(jLabel3)
+                .addContainerGap(493, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(538, 538, 538))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(221, 221, 221)
                 .addComponent(jLabel3)
-                .addGap(63, 63, 63)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addContainerGap(491, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -132,8 +130,8 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDesktopPane1)
-                .addContainerGap())
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnLibro.setText("Libros");
@@ -202,14 +200,14 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

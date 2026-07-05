@@ -5,7 +5,6 @@
 package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.controllers.UsuarioController;
-import ec.edu.ups.biblioteca.dao.UsuarioDAO;
 import ec.edu.ups.biblioteca.models.Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -15,14 +14,12 @@ import javax.swing.JOptionPane;
  * @author jimen
  */
 public class UsuarioView extends javax.swing.JInternalFrame {
-    private UsuarioDAO usuarioDAO;
     private UsuarioController usuarioController;
-    /**
+    /** 
      * Creates new form UsuarioView
      */
     public UsuarioView() {
         initComponents();
-        usuarioDAO = new UsuarioDAO();
         usuarioController = new UsuarioController();
         inicializar();
     }
@@ -37,20 +34,20 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     private void bloquear() {
         txtNombre.setEditable(false);
         txtCorreo.setEditable(false);
-        txtEstado.setEditable(false);
+
     }
 
     private void habilitar() {
         txtNombre.setEditable(true);
         txtCorreo.setEditable(true);
-        txtEstado.setEditable(true);
+
     }
 
     private void limpiar() {
         txtCedula.setText("");
         txtNombre.setText("");
         txtCorreo.setText("");
-        txtEstado.setText("");
+
     }
     private void modoActualizar() {
     habilitar();
@@ -70,7 +67,6 @@ private void listar() {
             u.getCedula(),
             u.getNombre(),
             u.getCorreo(),
-            u.getEstado()
         });
     }
 }
@@ -88,7 +84,6 @@ private void listar() {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnCrear = new javax.swing.JButton();
@@ -102,15 +97,17 @@ private void listar() {
         txtCorreo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtEstado = new javax.swing.JTextField();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setText("Cédula:");
 
         jLabel2.setText("Nombre:");
 
         jLabel3.setText("Correo electrónico:");
-
-        jLabel4.setText("Estado:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -142,15 +139,12 @@ private void listar() {
 
         jLabel6.setText("Los siguientes campos se habilitaran segun la accion seleccionada");
 
-        txtEstado.setText("Activo/Suspendido");
-        txtEstado.addActionListener(this::txtEstadoActionPerformed);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(46, Short.MAX_VALUE)
+                .addContainerGap(45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -169,15 +163,12 @@ private void listar() {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
                                             .addComponent(jLabel2)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4))
+                                            .addComponent(jLabel3))
                                         .addGap(46, 46, 46)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                                .addComponent(txtNombre)
-                                                .addComponent(txtCorreo)))))
+                                            .addComponent(txtCedula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.TRAILING))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnListar)
                                 .addGap(18, 18, 18)
@@ -217,11 +208,7 @@ private void listar() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(94, 94, 94)
+                .addGap(137, 137, 137)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -233,7 +220,7 @@ private void listar() {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(411, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +243,6 @@ private void listar() {
 
             txtNombre.setText(usuario.getNombre());
             txtCorreo.setText(usuario.getCorreo());
-            txtEstado.setText(usuario.getEstado());
 
             modoActualizar();
 
@@ -266,10 +252,6 @@ private void listar() {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void txtEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEstadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -282,7 +264,6 @@ private void listar() {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -290,7 +271,6 @@ private void listar() {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

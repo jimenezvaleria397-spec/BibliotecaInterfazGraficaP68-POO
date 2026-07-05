@@ -6,7 +6,9 @@ package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.models.Prestamo;
+import ec.edu.ups.biblioteca.models.Usuario;
 import java.util.List;
 /**
  *
@@ -14,16 +16,14 @@ import java.util.List;
  */
 
 public class PrestamoController {
-    
-    private PrestamoController prestamoController = new PrestamoController();
     private PrestamoDAO prestamoDAO;
+    private LibroDAO libroDAO;
+    private UsuarioDAO usuarioDAO;
 
     public PrestamoController() {
-
-        LibroDAO libroDAO = new LibroDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-        prestamoDAO = new PrestamoDAO(libroDAO, usuarioDAO);
+        this.libroDAO = LibroDAO.getLibroDAO();
+        this.usuarioDAO = UsuarioDAO.getUsuarioDAO();
+        this.prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
     }
 
     public void agregar(Prestamo prestamo) {
@@ -46,4 +46,11 @@ public class PrestamoController {
         return prestamoDAO.listar();
     }
 
+    public List<Libro> listarLibros() {
+        return libroDAO.listar();
+    }
+
+    public Usuario buscarUsuarioPorCedula(String cedula) {
+        return usuarioDAO.buscarPorCodigo(cedula);
+    }
 }

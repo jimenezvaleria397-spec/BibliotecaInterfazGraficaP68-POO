@@ -15,16 +15,15 @@ public class Usuario {
     private String cedula;
     private String nombre;
     private String correo;
-    private String estado;
+
 
     public Usuario() {
     }
 
-    public Usuario(String cedula, String nombre, String correo, String estado) {
+    public Usuario(String cedula, String nombre, String correo) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.correo = correo;
-        this.estado = estado;
     }
 
     public String getCedula() {
@@ -51,21 +50,12 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.cedula);
-        hash = 29 * hash + Objects.hashCode(this.nombre);
-        hash = 29 * hash + Objects.hashCode(this.correo);
-        hash = 29 * hash + Objects.hashCode(this.estado);
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.cedula);
+        hash = 23 * hash + Objects.hashCode(this.nombre);
+        hash = 23 * hash + Objects.hashCode(this.correo);
         return hash;
     }
 
@@ -87,15 +77,13 @@ public class Usuario {
         if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
-        if (!Objects.equals(this.correo, other.correo)) {
-            return false;
-        }
-        return Objects.equals(this.estado, other.estado);
+        return Objects.equals(this.correo, other.correo);
     }
 
     @Override
     public String toString() {
-        return "Usuario{" + "cedula=" + cedula + ", nombre=" + nombre + ", correo=" + correo + ", estado=" + estado + '}';
+        return "Usuario{" + "cedula=" + cedula + ", nombre=" + nombre + ", correo=" + correo + '}';
     }
+
     
 }

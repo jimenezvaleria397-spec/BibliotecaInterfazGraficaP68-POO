@@ -5,12 +5,12 @@
 package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.controllers.PrestamoController;
-import ec.edu.ups.biblioteca.dao.LibroDAO;
-import ec.edu.ups.biblioteca.dao.PrestamoDAO;
-import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.models.Prestamo;
+import ec.edu.ups.biblioteca.models.Usuario;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,28 +18,33 @@ import javax.swing.JOptionPane;
  * @author jimen
  */
 public class PrestamoView extends javax.swing.JInternalFrame {
-    private LibroDAO libroDAO;
-    private UsuarioDAO usuarioDAO;
-    private PrestamoDAO prestamoDAO;
     private PrestamoController prestamoController = new PrestamoController();
+    private List<Libro> librosDisponibles;
+    private Usuario usuarioSeleccionado;
+    private Libro libroSeleccionado;
 
     /**
      * Creates new form RealizarPrestamoView
      */
     public PrestamoView() {
         initComponents();
-        libroDAO = new LibroDAO();
-        usuarioDAO = new UsuarioDAO();
-        prestamoDAO = new PrestamoDAO(libroDAO, usuarioDAO);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Activo", "Devuelto"}));
+        cargarListaLibros();
+        jList1.addListSelectionListener(evt -> {
+            int index = jList1.getSelectedIndex();
+            if (index >= 0) {
+                txtLibro.setText(librosDisponibles.get(index).getTitulo());
+            }
+        });
         inicializarVista();
     }
     private void inicializarVista() {
-    bloquearCampos();
-    txtCodigo.setEditable(true);
-    btnActualizar.setEnabled(false);
-    btnEliminar.setEnabled(false);
-    listarPrestamos();
-}
+        bloquearCampos();
+        txtCodigo.setEditable(true);
+        btnActualizar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        listarPrestamos();
+    }
 
     private void bloquearCampos() {
 
@@ -47,8 +52,6 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         txtLibro.setEditable(false);
         txtFechaPrestamo.setEditable(false);
         txtFechaDevolucion.setEditable(false);
-        txtEstado.setEditable(false);
-
     }
 
     private void modoActualizar() {
@@ -64,18 +67,20 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         txtLibro.setEditable(true);
         txtFechaPrestamo.setEditable(true);
         txtFechaDevolucion.setEditable(true);
-        txtEstado.setEditable(true);
+    
 
     }
 
     private void limpiarCampos() {
-
         txtCodigo.setText("");
         txtUsuario.setText("");
         txtLibro.setText("");
         txtFechaPrestamo.setText("");
         txtFechaDevolucion.setText("");
-        txtEstado.setText("");
+
+        usuarioSeleccionado = null;
+        libroSeleccionado = null;
+        jList1.clearSelection();
 
     }
 
@@ -92,10 +97,20 @@ public class PrestamoView extends javax.swing.JInternalFrame {
                 p.getLibro().getTitulo(),
                 p.getFechaPrestamo(),
                 p.getFechaDevolucion(),
-                p.getEstado()
+
             });
         }
     }
+    
+    private void cargarListaLibros() {
+        librosDisponibles = prestamoController.listarLibros();
+        DefaultListModel<String> modeloLista = new DefaultListModel<>();
+        for (Libro l : librosDisponibles) {
+            modeloLista.addElement(l.getCodigo() + " - " + l.getTitulo());
+        }
+        jList1.setModel(modeloLista);
+    }
+    
     private void aplicarIdioma() {
         java.util.ResourceBundle bundle = Idioma.getBundle();
         jLabel1.setText(bundle.getString("prestamo.lbl.codigo"));
@@ -149,19 +164,27 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
-        txtEstado = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Prestamo-Vista");
 
         jLabel1.setText("Codigo del Prestamo:");
 
-        jLabel2.setText("Usuario");
+        jLabel2.setText("Usuario:");
 
-        jLabel3.setText("Libro");
+        jLabel3.setText("Libro:");
 
-        jLabel4.setText("Fecha de Prestamo");
+        jLabel4.setText("Fecha de Préstamo:");
 
-        jLabel5.setText("Fecha Devolucion");
+        jLabel5.setText("Fecha Devolución:");
 
-        jLabel6.setText("Estado");
+        jLabel6.setText("Estado:");
 
         txtCodigo.addActionListener(this::txtCodigoActionPerformed);
 
@@ -170,6 +193,7 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         txtFechaDevolucion.setText("DD/MM/AA");
 
         btnRegistrarPrestamo.setText("Registrar Prestamo");
+        btnRegistrarPrestamo.addActionListener(this::btnRegistrarPrestamoActionPerformed);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
@@ -202,58 +226,70 @@ public class PrestamoView extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Los campos se habilitaran segun la accion");
 
-        txtEstado.setText("Activo/Suspendido");
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Devolución" }));
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Activo", "Suspendido" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(70, 70, 70)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtEstado)
-                                    .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-                                .addGap(34, 34, 34)
-                                .addComponent(jButton6))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(106, 106, 106)))
-                .addGap(69, 69, 69))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(btnRegistrarPrestamo)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar)
+                .addGap(34, 34, 34)
+                .addComponent(btnActualizar)
+                .addGap(28, 28, 28)
+                .addComponent(btnEliminar)
+                .addGap(18, 18, 18)
+                .addComponent(btnListar)
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(209, 209, 209))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRegistrarPrestamo)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnActualizar)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnListar)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(209, 209, 209))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
+                        .addGap(175, 175, 175))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(315, 315, 315)
+                                    .addComponent(jButton6))
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtLibro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,34 +305,39 @@ public class PrestamoView extends javax.swing.JInternalFrame {
                     .addComponent(btnListar))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jButton6)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(51, 51, 51)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(2, 2, 2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton6)
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -306,7 +347,7 @@ public class PrestamoView extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,7 +377,6 @@ public class PrestamoView extends javax.swing.JInternalFrame {
             txtLibro.setText(prestamo.getLibro().getTitulo());
             txtFechaPrestamo.setText(String.valueOf(prestamo.getFechaPrestamo()));
             txtFechaDevolucion.setText(String.valueOf(prestamo.getFechaDevolucion()));
-            txtEstado.setText(prestamo.getEstado());
 
             modoActualizar();
 
@@ -347,6 +387,34 @@ public class PrestamoView extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnRegistrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPrestamoActionPerformed
+        String codigo = txtCodigo.getText();
+
+        if (codigo.isEmpty() || usuarioSeleccionado == null || libroSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debes ingresar código, usuario y libro válidos");
+            return;
+        }
+
+        try {
+            java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yy");
+            java.util.Date fechaPrestamo = formato.parse(txtFechaPrestamo.getText());
+            java.util.Date fechaDevolucion = formato.parse(txtFechaDevolucion.getText());
+
+            boolean estado = jComboBox1.getSelectedItem().equals("Activo");
+
+            Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, libroSeleccionado,
+                    fechaPrestamo, fechaDevolucion, estado);
+
+            prestamoController.agregar(prestamo);
+            listarPrestamos();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Préstamo registrado con éxito");
+
+        } catch (java.text.ParseException e) {
+            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Usa dd/MM/aa");
+        }
+    }//GEN-LAST:event_btnRegistrarPrestamoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
@@ -355,6 +423,7 @@ public class PrestamoView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnRegistrarPrestamo;
     private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -363,11 +432,12 @@ public class PrestamoView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtFechaDevolucion;
     private javax.swing.JTextField txtFechaPrestamo;
     private javax.swing.JTextField txtLibro;

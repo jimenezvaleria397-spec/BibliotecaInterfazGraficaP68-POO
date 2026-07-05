@@ -13,10 +13,17 @@ import java.util.List;
  * @author USER
  */
 public class UsuarioDAO implements DAO<Usuario>{
+    private static UsuarioDAO usuarioDAO;
     private List<Usuario> usuarios;
     
-    public UsuarioDAO(){
+    private UsuarioDAO(){ // constructor privado en DAO
         this.usuarios = new ArrayList<>();
+    }
+    public static UsuarioDAO getUsuarioDAO() {
+        if (usuarioDAO == null) {
+            usuarioDAO = new UsuarioDAO();
+        }
+        return usuarioDAO;
     }
 
     @Override
@@ -43,7 +50,6 @@ public class UsuarioDAO implements DAO<Usuario>{
             existente.setCedula(usuarioAC.getCedula());
             existente.setCorreo(usuarioAC.getCorreo());
             existente.setNombre(usuarioAC.getNombre());
-            existente.setEstado(usuarioAC.getEstado());
         }
     }
 

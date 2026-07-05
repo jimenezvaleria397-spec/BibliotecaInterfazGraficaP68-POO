@@ -18,13 +18,12 @@ public class Prestamo {
     private Libro libro;
     private Date fechaPrestamo;
     private Date fechaDevolucion;
-    private String estado;
+    private boolean estado;
 
     public Prestamo() {
     }
 
-    public Prestamo(String codigo, Usuario usuario, Libro libro,
-                    Date fechaPrestamo, Date fechaDevolucion, String estado) {
+    public Prestamo(String codigo, Usuario usuario, Libro libro, Date fechaPrestamo, Date fechaDevolucion, boolean estado) {
         this.codigo = codigo;
         this.usuario = usuario;
         this.libro = libro;
@@ -73,23 +72,23 @@ public class Prestamo {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public String getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.codigo);
-        hash = 29 * hash + Objects.hashCode(this.usuario);
-        hash = 29 * hash + Objects.hashCode(this.libro);
-        hash = 29 * hash + Objects.hashCode(this.fechaPrestamo);
-        hash = 29 * hash + Objects.hashCode(this.fechaDevolucion);
-        hash = 29 * hash + Objects.hashCode(this.estado);
+        hash = 89 * hash + Objects.hashCode(this.codigo);
+        hash = 89 * hash + Objects.hashCode(this.usuario);
+        hash = 89 * hash + Objects.hashCode(this.libro);
+        hash = 89 * hash + Objects.hashCode(this.fechaPrestamo);
+        hash = 89 * hash + Objects.hashCode(this.fechaDevolucion);
+        hash = 89 * hash + (this.estado ? 1 : 0);
         return hash;
     }
 
@@ -105,10 +104,10 @@ public class Prestamo {
             return false;
         }
         final Prestamo other = (Prestamo) obj;
-        if (!Objects.equals(this.codigo, other.codigo)) {
+        if (this.estado != other.estado) {
             return false;
         }
-        if (!Objects.equals(this.estado, other.estado)) {
+        if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
         if (!Objects.equals(this.usuario, other.usuario)) {
@@ -127,5 +126,6 @@ public class Prestamo {
     public String toString() {
         return "Prestamo{" + "codigo=" + codigo + ", usuario=" + usuario + ", libro=" + libro + ", fechaPrestamo=" + fechaPrestamo + ", fechaDevolucion=" + fechaDevolucion + ", estado=" + estado + '}';
     }
+
     
 }

@@ -41,7 +41,6 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
         EjemplarLibro existente = buscarPorCodigo(ejemplarAC.getCodigoBarras());
         if(existente != null){
             existente.setCodigoBarras(ejemplarAC.getCodigoBarras());
-            existente.setEstadoL(ejemplarAC.getEstadoL());
             existente.setUbicacion(ejemplarAC.getUbicacion());
         }
     }

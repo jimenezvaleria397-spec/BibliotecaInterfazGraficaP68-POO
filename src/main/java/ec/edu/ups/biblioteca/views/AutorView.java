@@ -1,32 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package ec.edu.ups.biblioteca.views;
 
-import ec.edu.ups.biblioteca.dao.AutorDAO;
+import ec.edu.ups.biblioteca.controllers.AutorController;
 import ec.edu.ups.biblioteca.models.Autor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
+ */
+
 /**
  *
- * @author jimen
+ * @author Lenovo
  */
 public class AutorView extends javax.swing.JInternalFrame {
-    private AutorDAO autorDAO;
+    private AutorController autorController;
 
     /**
-     * Creates new form CrearAutorView
+     * Creates new form AutorView
      */
     public AutorView() {
         initComponents();
-        autorDAO = new AutorDAO();
+        autorController = new AutorController();
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,51 +38,64 @@ public class AutorView extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btnCrearAutor = new javax.swing.JButton();
+        btnBuscarAutor = new javax.swing.JButton();
+        btnActualizarAutor = new javax.swing.JButton();
+        btnEliminarAutor = new javax.swing.JButton();
+        btnListarAutor = new javax.swing.JButton();
+        btnLimpiarCampos = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtCodigoAutor = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtNacionalidad = new javax.swing.JTextField();
         txtFechaNac = new javax.swing.JTextField();
-        btnCrear = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnListar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDeAutores = new javax.swing.JTable();
-        lblCodigoAutor = new javax.swing.JLabel();
-        txtCodigoAutor = new javax.swing.JTextField();
 
-        jLabel1.setText("Nombre");
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Autor-Vista");
 
-        jLabel2.setText("Nacionalidad");
+        jLabel1.setText("Seleccione primero la acción que necesita realizar:");
 
-        jLabel3.setText("Fecha de nacimiento:");
+        btnCrearAutor.setText("Crear");
+        btnCrearAutor.addActionListener(this::btnCrearAutorActionPerformed);
 
-        btnCrear.setText("Crear");
-        btnCrear.addActionListener(this::btnCrearActionPerformed);
+        btnBuscarAutor.setText("Buscar");
+        btnBuscarAutor.addActionListener(this::btnBuscarAutorActionPerformed);
 
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
+        btnActualizarAutor.setText("Actualizar");
+        btnActualizarAutor.addActionListener(this::btnActualizarAutorActionPerformed);
 
-        btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
+        btnEliminarAutor.setText("Eliminar");
+        btnEliminarAutor.addActionListener(this::btnEliminarAutorActionPerformed);
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+        btnListarAutor.setText("Listar");
+        btnListarAutor.addActionListener(this::btnListarAutorActionPerformed);
 
-        btnListar.setText("Listar");
-        btnListar.addActionListener(this::btnListarActionPerformed);
+        btnLimpiarCampos.setText("Limpiar");
+        btnLimpiarCampos.addActionListener(this::btnLimpiarCamposActionPerformed);
 
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
+        jLabel2.setText("Los textos se habilitarán según la acción seleccionada:");
 
-        jLabel4.setText("Los campos se habilitaran segun la accion seleccionada.");
+        jLabel3.setText("Código del Autor:");
 
-        jLabel5.setText("Seleccione primero que acción desea realizar:");
+        jLabel4.setText("Nombre:");
+
+        jLabel5.setText("Nacionalidad:");
+
+        jLabel6.setText("Fecha de Nacimiento:");
+
+        txtCodigoAutor.setText("0");
+        txtCodigoAutor.addActionListener(this::txtCodigoAutorActionPerformed);
+
+        txtFechaNac.setText("DD/MM/AA");
 
         tablaDeAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,94 +105,102 @@ public class AutorView extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Código:", "Nombre:", "Nacionalidad:", "Fecha de Nacimiento:"
+                "Código", "Nombre:", "Nacionalidad", "Fecha de Nacimiento:"
             }
         ));
         jScrollPane1.setViewportView(tablaDeAutores);
-
-        lblCodigoAutor.setText("Código Autor:");
-
-        txtCodigoAutor.setText("0");
-        txtCodigoAutor.addActionListener(this::txtCodigoAutorActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(btnCrear)
-                .addGap(37, 37, 37)
-                .addComponent(btnBuscar)
-                .addGap(51, 51, 51)
-                .addComponent(btnActualizar)
-                .addGap(47, 47, 47)
-                .addComponent(btnEliminar)
-                .addGap(44, 44, 44)
-                .addComponent(btnListar)
-                .addGap(45, 45, 45)
-                .addComponent(btnLimpiar)
-                .addGap(30, 30, 30))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLimpiarCampos)))
+                .addGap(239, 239, 239))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
+                        .addGap(365, 365, 365)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel4))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(lblCodigoAutor)
-                                    .addComponent(jLabel1))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtNacionalidad)
-                                    .addComponent(txtFechaNac)
-                                    .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnActualizarAutor)
+                                        .addGap(138, 138, 138))
+                                    .addComponent(jLabel2))
+                                .addGap(33, 33, 33)
+                                .addComponent(btnListarAutor))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnEliminarAutor)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(177, 177, 177)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnCrearAutor)
+                                .addGap(57, 57, 57)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnBuscarAutor)
+                                    .addComponent(jLabel3)))
+                            .addComponent(jLabel6))
+                        .addGap(111, 111, 111)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrear)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnActualizar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnListar)
-                    .addComponent(btnLimpiar))
-                .addGap(32, 32, 32)
-                .addComponent(jLabel4)
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodigoAutor)
-                    .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscarAutor)
+                    .addComponent(btnActualizarAutor)
+                    .addComponent(btnCrearAutor)
+                    .addComponent(btnListarAutor)
+                    .addComponent(btnEliminarAutor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                    .addComponent(jLabel6))
+                .addGap(48, 48, 48)
+                .addComponent(btnLimpiarCampos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63))
         );
+
+        jLabel1.getAccessibleContext().setAccessibleName("AutorView");
+        btnCrearAutor.getAccessibleContext().setAccessibleName("Buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,8 +208,8 @@ public class AutorView extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,52 +222,12 @@ public class AutorView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCodigoAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAutorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoAutorActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String codigo = txtCodigoAutor.getText();
-        Autor existente = autorDAO.buscarPorCodigo(codigo);
-
-        if (existente == null) {
-            JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
-            return;
-        }
-
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Eliminar este autor?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            autorDAO.eliminar(codigo);
-            JOptionPane.showMessageDialog(this, "Autor eliminado.");
-            limpiarCampos();
-            actualizarTabla();
-    }    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Codigo");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Nacionalidad");
-        modelo.addColumn("Fecha de Nacimiento");
-
-        for (Autor a : autorDAO.listar()) {
-            Object[] fila = {a.getCodigoAutor(), a.getNombre(), a.getNacionalidad(), a.getFechadeNac().toString()};
-            modelo.addRow(fila);
-        }
-
-        tablaDeAutores.setModel(modelo); 
-    }//GEN-LAST:event_btnListarActionPerformed
-
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-         limpiarCampos();
-    }//GEN-LAST:event_btnLimpiarActionPerformed
-    
-    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+    private void btnCrearAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearAutorActionPerformed
         String codigoAutor = txtCodigoAutor.getText();
         String nombre = txtNombre.getText();
         String nacionalidad = txtNacionalidad.getText();
         String fechaTexto = txtFechaNac.getText();
-
+        
         if (codigoAutor.isEmpty() || nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Código y nombre son obligatorios.");
             return;
@@ -254,86 +235,113 @@ public class AutorView extends javax.swing.JInternalFrame {
         try {
             LocalDate fechaNac = LocalDate.parse(fechaTexto);
             Autor autorAc = new Autor(nombre, nacionalidad, codigoAutor, fechaNac, new ArrayList<>());
-            autorDAO.agregar(autorAc);
+            autorController.agregar(autorAc);
             JOptionPane.showMessageDialog(this, "Autor registrado con éxito.");
             limpiarCampos();
             actualizarTabla();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA-MM-DD.");
         }
-    }//GEN-LAST:event_btnCrearActionPerformed
-    
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String codigo = txtCodigoAutor.getText();
-        Autor encontrado = autorDAO.buscarPorCodigo(codigo);
+    }//GEN-LAST:event_btnCrearAutorActionPerformed
 
+    private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
+        String codigo = txtCodigoAutor.getText();
+        Autor encontrado = autorController.buscarPorCodigo(codigo);
+        
         if (encontrado != null) {
             txtNombre.setText(encontrado.getNombre());
             txtNacionalidad.setText(encontrado.getNacionalidad());
-            txtFechaNac .setText(encontrado.getFechadeNac().toString());
+            txtFechaNac.setText(encontrado.getFechadeNac().toString());
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró un autor con ese código.");
         }
-    }//GEN-LAST:event_btnBuscarActionPerformed
-    
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+    }//GEN-LAST:event_btnBuscarAutorActionPerformed
+
+    private void btnActualizarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutorActionPerformed
         String codigo = txtCodigoAutor.getText();
-        Autor existente = autorDAO.buscarPorCodigo(codigo);
-
-        if (existente == null) {
-            JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
+        Autor existente = autorController.buscarPorCodigo(codigo);
+        
+        if(existente == null){
+            JOptionPane.showConfirmDialog(this, "No existe un autor con este código");
             return;
-        }
-
+        } 
         try {
             LocalDate fechaNac = LocalDate.parse(txtFechaNac.getText());
-            Autor autorAc = new Autor(txtNombre.getText(), txtNacionalidad.getText(), codigo, fechaNac, existente.getTitulos());
-            autorDAO.actualizar(autorAc); 
+            Autor autorAc = new Autor(txtNombre.getText(), txtNacionalidad.getText(), codigo, fechaNac,existente.getTitulos());
+            autorController.actualizar(autorAc); 
             JOptionPane.showMessageDialog(this, "Autor actualizado.");
             limpiarCampos();
             actualizarTabla();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA-MM-DD.");
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA.MM.DD. ");
         }
-    }//GEN-LAST:event_btnActualizarActionPerformed
+    }//GEN-LAST:event_btnActualizarAutorActionPerformed
+
+    private void btnEliminarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutorActionPerformed
+        String codigo = txtCodigoAutor.getText();
+        Autor existente = autorController.buscarPorCodigo(codigo);
+        if(existente != null){
+            JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
+            return;
+        }
+        
+        int confirmacion = JOptionPane.showConfirmDialog(this,"¿Eliminar este autor?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if(confirmacion == JOptionPane.YES_OPTION) {
+            autorController.eliminar(codigo);
+            JOptionPane.showMessageDialog(this, "Autor eliminado.");
+            limpiarCampos();
+            actualizarTabla();
+        }
+    }//GEN-LAST:event_btnEliminarAutorActionPerformed
+
+    private void btnListarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarAutorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnListarAutorActionPerformed
+
+    private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
+        limpiarCampos();
+    }//GEN-LAST:event_btnLimpiarCamposActionPerformed
+
+    private void txtCodigoAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAutorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoAutorActionPerformed
     
-    private void limpiarCampos() {
+    private void limpiarCampos(){
         txtCodigoAutor.setText("");
         txtNombre.setText("");
         txtNacionalidad.setText("");
         txtFechaNac.setText("");
     }
     
-    private void actualizarTabla() {
+    private void actualizarTabla(){
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Codigo");
+        modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Nacionalidad");
         modelo.addColumn("Fecha de Nacimiento");
-
-        for (Autor a : autorDAO.listar()) {
+        
+        for (Autor a : autorController.listar()) {
             Object[] fila = {a.getCodigoAutor(), a.getNombre(), a.getNacionalidad(), a.getFechadeNac().toString()};
             modelo.addRow(fila);
         }
-
         tablaDeAutores.setModel(modelo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCrear;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnActualizarAutor;
+    private javax.swing.JButton btnBuscarAutor;
+    private javax.swing.JButton btnCrearAutor;
+    private javax.swing.JButton btnEliminarAutor;
+    private javax.swing.JButton btnLimpiarCampos;
+    private javax.swing.JButton btnListarAutor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblCodigoAutor;
     private javax.swing.JTable tablaDeAutores;
     private javax.swing.JTextField txtCodigoAutor;
     private javax.swing.JTextField txtFechaNac;

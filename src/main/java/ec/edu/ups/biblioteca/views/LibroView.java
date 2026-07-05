@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class LibroView extends javax.swing.JInternalFrame {
     private LibroController libroController;
+    private boolean creandoNuevo = false; 
  
     public LibroView() {
         initComponents();
@@ -103,6 +104,11 @@ public class LibroView extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         btnLimpiar = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("Código:");
 
         jLabel2.setText("Título:");
@@ -144,7 +150,7 @@ public class LibroView extends javax.swing.JInternalFrame {
         btnListar.setText("Listar");
         btnListar.addActionListener(this::btnListarActionPerformed);
 
-        jLabel7.setText("Elija la opcioón que desea utilizar:");
+        jLabel7.setText("Elija la opción que desea utilizar:");
 
         tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -321,7 +327,7 @@ public class LibroView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        DefaultTableModel modelo = new DefaultTableModel();
+        listarLibros();
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -362,18 +368,28 @@ public class LibroView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtGeneroActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        Libro l = new Libro();
-        
-        l.setCodigo(txtCodigo.getText());
-        l.setTitulo(txtTitulo.getText());
-        l.setAutor(txtAutor.getText());
-        l.setEditorial(txtEditorial.getText());
-        l.setGenero(txtGenero.getText());
-        l.setAnio(Integer.parseInt(txtAnio.getText()));       
-        l.setEjemplares(Integer.parseInt(txtEjemplares.getText()));
-        libroController.agregar(l);
-        listarLibros();
-        limpiar();
+        if (!creandoNuevo) {
+            limpiar();
+            habilitarCampos();
+            txtCodigo.setEditable(true);
+            btnNuevo.setText("Guardar");
+            creandoNuevo = true;
+        } else {
+            Libro l = new Libro();
+            l.setCodigo(txtCodigo.getText());
+            l.setTitulo(txtTitulo.getText());
+            l.setAutor(txtAutor.getText());
+            l.setEditorial(txtEditorial.getText());
+            l.setGenero(txtGenero.getText());
+            l.setAnio(Integer.parseInt(txtAnio.getText()));
+            l.setEjemplares(Integer.parseInt(txtEjemplares.getText()));
+            libroController.agregar(l);
+            listarLibros();
+            limpiar();
+            bloquearCampos();
+            btnNuevo.setText("Nuevo");
+            creandoNuevo = false;
+        }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
