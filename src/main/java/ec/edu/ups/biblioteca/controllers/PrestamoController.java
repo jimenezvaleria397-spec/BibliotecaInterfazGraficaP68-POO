@@ -53,4 +53,8 @@ public class PrestamoController {
     public Usuario buscarUsuarioPorCedula(String cedula) {
         return usuarioDAO.buscarPorCodigo(cedula);
     }
+    
+    public Libro buscarLibroPorCodigo(String codigo) {
+        return libroDAO.buscarPorCodigo(codigo);
+    }
 }

@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class UsuarioView extends javax.swing.JInternalFrame {
     private UsuarioController usuarioController;
+    private boolean creandoNuevo = false;    
     /** 
      * Creates new form UsuarioView
      */
@@ -111,29 +112,34 @@ private void listar() {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Cedula", "Nombre", "Correo", "Estado"
+                "Cedula", "Nombre", "Correo"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         btnCrear.setText("Crear");
+        btnCrear.addActionListener(this::btnCrearActionPerformed);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         btnListar.setText("Listar");
+        btnListar.addActionListener(this::btnListarActionPerformed);
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         jLabel5.setText("Elija primero que accion desea realizar");
 
@@ -208,9 +214,9 @@ private void listar() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(137, 137, 137)
+                .addGap(59, 59, 59)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(126, 126, 126))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -234,7 +240,7 @@ private void listar() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+
         String cedula = txtCedula.getText();
 
         Usuario usuario = usuarioController.buscarPorCodigo(cedula);
@@ -252,6 +258,98 @@ private void listar() {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        if (!creandoNuevo) {
+            limpiar();
+            habilitar();
+            txtCedula.setEditable(true);
+            btnCrear.setText("Guardar");
+            creandoNuevo = true;
+        } else {
+            String cedula = txtCedula.getText();
+            String nombre = txtNombre.getText();
+            String correo = txtCorreo.getText();
+
+            if (cedula.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Cédula y nombre son obligatorios.");
+                return;
+            }
+
+            Usuario usuario = new Usuario();
+            usuario.setCedula(cedula);
+            usuario.setNombre(nombre);
+            usuario.setCorreo(correo);
+            usuarioController.agregar(usuario);
+
+            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
+            limpiar();
+            bloquear();
+            txtCedula.setEditable(true);
+            listar();
+            btnCrear.setText("Crear");
+            creandoNuevo = false;
+        }
+    }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+         String cedula = txtCedula.getText();
+        Usuario existente = usuarioController.buscarPorCodigo(cedula);
+
+        if (existente == null) {
+            JOptionPane.showMessageDialog(this, "No existe un usuario con esa cédula.");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Eliminar este usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            usuarioController.eliminar(cedula);
+            JOptionPane.showMessageDialog(this, "Usuario eliminado.");
+            limpiar();
+            bloquear();
+            txtCedula.setEditable(true);
+            listar();
+            btnEliminar.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        String cedula = txtCedula.getText();
+        Usuario existente = usuarioController.buscarPorCodigo(cedula);
+
+        if (existente == null) {
+            JOptionPane.showMessageDialog(this, "No existe un usuario con esa cédula.");
+            return;
+        }
+
+        existente.setNombre(txtNombre.getText());
+        existente.setCorreo(txtCorreo.getText());
+        usuarioController.actualizar(existente);
+
+        JOptionPane.showMessageDialog(this, "Usuario actualizado.");
+        limpiar();
+        bloquear();
+        txtCedula.setEditable(true);
+        listar();
+        btnActualizar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnCrear.setEnabled(true);
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        listar();
+    }//GEN-LAST:event_btnListarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiar();
+        bloquear();
+        txtCedula.setEditable(true);
+        btnActualizar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnCrear.setEnabled(true);
+        btnCrear.setText("Crear");
+        creandoNuevo = false;
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

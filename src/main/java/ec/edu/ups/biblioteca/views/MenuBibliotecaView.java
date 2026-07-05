@@ -47,7 +47,6 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     gestionarDevolucionesMenuItem.setText(bundle.getString("menu.gestionarDevoluciones"));
 
     btnIdioma.setText(bundle.getString("menu.idioma"));
-    
     }
    
   
