@@ -6,6 +6,8 @@ package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.controllers.UsuarioController;
 import ec.edu.ups.biblioteca.models.Usuario;
+import ec.edu.ups.biblioteca.utils.Idioma;
+import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -13,7 +15,7 @@ import javax.swing.JOptionPane;
  *
  * @author jimen
  */
-public class UsuarioView extends javax.swing.JInternalFrame {
+public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
     private UsuarioController usuarioController;
     private boolean creandoNuevo = false;    
     /** 
@@ -23,6 +25,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         initComponents();
         usuarioController = new UsuarioController();
         inicializar();
+       
     }
    
 
@@ -57,7 +60,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     btnCrear.setEnabled(false);
 }
 
-private void listar() {
+    private void listar() {
     javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
     modelo.setRowCount(0);
 
@@ -71,6 +74,32 @@ private void listar() {
         });
     }
 }
+
+    @Override
+    public void aplicarIdioma() {
+        java.util.ResourceBundle bundle = Idioma.getBundle();
+
+        jLabel5.setText(bundle.getString("usuario.lbl.pregunta"));
+        jLabel6.setText(bundle.getString("usuario.lbl.camposInfo"));
+        jLabel1.setText(bundle.getString("usuario.lbl.cedula"));
+        jLabel2.setText(bundle.getString("usuario.lbl.nombre"));
+        jLabel3.setText(bundle.getString("usuario.lbl.correo"));
+        
+
+        btnCrear.setText(bundle.getString("usuario.btn.crear"));
+        btnBuscar.setText(bundle.getString("usuario.btn.buscar"));
+        btnEliminar.setText(bundle.getString("usuario.btn.eliminar"));
+        btnActualizar.setText(bundle.getString("usuario.btn.actualizar"));
+        btnListar.setText(bundle.getString("usuario.btn.listar"));
+        btnLimpiar.setText(bundle.getString("usuario.btn.limpiar"));
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setColumnIdentifiers(new Object[]{
+            bundle.getString("usuario.col.cedula"),
+            bundle.getString("usuario.col.nombre"),
+            bundle.getString("usuario.col.correo"),
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,6 +132,8 @@ private void listar() {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+
+        jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
         jLabel1.setText("Cédula:");
 
@@ -257,6 +288,7 @@ private void listar() {
         } else {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
+        limpiar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -290,6 +322,7 @@ private void listar() {
             btnCrear.setText("Crear");
             creandoNuevo = false;
         }
+        
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

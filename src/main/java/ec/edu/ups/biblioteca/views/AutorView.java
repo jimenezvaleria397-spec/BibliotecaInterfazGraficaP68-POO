@@ -2,6 +2,8 @@ package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.controllers.AutorController;
 import ec.edu.ups.biblioteca.models.Autor;
+import ec.edu.ups.biblioteca.utils.Idioma;
+import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -16,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lenovo
  */
-public class AutorView extends javax.swing.JInternalFrame {
+public class AutorView extends javax.swing.JInternalFrame implements Idiomatizable{
     private AutorController autorController;
 
     /**
@@ -25,6 +27,39 @@ public class AutorView extends javax.swing.JInternalFrame {
     public AutorView() {
         initComponents();
         autorController = new AutorController();
+    }
+    private void limpiarCampos() {
+        txtCodigoAutor.setText("");
+        txtNombre.setText("");
+        txtNacionalidad.setText("");
+        txtFechaNac.setText("");
+        
+    }
+    @Override
+    public void aplicarIdioma() {
+        java.util.ResourceBundle bundle = Idioma.getBundle();
+
+        jLabel1.setText(bundle.getString("autor.lbl.pregunta"));
+        jLabel2.setText(bundle.getString("autor.lbl.camposInfo"));
+        jLabel3.setText(bundle.getString("autor.lbl.codigo"));
+        jLabel4.setText(bundle.getString("autor.lbl.nombre"));
+        jLabel5.setText(bundle.getString("autor.lbl.nacionalidad"));
+        jLabel6.setText(bundle.getString("autor.lbl.fechaNacimiento"));
+
+        btnCrearAutor.setText(bundle.getString("autor.btn.crear"));
+        btnBuscarAutor.setText(bundle.getString("autor.btn.buscar"));
+        btnActualizarAutor.setText(bundle.getString("autor.btn.actualizar"));
+        btnEliminarAutor.setText(bundle.getString("autor.btn.eliminar"));
+        btnListarAutor.setText(bundle.getString("autor.btn.listar"));
+        btnLimpiarCampos.setText(bundle.getString("autor.btn.limpiar"));
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaDeAutores.getModel();
+        modelo.setColumnIdentifiers(new Object[]{
+            bundle.getString("autor.col.codigo"),
+            bundle.getString("autor.col.nombre"),
+            bundle.getString("autor.col.nacionalidad"),
+            bundle.getString("autor.col.fechaNacimiento")
+        });
     }
 
     /**
@@ -61,6 +96,8 @@ public class AutorView extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Autor-Vista");
+
+        jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
         jLabel1.setText("Seleccione primero la acción que necesita realizar:");
 
@@ -115,12 +152,8 @@ public class AutorView extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLimpiarCampos)))
+                .addContainerGap(718, Short.MAX_VALUE)
+                .addComponent(btnLimpiarCampos)
                 .addGap(239, 239, 239))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,6 +190,10 @@ public class AutorView extends javax.swing.JInternalFrame {
                             .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(275, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,6 +279,7 @@ public class AutorView extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA-MM-DD.");
         }
+        limpiarCampos();
     }//GEN-LAST:event_btnCrearAutorActionPerformed
 
     private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
@@ -254,7 +292,9 @@ public class AutorView extends javax.swing.JInternalFrame {
             txtFechaNac.setText(encontrado.getFechadeNac().toString());
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró un autor con ese código.");
+            limpiarCampos();
         }
+        
     }//GEN-LAST:event_btnBuscarAutorActionPerformed
 
     private void btnActualizarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutorActionPerformed
@@ -274,7 +314,9 @@ public class AutorView extends javax.swing.JInternalFrame {
             actualizarTabla();
         } catch (Exception e){
             JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA.MM.DD. ");
+            limpiarCampos();
         }
+        
     }//GEN-LAST:event_btnActualizarAutorActionPerformed
 
     private void btnEliminarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutorActionPerformed
@@ -283,6 +325,7 @@ public class AutorView extends javax.swing.JInternalFrame {
         if(existente != null){
             JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
             return;
+            
         }
         
         int confirmacion = JOptionPane.showConfirmDialog(this,"¿Eliminar este autor?", "Confirmar", JOptionPane.YES_NO_OPTION);
@@ -306,12 +349,13 @@ public class AutorView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoAutorActionPerformed
     
+    /*
     private void limpiarCampos(){
         txtCodigoAutor.setText("");
         txtNombre.setText("");
         txtNacionalidad.setText("");
         txtFechaNac.setText("");
-    }
+    }*/
     
     private void actualizarTabla(){
         DefaultTableModel modelo = new DefaultTableModel();

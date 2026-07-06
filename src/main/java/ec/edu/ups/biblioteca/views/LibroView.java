@@ -4,15 +4,18 @@ package ec.edu.ups.biblioteca.views;
 import ec.edu.ups.biblioteca.controllers.LibroController;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.models.Libro;
+import ec.edu.ups.biblioteca.utils.Idioma;
+import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class LibroView extends javax.swing.JInternalFrame {
+public class LibroView extends javax.swing.JInternalFrame implements Idiomatizable{
     private LibroController libroController;
     private boolean creandoNuevo = false; 
  
     public LibroView() {
         initComponents();
+        aplicarIdioma();
         libroController = new LibroController();
         inicializarVista();
     }
@@ -67,6 +70,38 @@ public class LibroView extends javax.swing.JInternalFrame {
             });
         }
     }
+    @Override
+    public void aplicarIdioma() {
+        java.util.ResourceBundle bundle = Idioma.getBundle();
+
+        jLabel7.setText(bundle.getString("mensaje.accion"));
+        jLabel9.setText(bundle.getString("mensaje.campos"));
+        jLabel2.setText(bundle.getString("lbl.codigo"));
+        jLabel3.setText(bundle.getString("lbl.titulo"));
+        jLabel3.setText(bundle.getString("lbl.autor"));
+        jLabel4.setText(bundle.getString("lbl.editorial"));
+        jLabel5.setText(bundle.getString("lbl.genero"));
+        jLabel6.setText(bundle.getString("lbl.anio"));
+        jLabel8.setText(bundle.getString("lbl.ejemplares"));
+
+        btnNuevo.setText(bundle.getString("btn.crear"));
+        btnBuscar.setText(bundle.getString("btn.buscar"));
+        btnActualizar.setText(bundle.getString("btn.actualizar"));
+        btnEliminar.setText(bundle.getString("btn.eliminar"));
+        btnListar.setText(bundle.getString("btn.listar"));
+        btnLimpiar.setText(bundle.getString("btn.limpiar"));
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblLibros.getModel();
+        modelo.setColumnIdentifiers(new Object[]{
+            bundle.getString("col.codigo"),
+            bundle.getString("col.titulo"),
+            bundle.getString("col.autor"),
+            bundle.getString("col.editorial"),
+            bundle.getString("col.genero"),
+            bundle.getString("col.anio"),
+            bundle.getString("col.ejemplares")
+        });
+    }
     
 
     /**
@@ -108,6 +143,8 @@ public class LibroView extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+
+        jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
         jLabel1.setText("Código:");
 
@@ -393,7 +430,7 @@ public class LibroView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-
+        limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
 

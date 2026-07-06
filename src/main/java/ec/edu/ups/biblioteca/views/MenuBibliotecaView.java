@@ -5,6 +5,7 @@
 package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.utils.Idioma;                         
+import ec.edu.ups.biblioteca.utils.Idiomatizable;
         
 
 /**
@@ -48,6 +49,14 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
     btnIdioma.setText(bundle.getString("menu.idioma"));
     }
+    private void actualizarIdiomaVentanasAbiertas() {
+        for (javax.swing.JInternalFrame frame : jDesktopPane1.getAllFrames()) {
+            if (frame instanceof Idiomatizable) {
+                ((Idiomatizable) frame).aplicarIdioma();
+            }
+        }
+    }
+    
    
   
     /**
@@ -63,6 +72,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnLibro = new javax.swing.JMenu();
         gestionarLibrosMenuItem = new javax.swing.JMenuItem();
@@ -82,38 +92,49 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel2.setBackground(new java.awt.Color(51, 51, 0));
 
-        jDesktopPane1.setBackground(new java.awt.Color(255, 204, 204));
+        jDesktopPane1.setBackground(new java.awt.Color(96, 96, 67));
 
         jLabel3.setText("===== BIENVENIDO A LA BIBLIOTECA =====");
 
         jLabel2.setText("¿Qué quieres realizar hoy?");
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio.png"))); // NOI18N
+
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(483, 483, 483)
-                .addComponent(jLabel3)
-                .addContainerGap(493, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(538, 538, 538))
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(351, 351, 351)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(336, 336, 336)
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addGap(45, 45, 45))
+                            .addComponent(jLabel3))))
+                .addContainerGap(539, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(221, 221, 221)
+                .addGap(95, 95, 95)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addContainerGap(491, Short.MAX_VALUE))
+                .addGap(77, 77, 77)
+                .addComponent(jLabel4)
+                .addContainerGap(311, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -123,14 +144,13 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         btnLibro.setText("Libros");
@@ -199,7 +219,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,6 +236,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         Idioma.setIdioma("en");
         aplicarIdioma();
+        actualizarIdiomaVentanasAbiertas();
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void gestionarAutoresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarAutoresMenuItemActionPerformed
@@ -257,12 +278,14 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         Idioma.setIdioma("es");
         aplicarIdioma();
+        actualizarIdiomaVentanasAbiertas();
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         // TODO add your handling code here:
         Idioma.setIdioma("pt");
         aplicarIdioma();
+        actualizarIdiomaVentanasAbiertas();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
@@ -310,6 +333,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;

@@ -3,6 +3,7 @@ package ec.edu.ups.biblioteca.views;
 import ec.edu.ups.biblioteca.controllers.DevolucionController; 
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.utils.Idioma;
+import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import javax.swing.JOptionPane;
 
 /*
@@ -14,7 +15,7 @@ import javax.swing.JOptionPane;
  *
  * @author jimen
  */
-public class DevolucionView extends javax.swing.JInternalFrame {
+public class DevolucionView extends javax.swing.JInternalFrame implements Idiomatizable{
     
     private DevolucionController devolucionController = new DevolucionController();
     private Prestamo prestamo;
@@ -25,12 +26,14 @@ public class DevolucionView extends javax.swing.JInternalFrame {
     public DevolucionView() {
         initComponents();
         inicializarVista();
+        aplicarIdioma();
     }
     private void inicializarVista() {
         txtCodigoPrestamo.setEditable(true);
     }
 
-    private void aplicarIdioma() {
+    @Override
+    public void aplicarIdioma() {
         java.util.ResourceBundle bundle = Idioma.getBundle();
 
         jLabel3.setText(bundle.getString("devolucion.lbl.pregunta"));
@@ -79,6 +82,8 @@ public class DevolucionView extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+
+        jPanel2.setBackground(new java.awt.Color(114, 114, 82));
 
         jLabel1.setText("Código del prestamo:");
 
