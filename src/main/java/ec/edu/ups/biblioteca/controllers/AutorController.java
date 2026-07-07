@@ -14,7 +14,7 @@ public class AutorController {
     private AutorDAO autorDAO;
 
     public AutorController() {
-        autorDAO = new AutorDAO();
+        this.autorDAO = AutorDAO.getAutorDAO();
     }
 
     public void agregar(Autor autor) {

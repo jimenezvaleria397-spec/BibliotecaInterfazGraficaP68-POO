@@ -15,18 +15,18 @@ import javax.swing.JOptionPane;
  *
  * @author jimen
  */
-public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
-    private UsuarioController usuarioController;
-    private boolean creandoNuevo = false;    
-    /** 
-     * Creates new form UsuarioView
-     */
-    public UsuarioView() {
-        initComponents();
-        usuarioController = new UsuarioController();
-        inicializar();
-       
-    }
+    public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
+        private UsuarioController usuarioController;
+        private boolean creandoNuevo = false;    
+        /** 
+         * Creates new form UsuarioView
+         */
+        public UsuarioView() {
+            initComponents();
+            usuarioController = new UsuarioController();
+            inicializar();
+
+        }
    
 
     private void inicializar() {
@@ -53,27 +53,26 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
         txtCorreo.setText("");
 
     }
-    private void modoActualizar() {
-    habilitar();
-    btnActualizar.setEnabled(true);
-    btnEliminar.setEnabled(true);
-    btnCrear.setEnabled(false);
-}
+        private void modoActualizar() {
+            habilitar();
+            btnActualizar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+            btnCrear.setEnabled(false);
+        }
 
-    private void listar() {
-    javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-    modelo.setRowCount(0);
+        private void listar() {
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0);
 
-    List<Usuario> usuarios = usuarioController.listar();
+            List<Usuario> usuarios = usuarioController.listar();
 
-    for (Usuario u : usuarios) {
-        modelo.addRow(new Object[]{
-            u.getCedula(),
-            u.getNombre(),
-            u.getCorreo(),
-        });
-    }
-}
+            for (Usuario u : usuarios) {
+                modelo.addRow(new Object[]{
+                    u.getCedula(),
+                    u.getNombre(),
+                    u.getCorreo(),});
+            }
+        }
 
     @Override
     public void aplicarIdioma() {
@@ -238,9 +237,9 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
                     .addComponent(jLabel1)
                     .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -271,20 +270,14 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-
         String cedula = txtCedula.getText();
-
         Usuario usuario = usuarioController.buscarPorCodigo(cedula);
 
         if (usuario != null) {
-
             txtNombre.setText(usuario.getNombre());
             txtCorreo.setText(usuario.getCorreo());
-
             modoActualizar();
-
             btnEliminar.setEnabled(true);
-
         } else {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }

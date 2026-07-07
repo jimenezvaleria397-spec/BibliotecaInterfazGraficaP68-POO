@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.controllers;
+import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import java.util.List;
 /**
@@ -13,11 +15,18 @@ import java.util.List;
 
 public class LibroController {
     private LibroDAO libroDAO;
+    private EjemplarLibroDAO ejemplarLibroDAO;
 
     public LibroController() {
         libroDAO = LibroDAO.getLibroDAO();
+        ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
     }
 
+    public LibroController(LibroDAO libroDAO, EjemplarLibroDAO ejemplarLibroDAO) {
+        this.libroDAO = libroDAO;
+        this.ejemplarLibroDAO = ejemplarLibroDAO;
+    }
+    
     public void agregar(Libro libro) {
         libroDAO.agregar(libro);
     }
@@ -36,5 +45,14 @@ public class LibroController {
 
     public List<Libro> listar() {
         return libroDAO.listar();
+    }
+    
+    public void registrarLibro(Libro libro, int cantidadEjemplares) {
+        libroDAO.agregar(libro);
+        for (int i = 1; i <= cantidadEjemplares; i++) {
+            String codigoBarras = libro.getCodigo() + "-" + i;  // ej: "LIB001-1", "LIB001-2"...
+            EjemplarLibro ejemplar = new EjemplarLibro(codigoBarras, "Estante A", libro, true);
+            ejemplarLibroDAO.agregar(ejemplar);
+        }
     }
 }

@@ -1,8 +1,11 @@
 package ec.edu.ups.biblioteca.views;
 
 
+import ec.edu.ups.biblioteca.controllers.AutorController;
+import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
 import ec.edu.ups.biblioteca.controllers.LibroController;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
@@ -11,24 +14,40 @@ import javax.swing.table.DefaultTableModel;
 
 public class LibroView extends javax.swing.JInternalFrame implements Idiomatizable{
     private LibroController libroController;
+    private EjemplarLibroController ejemplarLibroController;
+    private AutorController autorController;      // agregar
+    private Autor autorSeleccionado;   
     private boolean creandoNuevo = false; 
  
     public LibroView() {
         initComponents();
         aplicarIdioma();
         libroController = new LibroController();
+        autorController = new AutorController();
+        ejemplarLibroController = new EjemplarLibroController();
         inicializarVista();
     }
 
     private void inicializarVista() {
         bloquearCampos();
         txtCodigo.setEditable(true);
+        cargarAutores();
         listarLibros();
+        tblLibros.getSelectionModel().addListSelectionListener(evt -> {
+            if (!evt.getValueIsAdjusting() && tblLibros.getSelectedRow() != -1) {
+                int fila = tblLibros.getSelectedRow();
+                String codigo = tblLibros.getValueAt(fila, 0).toString(); // columna código
+                Libro libroSeleccionado = libroController.buscarPorCodigo(codigo);
+
+                int disponibles = ejemplarLibroController.contarDisponibles(libroSeleccionado.getCodigo());
+                lblDisponibles.setText("Disponibles: " + disponibles);
+            }
+        });
     }
 
     private void bloquearCampos() {
         txtTitulo.setEditable(false);
-        txtAutor.setEditable(false);
+        cbxAutores.setEnabled(false);
         txtEditorial.setEditable(false);
         txtGenero.setEditable(false);
         txtAnio.setEditable(false);
@@ -37,7 +56,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
     private void habilitarCampos() {
         txtTitulo.setEditable(true);
-        txtAutor.setEditable(true);
+        cbxAutores.setEnabled(true);
         txtEditorial.setEditable(true);
         txtGenero.setEditable(true);
         txtAnio.setEditable(true);
@@ -47,11 +66,12 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private void limpiar() {
         txtCodigo.setText("");
         txtTitulo.setText("");
-        txtAutor.setText("");
+        cbxAutores.setSelectedItem(null); 
         txtEditorial.setText("");
         txtGenero.setText("");
         txtAnio.setText("");
         txtEjemplares.setText("");
+        autorSeleccionado = null; 
     }
 
     private void listarLibros() {
@@ -59,6 +79,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         modelo.setRowCount(0);
 
         for (Libro l : libroController.listar()) {
+            int disponibles = ejemplarLibroController.contarDisponibles(l.getCodigo());
             modelo.addRow(new Object[]{
                 l.getCodigo(),
                 l.getTitulo(),
@@ -66,17 +87,26 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                 l.getEditorial(),
                 l.getGenero(),
                 l.getAnio(),
-                l.getEjemplares()
+                disponibles
             });
         }
     }
+    
+    private void cargarAutores() {
+        cbxAutores.setModel(new javax.swing.DefaultComboBoxModel<>(
+                autorController.listar().toArray(new Autor[0])));
+        cbxAutores.addActionListener(e -> {
+            autorSeleccionado = (Autor) cbxAutores.getSelectedItem();
+        });
+    }
+    
     @Override
     public void aplicarIdioma() {
         java.util.ResourceBundle bundle = Idioma.getBundle();
 
         jLabel7.setText(bundle.getString("mensaje.accion"));
         jLabel9.setText(bundle.getString("mensaje.campos"));
-        jLabel2.setText(bundle.getString("lbl.codigo"));
+        lblCodigo.setText(bundle.getString("lbl.codigo"));
         jLabel3.setText(bundle.getString("lbl.titulo"));
         jLabel3.setText(bundle.getString("lbl.autor"));
         jLabel4.setText(bundle.getString("lbl.editorial"));
@@ -114,15 +144,14 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
-        txtAutor = new javax.swing.JTextField();
         txtEditorial = new javax.swing.JTextField();
         txtGenero = new javax.swing.JTextField();
         txtAnio = new javax.swing.JTextField();
@@ -138,6 +167,9 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtEjemplares = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         btnLimpiar = new javax.swing.JButton();
+        lblDisponibles = new javax.swing.JLabel();
+        txtDisponibles = new javax.swing.JTextField();
+        cbxAutores = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -146,9 +178,9 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
         jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
-        jLabel1.setText("Código:");
+        lblCodigo.setText("Código:");
 
-        jLabel2.setText("Título:");
+        lblTitulo.setText("Título:");
 
         jLabel3.setText("Autor:");
 
@@ -162,14 +194,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
         txtTitulo.setEditable(false);
 
-        txtAutor.setEditable(false);
-
         txtEditorial.setEditable(false);
 
         txtGenero.setEditable(false);
         txtGenero.addActionListener(this::txtGeneroActionPerformed);
 
         txtAnio.setEditable(false);
+        txtAnio.setText("AAAA");
         txtAnio.addActionListener(this::txtAnioActionPerformed);
 
         btnNuevo.setText("Nuevo");
@@ -216,11 +247,16 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         jLabel8.setText("Ejemplares:");
 
         txtEjemplares.setEditable(false);
+        txtEjemplares.setText("0");
 
         jLabel9.setText("Los campos se habilitaran segun la accion.");
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
+
+        lblDisponibles.setText("Disponibles:");
+
+        txtDisponibles.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -244,18 +280,20 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel1)
+                                        .addComponent(lblTitulo)
+                                        .addComponent(lblCodigo)
                                         .addComponent(jLabel3)
                                         .addComponent(jLabel4))
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cbxAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel8))
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(lblDisponibles, javax.swing.GroupLayout.Alignment.TRAILING)))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                             .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -265,12 +303,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                                             .addGap(86, 86, 86)
                                             .addComponent(jLabel5)))
                                     .addGap(27, 27, 27)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                                        .addComponent(txtEjemplares, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(btnEliminar)
-                                            .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtDisponibles)))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(227, 227, 227)
                                     .addComponent(btnActualizar)
@@ -301,31 +340,33 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                 .addComponent(jLabel9)
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblCodigo)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
+                    .addComponent(lblTitulo)
                     .addComponent(jLabel6)
                     .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDisponibles)
+                        .addComponent(txtDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(11, 11, 11)
                 .addComponent(btnLimpiar)
                 .addGap(18, 18, 18)
@@ -369,14 +410,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         Libro l = new Libro();
-
         l.setCodigo(txtCodigo.getText());
         l.setTitulo(txtTitulo.getText());
-        l.setAutor(txtAutor.getText());
+        l.setAutor(autorSeleccionado);
         l.setEditorial(txtEditorial.getText());
         l.setGenero(txtGenero.getText());
         l.setAnio(Integer.parseInt(txtAnio.getText()));
-        l.setEjemplares(Integer.parseInt(txtEjemplares.getText()));
+
         libroController.actualizar(l);
         listarLibros();
         limpiar();
@@ -387,17 +427,18 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     String codigo = txtCodigo.getText();
     Libro l = libroController.buscarPorCodigo(codigo);
 
-    if (l != null) {
-        txtTitulo.setText(l.getTitulo());
-        txtAutor.setText(l.getAutor());
-        txtEditorial.setText(l.getEditorial());
-        txtGenero.setText(l.getGenero());
-        txtAnio.setText(String.valueOf(l.getAnio()));
-        txtEjemplares.setText(String.valueOf(l.getEjemplares()));
-        habilitarCampos();
-    } else {
-        JOptionPane.showMessageDialog(this, "No encontrado");
-    }
+        if (l != null) {
+            txtTitulo.setText(l.getTitulo());
+            cbxAutores.setSelectedItem(l.getAutor());  
+            txtEditorial.setText(l.getEditorial());
+            txtGenero.setText(l.getGenero());
+            txtAnio.setText(String.valueOf(l.getAnio()));
+            int disponibles = ejemplarLibroController.contarDisponibles(codigo);
+            txtDisponibles.setText(String.valueOf(disponibles));  
+            habilitarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "No encontrado");
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneroActionPerformed
@@ -415,12 +456,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
             Libro l = new Libro();
             l.setCodigo(txtCodigo.getText());
             l.setTitulo(txtTitulo.getText());
-            l.setAutor(txtAutor.getText());
+            l.setAutor(autorSeleccionado);
             l.setEditorial(txtEditorial.getText());
             l.setGenero(txtGenero.getText());
             l.setAnio(Integer.parseInt(txtAnio.getText()));
-            l.setEjemplares(Integer.parseInt(txtEjemplares.getText()));
-            libroController.agregar(l);
+            
+            int cantidadEjemplares = Integer.parseInt(txtEjemplares.getText());
+            libroController.registrarLibro(l, cantidadEjemplares);
             listarLibros();
             limpiar();
             bloquearCampos();
@@ -441,8 +483,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<Autor> cbxAutores;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -452,10 +493,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblDisponibles;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblLibros;
     private javax.swing.JTextField txtAnio;
-    private javax.swing.JTextField txtAutor;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDisponibles;
     private javax.swing.JTextField txtEditorial;
     private javax.swing.JTextField txtEjemplares;
     private javax.swing.JTextField txtGenero;

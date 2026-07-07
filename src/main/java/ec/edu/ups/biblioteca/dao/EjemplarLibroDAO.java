@@ -13,20 +13,36 @@ import java.util.List;
  * @author USER
  */
 public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
-    private List<EjemplarLibro> ejemplarLibro;
+    private List<EjemplarLibro> ejemplarDAO;
+    private static EjemplarLibroDAO ejemplarLibroDAO;
     
     public EjemplarLibroDAO(){
-        this.ejemplarLibro = new ArrayList<>();
+        this.ejemplarDAO = new ArrayList<>();
     }
 
+    public List<EjemplarLibro> getEjemplarDAO() {
+        return ejemplarDAO;
+    }
+
+    public void setEjemplarDAO(List<EjemplarLibro> ejemplarDAO) {
+        this.ejemplarDAO = ejemplarDAO;
+    }
+    
+    public static EjemplarLibroDAO getEjemplarLibroDAO() {
+        if (ejemplarLibroDAO == null) {
+            ejemplarLibroDAO = new EjemplarLibroDAO();
+        }
+        return ejemplarLibroDAO;
+    }
+    
     @Override
     public void agregar(EjemplarLibro objeto) {
-        ejemplarLibro.add(objeto);
+        ejemplarDAO.add(objeto);
     }
 
     @Override
     public EjemplarLibro buscarPorCodigo(String codigo) {
-        for (EjemplarLibro eL : ejemplarLibro) {
+        for (EjemplarLibro eL : ejemplarDAO) {
             if (eL.getCodigoBarras().equals(codigo)) {
                 return eL;
             }
@@ -49,13 +65,13 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
     public void eliminar(String codigo) {
         EjemplarLibro existente = buscarPorCodigo(codigo);
         if(existente != null){
-            ejemplarLibro.remove(existente);
+            ejemplarDAO.remove(existente);
         }
     }
 
     @Override
     public List<EjemplarLibro> listar() {
-        return ejemplarLibro;
+        return ejemplarDAO;
     }
     
 }

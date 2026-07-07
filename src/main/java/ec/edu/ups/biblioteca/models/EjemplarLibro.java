@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.models;
 
+import java.io.ObjectInputStream;
 import java.util.Objects;
 
 /**
@@ -13,15 +14,35 @@ import java.util.Objects;
 public class EjemplarLibro {
     private String codigoBarras;
     private String ubicacion;
-
+    private Libro libro;          // de qué libro es copia
+    private boolean disponible;
+    
     public EjemplarLibro() {
     }
 
-    public EjemplarLibro(String codigoBarras, String ubicacion) {
+    public EjemplarLibro(String codigoBarras, String ubicacion, Libro libro, boolean disponible) {
         this.codigoBarras = codigoBarras;
         this.ubicacion = ubicacion;
+        this.libro = libro;
+        this.disponible = disponible;
     }
 
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+    
     public String getCodigoBarras() {
         return codigoBarras;
     }
@@ -40,9 +61,11 @@ public class EjemplarLibro {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.codigoBarras);
-        hash = 79 * hash + Objects.hashCode(this.ubicacion);
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.codigoBarras);
+        hash = 97 * hash + Objects.hashCode(this.ubicacion);
+        hash = 97 * hash + Objects.hashCode(this.libro);
+        hash = 97 * hash + (this.disponible ? 1 : 0);
         return hash;
     }
 
@@ -58,15 +81,26 @@ public class EjemplarLibro {
             return false;
         }
         final EjemplarLibro other = (EjemplarLibro) obj;
+        if (this.disponible != other.disponible) {
+            return false;
+        }
         if (!Objects.equals(this.codigoBarras, other.codigoBarras)) {
             return false;
         }
-        return Objects.equals(this.ubicacion, other.ubicacion);
+        if (!Objects.equals(this.ubicacion, other.ubicacion)) {
+            return false;
+        }
+        return Objects.equals(this.libro, other.libro);
     }
 
     @Override
     public String toString() {
-        return "EjemplarLibro{" + "codigoBarras=" + codigoBarras + ", ubicacion=" + ubicacion + '}';
+        return "EjemplarLibro{" + "codigoBarras=" + codigoBarras + ", ubicacion=" 
+                + ubicacion + ", libro=" + libro + ", disponible=" + disponible + '}';
     }
+
+    
+    
+    
 
 }

@@ -15,7 +15,7 @@ public class Prestamo {
 
     private String codigo;
     private Usuario usuario;
-    private Libro libro;
+    private EjemplarLibro ejemplar;
     private Date fechaPrestamo;
     private Date fechaDevolucion;
     private boolean estado;
@@ -23,10 +23,11 @@ public class Prestamo {
     public Prestamo() {
     }
 
-    public Prestamo(String codigo, Usuario usuario, Libro libro, Date fechaPrestamo, Date fechaDevolucion, boolean estado) {
+    public Prestamo(String codigo, Usuario usuario, EjemplarLibro ejemplar, Date fechaPrestamo, 
+            Date fechaDevolucion, boolean estado) {
         this.codigo = codigo;
         this.usuario = usuario;
-        this.libro = libro;
+        this.ejemplar = ejemplar;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
         this.estado = estado;
@@ -48,12 +49,12 @@ public class Prestamo {
         this.usuario = usuario;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public EjemplarLibro getEjemplar() {
+        return ejemplar;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setEjemplar(EjemplarLibro ejemplar) {
+        this.ejemplar = ejemplar;
     }
 
     public Date getFechaPrestamo() {
@@ -67,7 +68,6 @@ public class Prestamo {
     public Date getFechaDevolucion() {
         return fechaDevolucion;
     }
-
     public void setFechaDevolucion(Date fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
@@ -85,7 +85,7 @@ public class Prestamo {
         int hash = 7;
         hash = 89 * hash + Objects.hashCode(this.codigo);
         hash = 89 * hash + Objects.hashCode(this.usuario);
-        hash = 89 * hash + Objects.hashCode(this.libro);
+        hash = 89 * hash + Objects.hashCode(this.ejemplar);
         hash = 89 * hash + Objects.hashCode(this.fechaPrestamo);
         hash = 89 * hash + Objects.hashCode(this.fechaDevolucion);
         hash = 89 * hash + (this.estado ? 1 : 0);
@@ -113,7 +113,7 @@ public class Prestamo {
         if (!Objects.equals(this.usuario, other.usuario)) {
             return false;
         }
-        if (!Objects.equals(this.libro, other.libro)) {
+        if (!Objects.equals(this.ejemplar, other.ejemplar)) {
             return false;
         }
         if (!Objects.equals(this.fechaPrestamo, other.fechaPrestamo)) {
@@ -124,8 +124,7 @@ public class Prestamo {
 
     @Override
     public String toString() {
-        return "Prestamo{" + "codigo=" + codigo + ", usuario=" + usuario + ", libro=" + libro + ", fechaPrestamo=" + fechaPrestamo + ", fechaDevolucion=" + fechaDevolucion + ", estado=" + estado + '}';
+        return "Prestamo{" + "codigo=" + codigo + ", usuario=" + usuario + ", ejemplar=" + ejemplar 
+                + ", fechaPrestamo=" + fechaPrestamo + ", fechaDevolucion=" + fechaDevolucion + ", estado=" + estado + '}';
     }
-
-    
 }

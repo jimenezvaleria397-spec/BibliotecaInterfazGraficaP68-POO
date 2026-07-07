@@ -14,24 +14,24 @@ public class Libro {
 
     private String codigo;
     private String titulo;
-    private String autor;
+    private Autor autor;
     private String editorial;
     private String genero;
     private int anio;
-    private int ejemplares;
+    //private int ejemplares;
 
     public Libro() {
     }
 
-    public Libro(String codigo, String titulo, String autor, String editorial,
-                 String genero, int anio, int ejemplares) {
+    public Libro(String codigo, String titulo, Autor autor, String editorial,
+                 String genero, int anio) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
         this.genero = genero;
         this.anio = anio;
-        this.ejemplares = ejemplares;
+        //this.ejemplares = ejemplares;
     }
 
     public String getCodigo() {
@@ -50,11 +50,11 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public String getAutor() {
+    public Autor getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(Autor autor) {
         this.autor = autor;
     }
 
@@ -82,13 +82,13 @@ public class Libro {
         this.anio = anio;
     }
 
-    public int getEjemplares() {
+    /*public int getEjemplares() {
         return ejemplares;
-    }
+    }*/
 
-    public void setEjemplares(int ejemplares) {
+    /*public void setEjemplares(int ejemplares) {
         this.ejemplares = ejemplares;
-    }
+    }*/
 
     @Override
     public int hashCode() {
@@ -99,7 +99,7 @@ public class Libro {
         hash = 97 * hash + Objects.hashCode(this.editorial);
         hash = 97 * hash + Objects.hashCode(this.genero);
         hash = 97 * hash + this.anio;
-        hash = 97 * hash + this.ejemplares;
+        //hash = 97 * hash + this.ejemplares;
         return hash;
     }
 
@@ -118,9 +118,9 @@ public class Libro {
         if (this.anio != other.anio) {
             return false;
         }
-        if (this.ejemplares != other.ejemplares) {
+        /*if (this.ejemplares != other.ejemplares) {
             return false;
-        }
+        }*/
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
@@ -138,7 +138,9 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" + "codigo=" + codigo + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial + ", genero=" + genero + ", anio=" + anio + ", ejemplares=" + ejemplares + '}';
+        return "Libro{" + "codigo=" + codigo + ", titulo=" + titulo + 
+        ", autor=" + autor + ", editorial=" + editorial + ", genero=" 
+                + genero + ", anio=" + anio + '}';
     }
     
 }

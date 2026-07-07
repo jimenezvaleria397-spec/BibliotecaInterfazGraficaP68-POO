@@ -132,7 +132,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         txtCodigoAutor.setText("0");
         txtCodigoAutor.addActionListener(this::txtCodigoAutorActionPerformed);
 
-        txtFechaNac.setText("DD/MM/AA");
+        txtFechaNac.setText("AAAA-MM-DD");
 
         tablaDeAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

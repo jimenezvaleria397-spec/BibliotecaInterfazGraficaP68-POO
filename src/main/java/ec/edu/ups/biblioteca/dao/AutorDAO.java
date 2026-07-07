@@ -14,10 +14,18 @@ import java.util.List;
  * @author USERo
  */
 public class AutorDAO implements DAO<Autor>{
+    private static AutorDAO autorDAO; 
     private List<Autor> autores;
     
-    public AutorDAO(){
+    private AutorDAO(){
         this.autores = new ArrayList<>();
+    }
+    
+    public static AutorDAO getAutorDAO() {
+        if (autorDAO == null) {
+            autorDAO = new AutorDAO();
+        }
+        return autorDAO;
     }
 
     @Override

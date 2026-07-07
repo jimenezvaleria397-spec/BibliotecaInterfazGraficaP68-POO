@@ -3,12 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.controllers;
+import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.models.Usuario;
+import java.util.Date;
 import java.util.List;
 /**
  *
@@ -19,10 +22,12 @@ public class PrestamoController {
     private PrestamoDAO prestamoDAO;
     private LibroDAO libroDAO;
     private UsuarioDAO usuarioDAO;
+    private EjemplarLibroDAO ejemplarLibroDAO;
 
     public PrestamoController() {
         this.libroDAO = LibroDAO.getLibroDAO();
         this.usuarioDAO = UsuarioDAO.getUsuarioDAO();
+        this.ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
         this.prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
     }
 
@@ -56,5 +61,23 @@ public class PrestamoController {
     
     public Libro buscarLibroPorCodigo(String codigo) {
         return libroDAO.buscarPorCodigo(codigo);
+    }
+    
+    public void registrarPrestamo(Prestamo prestamo) {
+        EjemplarLibro ejemplar = prestamo.getEjemplar();
+        ejemplar.setDisponible(false); // se marca como prestado
+        ejemplarLibroDAO.actualizar(ejemplar);
+        prestamoDAO.agregar(prestamo);
+        // el combo de ejemplares disponibles se refresca solo, 
+        // porque contarDisponibles() ya lo excluye automáticamente
+    }
+    
+    public void registrarDevolucion(Prestamo prestamo) {
+        EjemplarLibro ejemplar = prestamo.getEjemplar();
+        ejemplar.setDisponible(true);           // vuelve a estar libre
+        ejemplarLibroDAO.actualizar(ejemplar);
+        prestamo.setEstado(false);              // préstamo cerrado
+        prestamo.setFechaDevolucion(new Date());
+        prestamoDAO.actualizar(prestamo);
     }
 }
