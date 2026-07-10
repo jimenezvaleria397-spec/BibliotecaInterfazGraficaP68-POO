@@ -24,6 +24,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     /**
      * Creates new form AutorView
      */
+    
     public AutorView() {
         initComponents();
         autorController = new AutorController();
@@ -94,8 +95,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setResizable(true);
-        setTitle("Autor-Vista");
+        setTitle("Registro del Autor - Vista");
 
         jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
@@ -218,9 +218,9 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
                         .addGap(18, 18, 18)
                         .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -255,6 +255,8 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleName("Registro del Autor");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -322,12 +324,10 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private void btnEliminarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutorActionPerformed
         String codigo = txtCodigoAutor.getText();
         Autor existente = autorController.buscarPorCodigo(codigo);
-        if(existente != null){
+        if(existente == null){
             JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
             return;
-            
         }
-        
         int confirmacion = JOptionPane.showConfirmDialog(this,"¿Eliminar este autor?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if(confirmacion == JOptionPane.YES_OPTION) {
             autorController.eliminar(codigo);
@@ -365,7 +365,9 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         modelo.addColumn("Fecha de Nacimiento");
         
         for (Autor a : autorController.listar()) {
-            Object[] fila = {a.getCodigoAutor(), a.getNombre(), a.getNacionalidad(), a.getFechadeNac().toString()};
+            Object[] fila = {a.getCodigoAutor(), 
+                a.getNombre(), a.getNacionalidad(), 
+                    a.getFechadeNac().toString()};
             modelo.addRow(fila);
         }
         tablaDeAutores.setModel(modelo);

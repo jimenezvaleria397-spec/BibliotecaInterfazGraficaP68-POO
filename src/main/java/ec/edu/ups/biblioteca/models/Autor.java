@@ -17,12 +17,12 @@ public class Autor {
     private String nacionalidad;
     private String codigoAutor;
     private LocalDate fechadeNac;
-    private ArrayList<String> titulos; 
+    private ArrayList<Libro> titulos; 
 
     public Autor() {
     }
 
-    public Autor(String nombre, String nacionalidad, String codigoAutor, LocalDate fechadeNac, ArrayList<String> titulos) {
+    public Autor(String nombre, String nacionalidad, String codigoAutor, LocalDate fechadeNac, ArrayList<Libro> titulos) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.codigoAutor = codigoAutor;
@@ -62,11 +62,11 @@ public class Autor {
         this.fechadeNac = fechadeNac;
     }
 
-    public ArrayList<String> getTitulos() {
+    public ArrayList<Libro> getTitulos() {
         return titulos;
     }
 
-    public void setTitulos(ArrayList<String> titulos) {
+    public void setTitulos(ArrayList<Libro> titulos) {
         this.titulos = titulos;
     }
 

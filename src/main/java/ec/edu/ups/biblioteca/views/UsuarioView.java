@@ -53,26 +53,26 @@ import javax.swing.JOptionPane;
         txtCorreo.setText("");
 
     }
-        private void modoActualizar() {
-            habilitar();
-            btnActualizar.setEnabled(true);
-            btnEliminar.setEnabled(true);
-            btnCrear.setEnabled(false);
+    private void modoActualizar() {
+        habilitar();
+        btnActualizar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        btnCrear.setEnabled(false);
+    }
+
+    private void listar() {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+
+        List<Usuario> usuarios = usuarioController.listar();
+
+        for (Usuario u : usuarios) {
+            modelo.addRow(new Object[]{
+            u.getCedula(),
+            u.getNombre(),
+            u.getCorreo(),});
         }
-
-        private void listar() {
-            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-            modelo.setRowCount(0);
-
-            List<Usuario> usuarios = usuarioController.listar();
-
-            for (Usuario u : usuarios) {
-                modelo.addRow(new Object[]{
-                    u.getCedula(),
-                    u.getNombre(),
-                    u.getCorreo(),});
-            }
-        }
+    }
 
     @Override
     public void aplicarIdioma() {
@@ -131,6 +131,7 @@ import javax.swing.JOptionPane;
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Registro del Usuario - Vista");
 
         jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 

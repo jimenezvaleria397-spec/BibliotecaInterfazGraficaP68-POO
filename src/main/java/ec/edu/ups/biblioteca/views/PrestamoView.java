@@ -134,7 +134,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(codigoLibro);
         cbxEjemplares.setModel(new javax.swing.DefaultComboBoxModel<>(
                 disponibles.toArray(EjemplarLibro[]::new)));
-    } // ESTOY PERDIENDO LA CABEZA
+    }
     
     @Override
     public void aplicarIdioma() {
@@ -153,11 +153,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         btnActualizar.setText(bundle.getString("prestamo.btn.actualizar"));
         btnEliminar.setText(bundle.getString("prestamo.btn.eliminar"));
         btnListar.setText(bundle.getString("prestamo.btn.listar"));
-        btnLimpiar.setText(bundle.getString("prestamo.btn.limpiar"));
-        //jdksjdklsj
-        //Ojala funcione
-    
-}
+        btnLimpiar.setText(bundle.getString("prestamo.btn.limpiar"));    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,7 +196,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Prestamo-Vista");
+        setTitle("Registro del Préstamo - Vista");
 
         jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 

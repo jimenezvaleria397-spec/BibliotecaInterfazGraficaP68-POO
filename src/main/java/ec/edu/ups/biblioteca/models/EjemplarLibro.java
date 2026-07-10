@@ -14,7 +14,7 @@ import java.util.Objects;
 public class EjemplarLibro {
     private String codigoBarras;
     private String ubicacion;
-    private Libro libro;          // de qué libro es copia
+    private Libro libro; // ingo del libro ya creado
     private boolean disponible;
     
     public EjemplarLibro() {
@@ -98,9 +98,4 @@ public class EjemplarLibro {
         return "EjemplarLibro{" + "codigoBarras=" + codigoBarras + ", ubicacion=" 
                 + ubicacion + ", libro=" + libro + ", disponible=" + disponible + '}';
     }
-
-    
-    
-    
-
 }

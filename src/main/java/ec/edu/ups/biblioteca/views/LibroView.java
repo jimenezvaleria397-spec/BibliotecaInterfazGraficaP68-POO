@@ -175,10 +175,11 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Registro del Libro - Vista");
 
         jPanel1.setBackground(new java.awt.Color(114, 114, 82));
 
-        lblCodigo.setText("Código:");
+        lblCodigo.setText("ISBN:");
 
         lblTitulo.setText("Título:");
 
@@ -191,6 +192,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         jLabel6.setText("Año:");
 
         txtCodigo.setEditable(false);
+        txtCodigo.setText("0");
 
         txtTitulo.setEditable(false);
 
@@ -505,6 +507,5 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
-
-   
+  
 }

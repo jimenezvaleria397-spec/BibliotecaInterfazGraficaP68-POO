@@ -74,4 +74,44 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
         return ejemplarDAO;
     }
     
+    public List<EjemplarLibro> listarDisponibles() {
+    List<EjemplarLibro> resultado = new ArrayList<>();
+    for (EjemplarLibro e : listar()) {
+        if (e.isDisponible()) {
+            resultado.add(e);
+        }
+    }
+    return resultado;
+}
+
+    public List<EjemplarLibro> listarDisponiblesPorLibro(String codigoLibro) {
+        List<EjemplarLibro> resultado = new ArrayList<>();
+        for (EjemplarLibro e : listar()) {
+            if (e.getLibro().getCodigo().equals(codigoLibro) && e.isDisponible()) {
+                resultado.add(e);
+            }
+        }
+        return resultado;
+    }
+
+    public int contarDisponibles(String codigoLibro) {
+        int contador = 0;
+        for (EjemplarLibro e : listar()) {
+            if (e.getLibro().getCodigo().equals(codigoLibro) && e.isDisponible()) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public int contarTotal(String codigoLibro) {
+        int contador = 0;
+        for (EjemplarLibro e : listar()) {
+            if (e.getLibro().getCodigo().equals(codigoLibro)) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+    
 }

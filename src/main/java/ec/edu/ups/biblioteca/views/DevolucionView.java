@@ -82,6 +82,7 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Registro Devolución - Vista");
 
         jPanel2.setBackground(new java.awt.Color(114, 114, 82));
 

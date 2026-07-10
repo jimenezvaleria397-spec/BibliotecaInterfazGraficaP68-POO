@@ -7,7 +7,6 @@ package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -32,29 +31,20 @@ public class EjemplarLibroController {
         return ejemplarDAO;
     }
     
-    public int contarDisponibles(String codigoLibro) {
-        return (int) ejemplarDAO.listar().stream()
-            .filter(e -> e.getLibro().getCodigo().equals(codigoLibro))
-            .filter(EjemplarLibro::isDisponible)
-            .count();   
-    }
-    
-    public int contarTotal(String codigoLibro) {
-        return (int) ejemplarDAO.listar().stream()
-            .filter(e -> e.getLibro().getCodigo().equals(codigoLibro))
-            .count();
-    }
-    
     public List<EjemplarLibro> listarDisponibles() {
-        return ejemplarDAO.listar( ).stream()
-                .filter(EjemplarLibro::isDisponible)
-                .collect(Collectors.toList());
+        return ejemplarDAO.listarDisponibles();
+    }
+
+    public List<EjemplarLibro> listarDisponiblesPorLibro(String codigoLibro) {
+        return ejemplarDAO.listarDisponiblesPorLibro(codigoLibro);
+    }
+
+    public int contarDisponibles(String codigoLibro) {
+        return ejemplarDAO.contarDisponibles(codigoLibro);
+    }
+
+    public int contarTotal(String codigoLibro) {
+        return ejemplarDAO.contarTotal(codigoLibro);
     }
     
-    public List<EjemplarLibro> listarDisponiblesPorLibro(String codigoLibro) {
-        return ejemplarDAO.listar().stream()
-                .filter(e -> e.getLibro().getCodigo().equals(codigoLibro))
-                .filter(EjemplarLibro::isDisponible)
-                .collect(Collectors.toList());
-    }
 }

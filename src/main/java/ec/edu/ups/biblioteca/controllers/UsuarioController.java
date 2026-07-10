@@ -10,9 +10,6 @@ import java.util.List;
  *
  * @author jimen
  */
-
-
-
 public class UsuarioController {
 
     private UsuarioDAO usuarioDAO;

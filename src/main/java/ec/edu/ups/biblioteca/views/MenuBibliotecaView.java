@@ -4,6 +4,11 @@
  */
 package ec.edu.ups.biblioteca.views;
 
+import ec.edu.ups.biblioteca.controllers.AutorController;
+import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
+import ec.edu.ups.biblioteca.controllers.LibroController;
+import ec.edu.ups.biblioteca.controllers.PrestamoController;
+import ec.edu.ups.biblioteca.controllers.UsuarioController;
 import ec.edu.ups.biblioteca.utils.Idioma;                         
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
         
@@ -15,14 +20,25 @@ import ec.edu.ups.biblioteca.utils.Idiomatizable;
 public class MenuBibliotecaView extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuBibliotecaView.class.getName());
-    
+    private AutorController autorController;
+    private LibroController libroController;
+    private UsuarioController usuarioController;
+    private EjemplarLibroController ejemplarLibroController;
+    private PrestamoController prestamoController;
     
     /**
      * Creates new form MenuBibliotecarioView
      */
-    public MenuBibliotecaView() {
+    public MenuBibliotecaView(AutorController autorController, LibroController libroController,
+        UsuarioController usuarioController, EjemplarLibroController ejemplarLibroController,
+        PrestamoController prestamoController) {
         initComponents();
-          aplicarIdioma();
+        this.autorController = autorController;
+        this.libroController = libroController;
+        this.usuarioController = usuarioController;
+        this.ejemplarLibroController = ejemplarLibroController;
+        this.prestamoController = prestamoController;
+        aplicarIdioma();
         
     }
    
@@ -90,6 +106,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jMenuItem18 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menú de la Biblioteca");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 0));
@@ -310,8 +327,16 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        AutorController autorController = new AutorController();
+        LibroController libroController = new LibroController();
+        UsuarioController usuarioController = new UsuarioController();
+        EjemplarLibroController ejemplarLibroController = new EjemplarLibroController();
+        PrestamoController prestamoController = new PrestamoController();
+        
         java.awt.EventQueue.invokeLater(() -> {
-            MenuBibliotecaView menu = new MenuBibliotecaView();
+            MenuBibliotecaView menu = new MenuBibliotecaView(
+            autorController, libroController, usuarioController, 
+                    ejemplarLibroController, prestamoController);
             menu.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
             menu.setVisible(true);
         });
