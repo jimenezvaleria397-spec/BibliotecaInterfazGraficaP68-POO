@@ -82,7 +82,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "cedula=" + cedula + ", nombre=" + nombre + ", correo=" + correo + '}';
+        return cedula + " -" + nombre + "-" + correo;
     }
 
     

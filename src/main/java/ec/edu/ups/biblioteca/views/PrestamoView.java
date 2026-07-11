@@ -215,6 +215,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         txtCodigo.addActionListener(this::txtCodigoActionPerformed);
 
         txtFechaPrestamo.setText("DD/MM/AA");
+        txtFechaPrestamo.addActionListener(this::txtFechaPrestamoActionPerformed);
 
         txtFechaDevolucion.setText("DD/MM/AA");
 
@@ -410,7 +411,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
             
             JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
         }
-        limpiarCampos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnRegistrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPrestamoActionPerformed
@@ -461,6 +461,10 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private void cbxEjemplaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEjemplaresActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxEjemplaresActionPerformed
+
+    private void txtFechaPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaPrestamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaPrestamoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

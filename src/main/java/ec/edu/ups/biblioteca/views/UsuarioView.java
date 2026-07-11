@@ -282,7 +282,6 @@ import javax.swing.JOptionPane;
         } else {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
-        limpiar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed

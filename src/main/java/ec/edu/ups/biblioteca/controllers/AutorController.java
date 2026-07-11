@@ -20,6 +20,7 @@ public class AutorController {
     public void agregar(Autor autor) {
         autorDAO.agregar(autor);
     }
+    // de 0 a 155 
 
     public Autor buscarPorCodigo(String codigo) {
         return autorDAO.buscarPorCodigo(codigo);

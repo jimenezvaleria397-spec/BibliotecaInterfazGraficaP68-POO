@@ -95,7 +95,6 @@ public class EjemplarLibro {
 
     @Override
     public String toString() {
-        return "EjemplarLibro{" + "codigoBarras=" + codigoBarras + ", ubicacion=" 
-                + ubicacion + ", libro=" + libro + ", disponible=" + disponible + '}';
+        return  ubicacion  + libro  + disponible;
     }
 }

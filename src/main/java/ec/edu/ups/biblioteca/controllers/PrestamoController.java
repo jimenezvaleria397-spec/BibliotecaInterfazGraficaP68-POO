@@ -23,8 +23,14 @@ public class PrestamoController {
     private LibroDAO libroDAO;
     private UsuarioDAO usuarioDAO;
     private EjemplarLibroDAO ejemplarLibroDAO;
+    
+    // private CrearProuductoView crearProductoView;
+    // private 
 
     public PrestamoController() {
+        // dentro del constructor CrearProductoView crearProductoView
+        // this.crearProductoView = crearProductorView.
+        // configurarEventos 
         this.libroDAO = LibroDAO.getLibroDAO();
         this.usuarioDAO = UsuarioDAO.getUsuarioDAO();
         this.ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
@@ -62,6 +68,8 @@ public class PrestamoController {
     public Libro buscarLibroPorCodigo(String codigo) {
         return libroDAO.buscarPorCodigo(codigo);
     }
+    
+    // listar prductos conecta entre productodDao y listarProductos
     
     public void registrarPrestamo(Prestamo prestamo) {
         EjemplarLibro ejemplar = prestamo.getEjemplar();
