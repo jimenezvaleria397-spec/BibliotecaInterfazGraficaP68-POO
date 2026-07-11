@@ -5,10 +5,16 @@
 package ec.edu.ups.biblioteca.views;
 
 import ec.edu.ups.biblioteca.controllers.AutorController;
+import ec.edu.ups.biblioteca.controllers.DevolucionController;
 import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
 import ec.edu.ups.biblioteca.controllers.LibroController;
 import ec.edu.ups.biblioteca.controllers.PrestamoController;
 import ec.edu.ups.biblioteca.controllers.UsuarioController;
+import ec.edu.ups.biblioteca.dao.AutorDAO;
+import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
+import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.dao.PrestamoDAO;
+import ec.edu.ups.biblioteca.dao.UsuarioDAO;
 import ec.edu.ups.biblioteca.utils.Idioma;                         
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
         
@@ -65,6 +71,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
     btnIdioma.setText(bundle.getString("menu.idioma"));
     }
+    
     private void actualizarIdiomaVentanasAbiertas() {
         for (javax.swing.JInternalFrame frame : jDesktopPane1.getAllFrames()) {
             if (frame instanceof Idiomatizable) {
@@ -327,11 +334,25 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        AutorController autorController = new AutorController();
-        LibroController libroController = new LibroController();
-        UsuarioController usuarioController = new UsuarioController();
-        EjemplarLibroController ejemplarLibroController = new EjemplarLibroController();
-        PrestamoController prestamoController = new PrestamoController();
+        AutorDAO autorDAO = AutorDAO.getAutorDAO();
+        UsuarioDAO usuarioDAO = UsuarioDAO.getUsuarioDAO();
+        LibroDAO libroDAO = LibroDAO.getLibroDAO();
+        EjemplarLibroDAO ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
+        PrestamoDAO prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
+        DevolucionView devolucionView = new DevolucionView();
+        DevolucionController devolucionController = new DevolucionController(prestamoDAO, devolucionView);
+        
+        AutorView autorView = new AutorView();
+        UsuarioView usuarioView = new UsuarioView();
+        LibroView libroView = new LibroView();
+        AutorController autorController = new AutorController(autorDAO, autorView);
+
+        UsuarioController usuarioController = new UsuarioController(usuarioDAO, usuarioView);
+        EjemplarLibroController ejemplarLibroController = new EjemplarLibroController(ejemplarLibroDAO);
+        LibroController libroController = new LibroController(libroDAO, libroView, autorController, ejemplarLibroController);
+        PrestamoView prestamoView = new PrestamoView();
+        PrestamoController prestamoController = new PrestamoController(prestamoDAO, usuarioController, libroController, 
+                ejemplarLibroController, prestamoView);
         
         java.awt.EventQueue.invokeLater(() -> {
             MenuBibliotecaView menu = new MenuBibliotecaView(

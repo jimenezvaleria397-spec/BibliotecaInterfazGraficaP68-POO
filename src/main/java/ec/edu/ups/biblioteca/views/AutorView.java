@@ -6,7 +6,10 @@ import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -19,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Lenovo
  */
 public class AutorView extends javax.swing.JInternalFrame implements Idiomatizable{
-    private AutorController autorController;
 
     /**
      * Creates new form AutorView
@@ -27,15 +29,15 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     
     public AutorView() {
         initComponents();
-        autorController = new AutorController();
     }
-    private void limpiarCampos() {
+
+    public void limpiarCampos() {
         txtCodigoAutor.setText("");
         txtNombre.setText("");
         txtNacionalidad.setText("");
         txtFechaNac.setText("");
-        
     }
+    
     @Override
     public void aplicarIdioma() {
         java.util.ResourceBundle bundle = Idioma.getBundle();
@@ -132,7 +134,12 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         txtCodigoAutor.setText("0");
         txtCodigoAutor.addActionListener(this::txtCodigoAutorActionPerformed);
 
+        txtNombre.addActionListener(this::txtNombreActionPerformed);
+
+        txtNacionalidad.addActionListener(this::txtNacionalidadActionPerformed);
+
         txtFechaNac.setText("AAAA-MM-DD");
+        txtFechaNac.addActionListener(this::txtFechaNacActionPerformed);
 
         tablaDeAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -262,79 +269,19 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearAutorActionPerformed
-        String codigoAutor = txtCodigoAutor.getText();
-        String nombre = txtNombre.getText();
-        String nacionalidad = txtNacionalidad.getText();
-        String fechaTexto = txtFechaNac.getText();
-        
-        if (codigoAutor.isEmpty() || nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Código y nombre son obligatorios.");
-            return;
-        }
-        try {
-            LocalDate fechaNac = LocalDate.parse(fechaTexto);
-            Autor autorAc = new Autor(nombre, nacionalidad, codigoAutor, fechaNac, new ArrayList<>());
-            autorController.agregar(autorAc);
-            JOptionPane.showMessageDialog(this, "Autor registrado con éxito.");
-            limpiarCampos();
-            actualizarTabla();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA-MM-DD.");
-        }
-        limpiarCampos();
+
     }//GEN-LAST:event_btnCrearAutorActionPerformed
 
     private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
-        String codigo = txtCodigoAutor.getText();
-        Autor encontrado = autorController.buscarPorCodigo(codigo);
-        
-        if (encontrado != null) {
-            txtNombre.setText(encontrado.getNombre());
-            txtNacionalidad.setText(encontrado.getNacionalidad());
-            txtFechaNac.setText(encontrado.getFechadeNac().toString());
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró un autor con ese código.");
-            limpiarCampos();
-        }
-        
+                
     }//GEN-LAST:event_btnBuscarAutorActionPerformed
 
     private void btnActualizarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAutorActionPerformed
-        String codigo = txtCodigoAutor.getText();
-        Autor existente = autorController.buscarPorCodigo(codigo);
-        
-        if(existente == null){
-            JOptionPane.showConfirmDialog(this, "No existe un autor con este código");
-            return;
-        } 
-        try {
-            LocalDate fechaNac = LocalDate.parse(txtFechaNac.getText());
-            Autor autorAc = new Autor(txtNombre.getText(), txtNacionalidad.getText(), codigo, fechaNac,existente.getTitulos());
-            autorController.actualizar(autorAc); 
-            JOptionPane.showMessageDialog(this, "Autor actualizado.");
-            limpiarCampos();
-            actualizarTabla();
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato AAAA.MM.DD. ");
-            limpiarCampos();
-        }
         
     }//GEN-LAST:event_btnActualizarAutorActionPerformed
 
     private void btnEliminarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAutorActionPerformed
-        String codigo = txtCodigoAutor.getText();
-        Autor existente = autorController.buscarPorCodigo(codigo);
-        if(existente == null){
-            JOptionPane.showMessageDialog(this, "No existe un autor con ese código.");
-            return;
-        }
-        int confirmacion = JOptionPane.showConfirmDialog(this,"¿Eliminar este autor?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if(confirmacion == JOptionPane.YES_OPTION) {
-            autorController.eliminar(codigo);
-            JOptionPane.showMessageDialog(this, "Autor eliminado.");
-            limpiarCampos();
-            actualizarTabla();
-        }
+        
     }//GEN-LAST:event_btnEliminarAutorActionPerformed
 
     private void btnListarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarAutorActionPerformed
@@ -348,26 +295,36 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private void txtCodigoAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAutorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoAutorActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtNacionalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNacionalidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNacionalidadActionPerformed
+
+    private void txtFechaNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaNacActionPerformed
     
-    /*
-    private void limpiarCampos(){
-        txtCodigoAutor.setText("");
-        txtNombre.setText("");
-        txtNacionalidad.setText("");
-        txtFechaNac.setText("");
-    }*/
+    public void mostrarAutorEnCampos(Autor autor) {
+        txtNombre.setText(autor.getNombre());
+        txtNacionalidad.setText(autor.getNacionalidad());
+        txtFechaNac.setText(autor.getFechadeNac().toString());
+    }
     
-    private void actualizarTabla(){
+    public void actualizarTabla(List<Autor> autores){
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Nacionalidad");
         modelo.addColumn("Fecha de Nacimiento");
         
-        for (Autor a : autorController.listar()) {
-            Object[] fila = {a.getCodigoAutor(), 
-                a.getNombre(), a.getNacionalidad(), 
-                    a.getFechadeNac().toString()};
+        for (Autor autor : autores) {
+            Object[] fila = {autor.getCodigoAutor(), 
+                autor.getNombre(), autor.getNacionalidad(), 
+                autor.getFechadeNac().toString()};
             modelo.addRow(fila);
         }
         tablaDeAutores.setModel(modelo);
@@ -394,4 +351,45 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+    public JButton getBtnActualizarAutor() {
+        return btnActualizarAutor;
+    }
+
+    public JButton getBtnBuscarAutor() {
+        return btnBuscarAutor;
+    }
+
+    public JButton getBtnCrearAutor() {
+        return btnCrearAutor;
+    }
+
+    public JButton getBtnEliminarAutor() {
+        return btnEliminarAutor;
+    }
+
+    public JButton getBtnLimpiarCampos() {
+        return btnLimpiarCampos;
+    }
+
+    public JButton getBtnListarAutor() {
+        return btnListarAutor;
+    }
+
+    public JTextField getTxtCodigoAutor() {
+        return txtCodigoAutor;
+    }
+
+    public JTextField getTxtFechaNac() {
+        return txtFechaNac;
+    }
+
+    public JTextField getTxtNacionalidad() {
+        return txtNacionalidad;
+    }
+
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+
 }

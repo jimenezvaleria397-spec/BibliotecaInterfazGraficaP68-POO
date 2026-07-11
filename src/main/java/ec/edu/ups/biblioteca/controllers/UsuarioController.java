@@ -5,7 +5,9 @@
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
 import ec.edu.ups.biblioteca.models.Usuario;
+import ec.edu.ups.biblioteca.views.UsuarioView;
 import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author jimen
@@ -13,11 +15,151 @@ import java.util.List;
 public class UsuarioController {
 
     private UsuarioDAO usuarioDAO;
+    private UsuarioView usuarioView;
+    private boolean creandoNuevo = false;
 
-    public UsuarioController() { // constructor publico en controller
-        usuarioDAO = UsuarioDAO.getUsuarioDAO();
+    public UsuarioController(UsuarioDAO usuarioDAO, UsuarioView usuarioView) {
+        this.usuarioDAO = usuarioDAO;
+        this.usuarioView = usuarioView;
+        configurarEventos();
+        listarUsuarios();
+        
     }
+    
+    public void configurarEventos(){
+        configurarEventosCrearUsuario();
+        configurarEventosBusquedaUsuario();
+        configurarEventosActualizarUsuario();
+        configurarEventosEliminarUsuario();
+        configurarEventosListarUsuario(); 
+        configurarEventosLimpiarUsuario(); 
+    }
+    
+    private void configurarEventosCrearUsuario(){
+        usuarioView.getBtnCrear().addActionListener(e -> crearUsuario());
+    }
+    
+    private void crearUsuario(){
+        if(!creandoNuevo){
+            usuarioView.limpiar();
+            usuarioView.habilitar();
+            usuarioView.getTxtCedula().setEditable(true);
+            usuarioView.getBtnCrear().setText("Guardar");
+            creandoNuevo = true;
+        }else{
+            String cedula = usuarioView.getTxtCedula().getText();
+            String nombre = usuarioView.getTxtNombre().getText();
+            String correo = usuarioView.getTxtCorreo().getText();
 
+            if (cedula.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(usuarioView, "Cédula y nombre son obligatorios.");
+                return;
+            }
+
+            Usuario usuario = new Usuario();
+            usuario.setCedula(cedula);
+            usuario.setNombre(nombre);
+            usuario.setCorreo(correo);
+            agregar(usuario);
+
+            JOptionPane.showMessageDialog(usuarioView, "Usuario registrado con éxito.");
+            usuarioView.limpiar();
+            usuarioView.bloquear();
+            usuarioView.getTxtCedula().setEditable(true);
+            listarUsuarios();
+            usuarioView.getBtnCrear().setText("Crear");
+            creandoNuevo = false;
+        }
+    }
+    
+    private void configurarEventosBusquedaUsuario(){
+        usuarioView.getBtnBuscar().addActionListener(e -> buscarUsuario());
+    }
+    
+    private void buscarUsuario(){
+        String cedula = usuarioView.getTxtCedula().getText();
+        Usuario usuario = buscarPorCodigo(cedula);
+
+        if (usuario != null) {
+            usuarioView.getTxtNombre().setText(usuario.getNombre());
+            usuarioView.getTxtCorreo().setText(usuario.getCorreo());
+            usuarioView.modoActualizar();
+        } else {
+            JOptionPane.showMessageDialog(usuarioView, "Usuario no encontrado");
+        }
+    }
+    
+    private void configurarEventosActualizarUsuario(){
+        usuarioView.getBtnActualizar().addActionListener(e -> actualizarUsuario());
+    }
+    
+    private void actualizarUsuario(){
+        String cedula = usuarioView.getTxtCedula().getText();
+        Usuario existente = buscarPorCodigo(cedula);
+
+        if (existente == null) {
+            JOptionPane.showMessageDialog(usuarioView, "No existe un usuario con esa cédula.");
+            return;
+        }
+
+        existente.setNombre(usuarioView.getTxtNombre().getText());
+        existente.setCorreo(usuarioView.getTxtCorreo().getText());
+        actualizar(existente);
+
+        JOptionPane.showMessageDialog(usuarioView, "Usuario actualizado.");
+        usuarioView.limpiar();
+        usuarioView.bloquear();
+        usuarioView.getTxtCedula().setEditable(true);
+        listarUsuarios();
+    }
+    
+    private void configurarEventosEliminarUsuario(){
+        usuarioView.getBtnEliminar().addActionListener(e -> eliminarUsuario());
+    }
+    
+    private void eliminarUsuario(){
+        String cedula = usuarioView.getTxtCedula().getText();
+        Usuario existente = buscarPorCodigo(cedula);
+
+        if (existente == null) {
+            JOptionPane.showMessageDialog(usuarioView, "No existe un usuario con esa cédula.");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(usuarioView,
+                "¿Eliminar este usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            eliminar(cedula);
+            JOptionPane.showMessageDialog(usuarioView, "Usuario eliminado.");
+            usuarioView.limpiar();
+            usuarioView.bloquear();
+            usuarioView.getTxtCedula().setEditable(true);
+            listarUsuarios();
+        }
+    }
+    
+    private void configurarEventosListarUsuario(){
+        usuarioView.getBtnListar().addActionListener(e -> listarUsuarios());
+    }
+    
+    private void listarUsuarios() {
+        List<Usuario> usuarios = listar();
+        usuarioView.listar(usuarios);
+    }
+    
+    private void configurarEventosLimpiarUsuario(){
+        usuarioView.getBtnLimpiar().addActionListener(e -> limpiarUsuario());
+    }
+    
+    private void limpiarUsuario(){
+        usuarioView.limpiar();
+        usuarioView.bloquear();
+        usuarioView.getTxtCedula().setEditable(true);
+        usuarioView.getBtnCrear().setText("Crear");
+        creandoNuevo = false; 
+    }
+    
     public void agregar(Usuario usuario) {
         usuarioDAO.agregar(usuario);
     }

@@ -121,7 +121,7 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="txtFechaDevolucion" max="32767" attributes="0"/>
-                                      <Component id="jComboBox1" pref="149" max="32767" attributes="0"/>
+                                      <Component id="CbxEstado" pref="149" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -164,7 +164,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="CbxEstado" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbxLibros" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -297,7 +297,7 @@
             <Property name="text" type="java.lang.String" value="Los campos se habilitaran segun la accion"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="CbxEstado">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">

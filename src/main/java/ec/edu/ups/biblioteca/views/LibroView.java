@@ -9,43 +9,33 @@ import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class LibroView extends javax.swing.JInternalFrame implements Idiomatizable{
-    private LibroController libroController;
     private EjemplarLibroController ejemplarLibroController;
-    private AutorController autorController;      // agregar
     private Autor autorSeleccionado;   
     private boolean creandoNuevo = false; 
  
     public LibroView() {
         initComponents();
         aplicarIdioma();
-        libroController = new LibroController();
-        autorController = new AutorController();
-        ejemplarLibroController = new EjemplarLibroController();
         inicializarVista();
     }
 
     private void inicializarVista() {
         bloquearCampos();
         txtCodigo.setEditable(true);
-        cargarAutores();
-        listarLibros();
-        tblLibros.getSelectionModel().addListSelectionListener(evt -> {
-            if (!evt.getValueIsAdjusting() && tblLibros.getSelectedRow() != -1) {
-                int fila = tblLibros.getSelectedRow();
-                String codigo = tblLibros.getValueAt(fila, 0).toString(); // columna código
-                Libro libroSeleccionado = libroController.buscarPorCodigo(codigo);
-
-                int disponibles = ejemplarLibroController.contarDisponibles(libroSeleccionado.getCodigo());
-                lblDisponibles.setText("Disponibles: " + disponibles);
-            }
-        });
     }
 
-    private void bloquearCampos() {
+    public void bloquearCampos() {
         txtTitulo.setEditable(false);
         cbxAutores.setEnabled(false);
         txtEditorial.setEditable(false);
@@ -54,7 +44,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtEjemplares.setEditable(false);
     }
 
-    private void habilitarCampos() {
+    public void habilitarCampos() {
         txtTitulo.setEditable(true);
         cbxAutores.setEnabled(true);
         txtEditorial.setEditable(true);
@@ -63,7 +53,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtEjemplares.setEditable(true);
     }
 
-    private void limpiar() {
+    public void limpiar() {
         txtCodigo.setText("");
         txtTitulo.setText("");
         cbxAutores.setSelectedItem(null); 
@@ -74,30 +64,17 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         autorSeleccionado = null; 
     }
 
-    private void listarLibros() {
+    public void listarLibros(List<Object[]> filas) {
         DefaultTableModel modelo = (DefaultTableModel) tblLibros.getModel();
         modelo.setRowCount(0);
-
-        for (Libro l : libroController.listar()) {
-            int disponibles = ejemplarLibroController.contarDisponibles(l.getCodigo());
-            modelo.addRow(new Object[]{
-                l.getCodigo(),
-                l.getTitulo(),
-                l.getAutor(),
-                l.getEditorial(),
-                l.getGenero(),
-                l.getAnio(),
-                disponibles
-            });
+        for (Object[] fila : filas) {
+            modelo.addRow(fila);
         }
     }
     
-    private void cargarAutores() {
+    public void cargarAutores(List<Autor> autores) {
         cbxAutores.setModel(new javax.swing.DefaultComboBoxModel<>(
-                autorController.listar().toArray(new Autor[0])));
-        cbxAutores.addActionListener(e -> {
-            autorSeleccionado = (Autor) cbxAutores.getSelectedItem();
-        });
+        autores.toArray(new Autor[0])));
     }
     
     @Override
@@ -114,7 +91,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         jLabel6.setText(bundle.getString("lbl.anio"));
         jLabel8.setText(bundle.getString("lbl.ejemplares"));
 
-        btnNuevo.setText(bundle.getString("btn.crear"));
+        btnCrear.setText(bundle.getString("btn.crear"));
         btnBuscar.setText(bundle.getString("btn.buscar"));
         btnActualizar.setText(bundle.getString("btn.actualizar"));
         btnEliminar.setText(bundle.getString("btn.eliminar"));
@@ -155,7 +132,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtEditorial = new javax.swing.JTextField();
         txtGenero = new javax.swing.JTextField();
         txtAnio = new javax.swing.JTextField();
-        btnNuevo = new javax.swing.JButton();
+        btnCrear = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -205,8 +182,8 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtAnio.setText("AAAA");
         txtAnio.addActionListener(this::txtAnioActionPerformed);
 
-        btnNuevo.setText("Nuevo");
-        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
+        btnCrear.setText("Crear");
+        btnCrear.addActionListener(this::btnCrearActionPerformed);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(this::btnBuscarActionPerformed);
@@ -318,7 +295,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                                     .addGap(42, 42, 42)
                                     .addComponent(btnListar))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(btnNuevo)
+                                    .addComponent(btnCrear)
                                     .addGap(33, 33, 33)
                                     .addComponent(btnBuscar))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -333,7 +310,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                 .addComponent(jLabel7)
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
+                    .addComponent(btnCrear)
                     .addComponent(btnBuscar)
                     .addComponent(btnActualizar)
                     .addComponent(btnListar)
@@ -400,78 +377,26 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     }//GEN-LAST:event_txtAnioActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String codigo = txtCodigo.getText();
-        libroController.eliminar(codigo);
-        listarLibros();
-        limpiar();
+      
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        listarLibros();
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        Libro l = new Libro();
-        l.setCodigo(txtCodigo.getText());
-        l.setTitulo(txtTitulo.getText());
-        l.setAutor(autorSeleccionado);
-        l.setEditorial(txtEditorial.getText());
-        l.setGenero(txtGenero.getText());
-        l.setAnio(Integer.parseInt(txtAnio.getText()));
-
-        libroController.actualizar(l);
-        listarLibros();
-        limpiar();
-        
+       
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    String codigo = txtCodigo.getText();
-    Libro l = libroController.buscarPorCodigo(codigo);
-
-        if (l != null) {
-            txtTitulo.setText(l.getTitulo());
-            cbxAutores.setSelectedItem(l.getAutor());  
-            txtEditorial.setText(l.getEditorial());
-            txtGenero.setText(l.getGenero());
-            txtAnio.setText(String.valueOf(l.getAnio()));
-            int disponibles = ejemplarLibroController.contarDisponibles(codigo);
-            txtDisponibles.setText(String.valueOf(disponibles));  
-            habilitarCampos();
-        } else {
-            JOptionPane.showMessageDialog(this, "No encontrado");
-        }
+   
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGeneroActionPerformed
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        if (!creandoNuevo) {
-            limpiar();
-            habilitarCampos();
-            txtCodigo.setEditable(true);
-            btnNuevo.setText("Guardar");
-            creandoNuevo = true;
-        } else {
-            Libro l = new Libro();
-            l.setCodigo(txtCodigo.getText());
-            l.setTitulo(txtTitulo.getText());
-            l.setAutor(autorSeleccionado);
-            l.setEditorial(txtEditorial.getText());
-            l.setGenero(txtGenero.getText());
-            l.setAnio(Integer.parseInt(txtAnio.getText()));
-            
-            int cantidadEjemplares = Integer.parseInt(txtEjemplares.getText());
-            libroController.registrarLibro(l, cantidadEjemplares);
-            listarLibros();
-            limpiar();
-            bloquearCampos();
-            btnNuevo.setText("Nuevo");
-            creandoNuevo = false;
-        }
-    }//GEN-LAST:event_btnNuevoActionPerformed
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+    }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiar();
@@ -481,10 +406,10 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnListar;
-    private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<Autor> cbxAutores;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -507,5 +432,105 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
-  
+
+    public JButton getBtnActualizar() {
+        return btnActualizar;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnListar() {
+        return btnListar;
+    }
+
+    public JButton getBtnCrear() {
+        return btnCrear;
+    }
+
+    public JComboBox<Autor> getCbxAutores() {
+        return cbxAutores;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public JTable getTblLibros() {
+        return tblLibros;
+    }
+    
+    public void mostrarDisponibles(int disponibles) {
+        lblDisponibles.setText("Disponibles: " + disponibles);
+    }
+
+    public JTextField getTxtAnio() {
+        return txtAnio;
+    }
+
+    public JTextField getTxtCodigo() {
+        return txtCodigo;
+    }
+
+    public JTextField getTxtDisponibles() {
+        return txtDisponibles;
+    }
+
+    public JTextField getTxtEditorial() {
+        return txtEditorial;
+    }
+
+    public JTextField getTxtEjemplares() {
+        return txtEjemplares;
+    }
+
+    public JTextField getTxtGenero() {
+        return txtGenero;
+    }
+
+    public JTextField getTxtTitulo() {
+        return txtTitulo;
+    }
+
+    public void setCbxAutores(JComboBox<Autor> cbxAutores) {
+        this.cbxAutores = cbxAutores;
+    }
+
+    public void setLblTitulo(JLabel lblTitulo) {
+        this.lblTitulo = lblTitulo;
+    }
+
+    public void setTxtAnio(JTextField txtAnio) {
+        this.txtAnio = txtAnio;
+    }
+
+    public void setTxtCodigo(JTextField txtCodigo) {
+        this.txtCodigo = txtCodigo;
+    }
+
+    public void setTxtEditorial(JTextField txtEditorial) {
+        this.txtEditorial = txtEditorial;
+    }
+
+    public void setTxtEjemplares(JTextField txtEjemplares) {
+        this.txtEjemplares = txtEjemplares;
+    }
+    
+    public void mostrarLibroCampos(Libro libro) {
+        txtCodigo.setText(libro.getCodigo());
+        txtTitulo.setText(libro.getTitulo());
+        cbxAutores.setSelectedItem(libro.getAutor());
+        txtEditorial.setText(libro.getEditorial());
+        txtGenero.setText(libro.getGenero());
+        txtAnio.setText(String.valueOf(libro.getAnio()));
+    }
 }

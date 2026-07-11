@@ -15,20 +15,19 @@ import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
  * @author jimen
  */
 public class PrestamoView extends javax.swing.JInternalFrame implements Idiomatizable{
-    private PrestamoController prestamoController = new PrestamoController();
-    private EjemplarLibroController ejemplarLibroController = new EjemplarLibroController();
-    private UsuarioController usuarioController = new UsuarioController();
     private boolean registrandoPrestamo = false;
     private Usuario usuarioSeleccionado;
     private EjemplarLibro ejemplarSeleccionado;
-
 
     /**
      * Creates new form RealizarPrestamoView
@@ -36,7 +35,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     public PrestamoView() {
         initComponents();
         aplicarIdioma();
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Activo", "Devuelto"}));
+        CbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Activo", "Devuelto"}));
         inicializarVista();
     }
     private void inicializarVista() {
@@ -44,40 +43,21 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         txtCodigo.setEditable(true);
         btnActualizar.setEnabled(false);
         btnEliminar.setEnabled(false);
-
-        cargarUsuarios();
-        cargarLibros();
-
-        cbxUsuarios.addActionListener(e -> {
-            usuarioSeleccionado = (Usuario) cbxUsuarios.getSelectedItem();
-        });
-
-        cbxLibros.addActionListener(e -> {
-            Libro libroSeleccionado = (Libro) cbxLibros.getSelectedItem();
-            if (libroSeleccionado != null) {
-                cargarEjemplaresDelLibro(libroSeleccionado.getCodigo());
-            }
-        });
-
-        cbxEjemplares.addActionListener(e -> {
-            ejemplarSeleccionado = (EjemplarLibro) cbxEjemplares.getSelectedItem();
-        });
-
-        listarPrestamos();
     }
 
-    private void cargarUsuarios() {
-        cbxUsuarios.setModel(new javax.swing.DefaultComboBoxModel<>(
-                usuarioController.listar().toArray(new Usuario[0])));
+    public void cargarUsuarios(List<Usuario> usuarios) {
+        cbxUsuarios.setModel(new javax.swing.DefaultComboBoxModel<>(usuarios.toArray(new Usuario[0])));
     }
     
-    private void cargarLibros() {
-        cbxLibros.setModel(new javax.swing.DefaultComboBoxModel<>(
-                prestamoController.listarLibros().toArray(new Libro[0])));
+    public void cargarLibros(List<Libro> libros) {
+        cbxLibros.setModel(new javax.swing.DefaultComboBoxModel<>(libros.toArray(new Libro[0])));
+    }
+    
+    public void cargarEjemplares(List<EjemplarLibro> disponibles) {
+        cbxEjemplares.setModel(new javax.swing.DefaultComboBoxModel<>(disponibles.toArray(new EjemplarLibro[0])));
     }
 
-    private void bloquearCampos() {
-        
+    public void bloquearCampos() {
         cbxUsuarios.setEnabled(false);
         cbxLibros.setEnabled(false);
         cbxEjemplares.setEnabled(false);
@@ -85,22 +65,23 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         txtFechaDevolucion.setEditable(false);
     }
 
-    private void modoActualizar() {
+    public void modoActualizar() {
         habilitarCampos();
         btnActualizar.setEnabled(true);
         btnEliminar.setEnabled(true);
         btnRegistrarPrestamo.setEnabled(false);
     }
 
-    private void habilitarCampos() {
-        cbxUsuarios.setEnabled(true);
-        cbxLibros.setEnabled(true);
-        cbxEjemplares.setEnabled(true);
-        txtFechaPrestamo.setEditable(true);
-        txtFechaDevolucion.setEditable(true);
+    public void habilitarCampos() {
+        txtCodigo.setText("");
+        cbxUsuarios.setSelectedItem(null);
+        cbxLibros.setSelectedItem(null);
+        cbxEjemplares.setSelectedItem(null);
+        txtFechaPrestamo.setText("");
+        txtFechaDevolucion.setText("");
     }
 
-    private void limpiarCampos() {
+    public void limpiarCampos() {
         txtCodigo.setText("");
         cbxUsuarios.setSelectedItem(null);
         cbxLibros.setSelectedItem(null);
@@ -110,12 +91,17 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         ejemplarSeleccionado = null;
         usuarioSeleccionado = null;
     }
+    
+    public void mostrarPrestamoEnCampos(Prestamo p) {
+        cbxUsuarios.setSelectedItem(p.getUsuario());
+        cbxLibros.setSelectedItem(p.getEjemplar().getLibro());
+        txtFechaPrestamo.setText(String.valueOf(p.getFechaPrestamo()));
+        txtFechaDevolucion.setText(String.valueOf(p.getFechaDevolucion()));
+    }
 
-    private void listarPrestamos() {
+    public void listarPrestamos(List<Prestamo> prestamos) {
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
-
-        List<Prestamo> prestamos = prestamoController.listar();
 
         for (Prestamo p : prestamos) {
             modelo.addRow(new Object[]{
@@ -128,12 +114,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
 
             });
         }
-    }
-    
-    private void cargarEjemplaresDelLibro(String codigoLibro) {
-        List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(codigoLibro);
-        cbxEjemplares.setModel(new javax.swing.DefaultComboBoxModel<>(
-                disponibles.toArray(EjemplarLibro[]::new)));
     }
     
     @Override
@@ -184,7 +164,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CbxEstado = new javax.swing.JComboBox<>();
         btnLimpiar = new javax.swing.JButton();
         cbxUsuarios = new javax.swing.JComboBox<>();
         cbxLibros = new javax.swing.JComboBox<>();
@@ -251,7 +231,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
 
         jLabel8.setText("Los campos se habilitaran segun la accion");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Devolución" }));
+        CbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Devolución" }));
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
@@ -318,7 +298,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtFechaDevolucion)
-                                    .addComponent(jComboBox1, 0, 149, Short.MAX_VALUE))))))
+                                    .addComponent(CbxEstado, 0, 149, Short.MAX_VALUE))))))
                 .addContainerGap(261, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -351,7 +331,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -390,84 +370,31 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
 
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
         // TODO add your handling code here:
-        limpiarCampos();
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String codigo = txtCodigo.getText();
-        Prestamo prestamo = prestamoController.buscarPorCodigo(codigo);
-
-        if (prestamo != null) {
-            
-            cbxUsuarios.setSelectedItem(prestamo.getUsuario());
-            cbxLibros.setSelectedItem(prestamo.getEjemplar().getLibro().getTitulo());
-            txtFechaPrestamo.setText(String.valueOf(prestamo.getFechaPrestamo()));
-            txtFechaDevolucion.setText(String.valueOf(prestamo.getFechaDevolucion()));
-
-            modoActualizar();
-
-            btnEliminar.setEnabled(true);
-        } else {
-            
-            JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
-        }
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnRegistrarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPrestamoActionPerformed
-        if (!registrandoPrestamo) {
-            limpiarCampos();
-            habilitarCampos();
-            txtCodigo.setEditable(true);
-            btnRegistrarPrestamo.setText("Guardar");
-            registrandoPrestamo = true;
-        } else {
-            String codigo = txtCodigo.getText();
-            if (codigo.isEmpty() || usuarioSeleccionado == null || ejemplarSeleccionado == null) {
-                JOptionPane.showMessageDialog(this, "Debes ingresar código, usuario y ejemplar válidos");
-                return;
-            }
-            try {
-                java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yy");
-                java.util.Date fechaPrestamo = formato.parse(txtFechaPrestamo.getText());
-                java.util.Date fechaDevolucion = formato.parse(txtFechaDevolucion.getText());
-                boolean estado = jComboBox1.getSelectedItem().equals("Activo");
-                Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
-                        fechaPrestamo, fechaDevolucion, estado);
-
-                prestamoController.registrarPrestamo(prestamo);
-                cargarEjemplaresDelLibro(ejemplarSeleccionado.getLibro().getCodigo());
-                listarPrestamos();
-                limpiarCampos();
-                bloquearCampos();
-                txtCodigo.setEditable(true);
-                btnRegistrarPrestamo.setText("Registrar Prestamo");
-                registrandoPrestamo = false;
-
-                JOptionPane.showMessageDialog(this, "Préstamo registrado con éxito");
-            } catch (java.text.ParseException e) {
-                JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Usa dd/MM/aa");
-            }
-        }
     }//GEN-LAST:event_btnRegistrarPrestamoActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarCampos();// TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void cbxUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxUsuariosActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_cbxUsuariosActionPerformed
 
     private void cbxEjemplaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEjemplaresActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_cbxEjemplaresActionPerformed
 
     private void txtFechaPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaPrestamoActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtFechaPrestamoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> CbxEstado;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
@@ -477,7 +404,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private javax.swing.JComboBox<EjemplarLibro> cbxEjemplares;
     private javax.swing.JComboBox<Libro> cbxLibros;
     private javax.swing.JComboBox<Usuario> cbxUsuarios;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -494,4 +420,58 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private javax.swing.JTextField txtFechaDevolucion;
     private javax.swing.JTextField txtFechaPrestamo;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBtnActualizar() {
+        return btnActualizar;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnListar() {
+        return btnListar;
+    }
+
+    public JButton getBtnRegistrarPrestamo() {
+        return btnRegistrarPrestamo;
+    }
+
+    public JComboBox<EjemplarLibro> getCbxEjemplares() {
+        return cbxEjemplares;
+    }
+
+    public JComboBox<Libro> getCbxLibros() {
+        return cbxLibros;
+    }
+
+    public JComboBox<Usuario> getCbxUsuarios() {
+        return cbxUsuarios;
+    }
+
+    public JComboBox<String> getCbxEstado() {
+        return CbxEstado;
+    }
+    
+    public JTextField getTxtCodigo() {
+        return txtCodigo;
+    }
+
+    public JTextField getTxtFechaDevolucion() {
+        return txtFechaDevolucion;
+    }
+
+    public JTextField getTxtFechaPrestamo() {
+        return txtFechaPrestamo;
+    }
+
+
 }

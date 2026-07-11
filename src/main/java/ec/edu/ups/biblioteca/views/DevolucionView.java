@@ -4,7 +4,10 @@ import ec.edu.ups.biblioteca.controllers.DevolucionController;
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -16,13 +19,12 @@ import javax.swing.JOptionPane;
  * @author jimen
  */
 public class DevolucionView extends javax.swing.JInternalFrame implements Idiomatizable{
-    
-    private DevolucionController devolucionController = new DevolucionController();
     private Prestamo prestamo;
-
+    
     /**
      * Creates new form DevolucionLibroView
      */
+    
     public DevolucionView() {
         initComponents();
         inicializarVista();
@@ -53,10 +55,18 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
             bundle.getString("devolucion.col.estado")
         });
     }
+    
+    public void mostrarPrestamoEncontrado() {
+        JOptionPane.showMessageDialog(this, "Préstamo encontrado.");
+    }
 
-   
-  
+    public void mostrarPrestamoNoEncontrado() {
+        JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
+    }
 
+    public void mostrarDevolucionExitosa() {
+        JOptionPane.showMessageDialog(this, "Devolución registrada correctamente");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,21 +206,12 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolucionActionPerformed
-        devolucionController.registrarDevolucion(prestamo);
-        
-        JOptionPane.showMessageDialog(this,"Devolución registrada correctamente");
-        
+      
     }//GEN-LAST:event_btnDevolucionActionPerformed
 
     private void btnPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrestamoActionPerformed
-        int codigo = Integer.parseInt(txtCodigoPrestamo.getText());
-        prestamo = devolucionController.buscarPorCodigo(String.valueOf(codigo));
-    
-         if (prestamo == null) {
-        JOptionPane.showMessageDialog(this, "Préstamo no encontrado");
-        }
+       
     }//GEN-LAST:event_btnPrestamoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDevolucion;
@@ -224,4 +225,22 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCodigoPrestamo;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBtnDevolucion() {
+        return btnDevolucion;
+    }
+
+    public JButton getBtnPrestamo() {
+        return btnPrestamo;
+    }
+
+    public JTable getjTable1() {
+        return jTable1;
+    }
+
+    public JTextField getTxtCodigoPrestamo() {
+        return txtCodigoPrestamo;
+    }
+
+
 }

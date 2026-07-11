@@ -9,62 +9,61 @@ import ec.edu.ups.biblioteca.models.Usuario;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
  * @author jimen
  */
-    public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
-        private UsuarioController usuarioController;
-        private boolean creandoNuevo = false;    
-        /** 
-         * Creates new form UsuarioView
-         */
-        public UsuarioView() {
-            initComponents();
-            usuarioController = new UsuarioController();
-            inicializar();
-
-        }
+public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
+    private UsuarioController usuarioController;
+    private boolean creandoNuevo = false;    
+    /** 
+    ** Creates new form UsuarioView
+    */
+    public UsuarioView() {
+        initComponents();
+        inicializar();
+    }
    
 
     private void inicializar() {
         bloquear();
         txtCedula.setEditable(true);
-        listar();
     }
 
-    private void bloquear() {
+    public void bloquear() {
         txtNombre.setEditable(false);
         txtCorreo.setEditable(false);
 
     }
 
-    private void habilitar() {
+    public void habilitar() {
         txtNombre.setEditable(true);
         txtCorreo.setEditable(true);
 
     }
 
-    private void limpiar() {
+    public void limpiar() {
         txtCedula.setText("");
         txtNombre.setText("");
         txtCorreo.setText("");
 
     }
-    private void modoActualizar() {
+    public void modoActualizar() {
         habilitar();
         btnActualizar.setEnabled(true);
         btnEliminar.setEnabled(true);
         btnCrear.setEnabled(false);
     }
 
-    private void listar() {
+    public void listar(List<Usuario> usuarios) {
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
-
-        List<Usuario> usuarios = usuarioController.listar();
 
         for (Usuario u : usuarios) {
             modelo.addRow(new Object[]{
@@ -271,110 +270,27 @@ import javax.swing.JOptionPane;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String cedula = txtCedula.getText();
-        Usuario usuario = usuarioController.buscarPorCodigo(cedula);
-
-        if (usuario != null) {
-            txtNombre.setText(usuario.getNombre());
-            txtCorreo.setText(usuario.getCorreo());
-            modoActualizar();
-            btnEliminar.setEnabled(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuario no encontrado");
-        }
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        if (!creandoNuevo) {
-            limpiar();
-            habilitar();
-            txtCedula.setEditable(true);
-            btnCrear.setText("Guardar");
-            creandoNuevo = true;
-        } else {
-            String cedula = txtCedula.getText();
-            String nombre = txtNombre.getText();
-            String correo = txtCorreo.getText();
-
-            if (cedula.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Cédula y nombre son obligatorios.");
-                return;
-            }
-
-            Usuario usuario = new Usuario();
-            usuario.setCedula(cedula);
-            usuario.setNombre(nombre);
-            usuario.setCorreo(correo);
-            usuarioController.agregar(usuario);
-
-            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
-            limpiar();
-            bloquear();
-            txtCedula.setEditable(true);
-            listar();
-            btnCrear.setText("Crear");
-            creandoNuevo = false;
-        }
         
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-         String cedula = txtCedula.getText();
-        Usuario existente = usuarioController.buscarPorCodigo(cedula);
-
-        if (existente == null) {
-            JOptionPane.showMessageDialog(this, "No existe un usuario con esa cédula.");
-            return;
-        }
-
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Eliminar este usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            usuarioController.eliminar(cedula);
-            JOptionPane.showMessageDialog(this, "Usuario eliminado.");
-            limpiar();
-            bloquear();
-            txtCedula.setEditable(true);
-            listar();
-            btnEliminar.setEnabled(false);
-        }
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        String cedula = txtCedula.getText();
-        Usuario existente = usuarioController.buscarPorCodigo(cedula);
-
-        if (existente == null) {
-            JOptionPane.showMessageDialog(this, "No existe un usuario con esa cédula.");
-            return;
-        }
-
-        existente.setNombre(txtNombre.getText());
-        existente.setCorreo(txtCorreo.getText());
-        usuarioController.actualizar(existente);
-
-        JOptionPane.showMessageDialog(this, "Usuario actualizado.");
-        limpiar();
-        bloquear();
-        txtCedula.setEditable(true);
-        listar();
-        btnActualizar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCrear.setEnabled(true);
+        
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        listar();
+
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiar();
-        bloquear();
-        txtCedula.setEditable(true);
-        btnActualizar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCrear.setEnabled(true);
-        btnCrear.setText("Crear");
-        creandoNuevo = false;
+        
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
 
@@ -397,4 +313,53 @@ import javax.swing.JOptionPane;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+    public UsuarioController getUsuarioController() {
+        return usuarioController;
+    }
+
+    public JButton getBtnActualizar() {
+        return btnActualizar;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JButton getBtnCrear() {
+        return btnCrear;
+    }
+
+    public JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnListar() {
+        return btnListar;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public JTable getjTable1() {
+        return jTable1;
+    }
+
+    public JTextField getTxtCedula() {
+        return txtCedula;
+    }
+
+    public JTextField getTxtCorreo() {
+        return txtCorreo;
+    }
+
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+    
 }
