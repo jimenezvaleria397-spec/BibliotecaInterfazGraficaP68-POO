@@ -187,6 +187,18 @@ public class PrestamoController {
     
     private void eliminarPrestamo() {
         String codigo = prestamoView.getTxtCodigo().getText();
+        Prestamo existente = buscarPorCodigo(codigo);
+
+        if (existente == null) {
+            JOptionPane.showMessageDialog(prestamoView, "No existe un préstamo con ese código.");
+            return;
+        }
+
+        // esto faltaba: si se elimina el préstamo, el ejemplar debe volver a estar disponible
+        EjemplarLibro ejemplar = existente.getEjemplar();
+        ejemplar.setDisponible(true);
+        ejemplarLibroController.actualizar(ejemplar);
+
         eliminar(codigo);
         listarPrestamos();
         prestamoView.limpiarCampos();
@@ -231,7 +243,5 @@ public class PrestamoController {
         ejemplar.setDisponible(false); // se marca como prestado
         ejemplarLibroController.actualizar(ejemplar);
         agregar(prestamo);
-        // el combo de ejemplares disponibles se refresca solo, 
-        // porque contarDisponibles() ya lo excluye automáticamente
     }
 }

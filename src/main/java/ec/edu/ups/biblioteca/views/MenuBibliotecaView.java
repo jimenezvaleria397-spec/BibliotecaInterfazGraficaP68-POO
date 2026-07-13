@@ -24,6 +24,8 @@ import ec.edu.ups.biblioteca.utils.Idiomatizable;
  * @author jimen
  */
 public class MenuBibliotecaView extends javax.swing.JFrame {
+    //verdadero:
+    /////
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuBibliotecaView.class.getName());
     private AutorController autorController;
@@ -31,19 +33,35 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private UsuarioController usuarioController;
     private EjemplarLibroController ejemplarLibroController;
     private PrestamoController prestamoController;
+
+    // Guardamos las vistas ya conectadas a sus Controllers en main().
+    // Antes el menú creaba vistas NUEVAS (sin Controller) en cada click,
+    // por eso los botones no hacían nada al abrir desde el menú.
+    private AutorView autorView;
+    private LibroView libroView;
+    private UsuarioView usuarioView;
+    private PrestamoView prestamoView;
+    private DevolucionView devolucionView;
     
     /**
      * Creates new form MenuBibliotecarioView
      */
     public MenuBibliotecaView(AutorController autorController, LibroController libroController,
         UsuarioController usuarioController, EjemplarLibroController ejemplarLibroController,
-        PrestamoController prestamoController) {
+        PrestamoController prestamoController,
+        AutorView autorView, LibroView libroView, UsuarioView usuarioView,
+        PrestamoView prestamoView, DevolucionView devolucionView) {
         initComponents();
         this.autorController = autorController;
         this.libroController = libroController;
         this.usuarioController = usuarioController;
         this.ejemplarLibroController = ejemplarLibroController;
         this.prestamoController = prestamoController;
+        this.autorView = autorView;
+        this.libroView = libroView;
+        this.usuarioView = usuarioView;
+        this.prestamoView = prestamoView;
+        this.devolucionView = devolucionView;
         aplicarIdioma();
         
     }
@@ -264,38 +282,48 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void gestionarAutoresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarAutoresMenuItemActionPerformed
-        AutorView autorView = new AutorView();
-        jDesktopPane1.add(autorView);  
-        autorView.setLocation(20, 20);
+        if (autorView.getParent() == null) {
+            jDesktopPane1.add(autorView);
+            autorView.setLocation(20, 20);
+        }
         autorView.setVisible(true);
+        try { autorView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarAutoresMenuItemActionPerformed
 
     private void gestionarLibrosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarLibrosMenuItemActionPerformed
-        LibroView libroView = new LibroView();
-        jDesktopPane1.add(libroView);
-        libroView.setLocation(20, 20);
+        if (libroView.getParent() == null) {
+            jDesktopPane1.add(libroView);
+            libroView.setLocation(20, 20);
+        }
         libroView.setVisible(true);
+        try { libroView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarLibrosMenuItemActionPerformed
 
     private void gestionarUsuariosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarUsuariosMenuItemActionPerformed
-        UsuarioView usuarioView = new UsuarioView();
-        jDesktopPane1.add(usuarioView);
-        usuarioView.setLocation(20, 20);
+        if (usuarioView.getParent() == null) {
+            jDesktopPane1.add(usuarioView);
+            usuarioView.setLocation(20, 20);
+        }
         usuarioView.setVisible(true);
+        try { usuarioView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarUsuariosMenuItemActionPerformed
 
     private void gestionarDevolucionesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarDevolucionesMenuItemActionPerformed
-        DevolucionView devolucionView = new DevolucionView();
-        jDesktopPane1.add(devolucionView);
-        devolucionView.setLocation(20, 20);
+        if (devolucionView.getParent() == null) {
+            jDesktopPane1.add(devolucionView);
+            devolucionView.setLocation(20, 20);
+        }
         devolucionView.setVisible(true);
+        try { devolucionView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarDevolucionesMenuItemActionPerformed
 
     private void gestionarPrestamosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarPrestamosMenuItemActionPerformed
-        PrestamoView prestamoView = new PrestamoView();
-        jDesktopPane1.add(prestamoView);
-        prestamoView.setLocation(20, 20);
+        if (prestamoView.getParent() == null) {
+            jDesktopPane1.add(prestamoView);
+            prestamoView.setLocation(20, 20);
+        }
         prestamoView.setVisible(true);
+        try { prestamoView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarPrestamosMenuItemActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
@@ -334,30 +362,33 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        AutorDAO autorDAO = AutorDAO.getAutorDAO();
+         AutorDAO autorDAO = AutorDAO.getAutorDAO();
         UsuarioDAO usuarioDAO = UsuarioDAO.getUsuarioDAO();
         LibroDAO libroDAO = LibroDAO.getLibroDAO();
         EjemplarLibroDAO ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
         PrestamoDAO prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
-        DevolucionView devolucionView = new DevolucionView();
-        DevolucionController devolucionController = new DevolucionController(prestamoDAO, devolucionView);
-        
+
+        // Creamos CADA vista UNA sola vez aquí y las conectamos a su Controller.
+        // El menú ya NO debe crear vistas nuevas: debe reutilizar estas mismas instancias.
         AutorView autorView = new AutorView();
         UsuarioView usuarioView = new UsuarioView();
         LibroView libroView = new LibroView();
-        AutorController autorController = new AutorController(autorDAO, autorView);
+        PrestamoView prestamoView = new PrestamoView();
+        DevolucionView devolucionView = new DevolucionView();
 
+        AutorController autorController = new AutorController(autorDAO, autorView);
         UsuarioController usuarioController = new UsuarioController(usuarioDAO, usuarioView);
         EjemplarLibroController ejemplarLibroController = new EjemplarLibroController(ejemplarLibroDAO);
         LibroController libroController = new LibroController(libroDAO, libroView, autorController, ejemplarLibroController);
-        PrestamoView prestamoView = new PrestamoView();
         PrestamoController prestamoController = new PrestamoController(prestamoDAO, usuarioController, libroController, 
                 ejemplarLibroController, prestamoView);
+        DevolucionController devolucionController = new DevolucionController(prestamoDAO, devolucionView, ejemplarLibroController);
         
         java.awt.EventQueue.invokeLater(() -> {
             MenuBibliotecaView menu = new MenuBibliotecaView(
             autorController, libroController, usuarioController, 
-                    ejemplarLibroController, prestamoController);
+                    ejemplarLibroController, prestamoController,
+                    autorView, libroView, usuarioView, prestamoView, devolucionView);
             menu.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
             menu.setVisible(true);
         });

@@ -59,6 +59,25 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
     public void mostrarPrestamoEncontrado() {
         JOptionPane.showMessageDialog(this, "Préstamo encontrado.");
     }
+    
+    public void mostrarPrestamoEnTabla(Prestamo prestamo) {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+        modelo.addRow(new Object[]{
+            prestamo.getCodigo(),
+            prestamo.getUsuario(),
+            prestamo.getEjemplar().getLibro(),
+            prestamo.getFechaPrestamo(),
+            prestamo.getFechaDevolucion(),
+            prestamo.isEstado() ? "Activo" : "Devuelto"
+        });
+    }
+
+   //lIMPIA LA TABLA
+    public void limpiarTabla() {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
+    }
 
     public void mostrarPrestamoNoEncontrado() {
         JOptionPane.showMessageDialog(this, "Préstamo no encontrado");

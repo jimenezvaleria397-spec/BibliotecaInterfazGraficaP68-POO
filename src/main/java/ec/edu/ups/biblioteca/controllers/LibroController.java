@@ -3,10 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.controllers;
-import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.models.Autor;
-import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.views.LibroView;
 import java.util.ArrayList;
@@ -54,6 +52,7 @@ public class LibroController {
             libroView.habilitarCampos();
             libroView.getTxtCodigo().setEditable(true);
             libroView.getBtnCrear().setText("Guardar");
+            cargarAutoresCombo(); 
             creandoNuevo = true;
         } else {
             try {

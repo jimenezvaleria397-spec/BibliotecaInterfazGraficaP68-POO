@@ -20,7 +20,6 @@ import javax.swing.JTextField;
  * @author jimen
  */
 public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatizable{
-    private UsuarioController usuarioController;
     private boolean creandoNuevo = false;    
     /** 
     ** Creates new form UsuarioView
@@ -313,10 +312,6 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
-
-    public UsuarioController getUsuarioController() {
-        return usuarioController;
-    }
 
     public JButton getBtnActualizar() {
         return btnActualizar;

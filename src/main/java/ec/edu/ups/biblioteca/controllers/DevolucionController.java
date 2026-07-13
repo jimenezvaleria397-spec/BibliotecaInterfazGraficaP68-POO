@@ -6,6 +6,7 @@ package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.views.DevolucionView;
 import javax.swing.JOptionPane;
@@ -18,34 +19,48 @@ public class DevolucionController {
 
     private PrestamoDAO prestamoDAO;
     private DevolucionView devolucionView;
+    private EjemplarLibroController ejemplarLibroController;
     private Prestamo prestamoSeleccionado;
 
-    public DevolucionController(PrestamoDAO prestamoDAO, DevolucionView devolucionView) {
+    public DevolucionController(PrestamoDAO prestamoDAO, DevolucionView devolucionView,
+            EjemplarLibroController ejemplarLibroController) {
         this.prestamoDAO = prestamoDAO;
         this.devolucionView = devolucionView;
+        this.ejemplarLibroController = ejemplarLibroController;
         configurarEventos();
     }
-    
+
     private void configurarEventos() {
         configurarEventosBuscarPrestamo();
         configurarEventosRegistrarDevolucion();
     }
-    
+
     private void configurarEventosBuscarPrestamo() {
         devolucionView.getBtnPrestamo().addActionListener(e -> buscarPrestamo());
     }
 
     private void buscarPrestamo() {
         String codigo = devolucionView.getTxtCodigoPrestamo().getText();
-        prestamoSeleccionado = buscarPorCodigo(codigo);
+        Prestamo prestamo = buscarPorCodigo(codigo);
 
-        if (prestamoSeleccionado == null) {
+        if (prestamo == null) {
             JOptionPane.showMessageDialog(devolucionView, "Préstamo no encontrado");
+            devolucionView.limpiarTabla();
+            prestamoSeleccionado = null;
+            return;
+        }
+
+        // mostramos el préstamo encontrado en la tabla (esto es lo que faltaba)
+        devolucionView.mostrarPrestamoEnTabla(prestamo);
+
+        if (!prestamo.isEstado()) {
+            JOptionPane.showMessageDialog(devolucionView, "Este préstamo ya fue devuelto anteriormente.");
+            prestamoSeleccionado = null;
         } else {
-            JOptionPane.showMessageDialog(devolucionView, "Préstamo encontrado.");
+            prestamoSeleccionado = prestamo;
         }
     }
-    
+
     private void configurarEventosRegistrarDevolucion() {
         devolucionView.getBtnDevolucion().addActionListener(e -> registrarDevolucionDesdeVista());
     }
@@ -57,8 +72,9 @@ public class DevolucionController {
         }
         registrarDevolucion(prestamoSeleccionado);
         JOptionPane.showMessageDialog(devolucionView, "Devolución registrada correctamente");
-        prestamoSeleccionado = null;
+        devolucionView.limpiarTabla();
         devolucionView.getTxtCodigoPrestamo().setText("");
+        prestamoSeleccionado = null;
     }
 
     public Prestamo buscarPorCodigo(String codigo) {
@@ -66,7 +82,12 @@ public class DevolucionController {
     }
 
     public void registrarDevolucion(Prestamo prestamo) {
-        prestamo.setEstado(false); // false cuando el préstamo ya se acabo (devolucion)
+        prestamo.setEstado(false); // false cuando el préstamo ya se acabó (devolución)
         prestamoDAO.actualizar(prestamo);
+
+        // esto es lo que faltaba: liberar el ejemplar para que vuelva a estar disponible
+        EjemplarLibro ejemplar = prestamo.getEjemplar();
+        ejemplar.setDisponible(true);
+        ejemplarLibroController.actualizar(ejemplar);
     }
 }
