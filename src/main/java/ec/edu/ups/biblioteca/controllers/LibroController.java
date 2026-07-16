@@ -42,7 +42,20 @@ public class LibroController {
         configurarEventosListarLibros();
         configurarEventosLimpiarLibro();
         configurarEventosSeleccionTabla();
+         configurarEventosComboAutores(); 
     }
+    private void configurarEventosComboAutores() {
+    libroView.getCbxAutores().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        @Override
+        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+            cargarAutoresCombo();
+        }
+        @Override
+        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+        @Override
+        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+    });
+}
     
     private void configurarEventosCrearLibro(){
         libroView.getBtnCrear().addActionListener(e -> crearLibro());

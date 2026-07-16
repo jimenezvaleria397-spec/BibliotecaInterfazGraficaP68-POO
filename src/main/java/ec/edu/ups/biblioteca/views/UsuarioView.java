@@ -38,6 +38,7 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
     public void bloquear() {
         txtNombre.setEditable(false);
         txtCorreo.setEditable(false);
+        btnCrear.setEnabled(true);
 
     }
 
