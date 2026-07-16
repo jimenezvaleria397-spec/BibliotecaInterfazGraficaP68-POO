@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.models;
-
-import java.io.ObjectInputStream;
 import java.util.Objects;
 
 /**
@@ -14,13 +12,14 @@ import java.util.Objects;
 public class EjemplarLibro {
     private String codigoBarras;
     private String ubicacion;
-    private Libro libro; // ingo del libro ya creado
+    private Libro libro; // datos del libro ya creado
     private boolean disponible;
     
     public EjemplarLibro() {
     }
 
-    public EjemplarLibro(String codigoBarras, String ubicacion, Libro libro, boolean disponible) {
+    public EjemplarLibro(String codigoBarras, String ubicacion, 
+            Libro libro, boolean disponible) {
         this.codigoBarras = codigoBarras;
         this.ubicacion = ubicacion;
         this.libro = libro;
