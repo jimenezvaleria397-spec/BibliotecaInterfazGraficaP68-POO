@@ -3,10 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.controllers;
-import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
-import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
-import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.excepciones.ValidacionException;
+import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.models.Prestamo;
@@ -103,39 +102,41 @@ public class PrestamoController {
             prestamoView.getBtnRegistrarPrestamo().setText("Guardar");
             registrandoPrestamo = true;
         } else {
-            String codigo = prestamoView.getTxtCodigo().getText();
+    String codigo = prestamoView.getTxtCodigo().getText();
 
-            if (codigo.isEmpty() || usuarioSeleccionado == null || ejemplarSeleccionado == null) {
-                JOptionPane.showMessageDialog(prestamoView, "Debes ingresar código, usuario y ejemplar válidos");
-                return;
-            }
-            try {
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yy");
-                Date fechaPrestamo = formato.parse(prestamoView.getTxtFechaPrestamo().getText());
-                Date fechaDevolucion = formato.parse(prestamoView.getTxtFechaDevolucion().getText());
-                boolean estado = prestamoView.getCbxEstado().getSelectedItem().equals("Activo");
-
-                Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
-                        fechaPrestamo, fechaDevolucion, estado);
-
-                registrarPrestamo(prestamo);
-
-                List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(ejemplarSeleccionado.getLibro().getCodigo());
-                prestamoView.cargarEjemplares(disponibles);
-
-                listarPrestamos();
-                prestamoView.limpiarCampos();
-                prestamoView.bloquearCampos();
-                prestamoView.getTxtCodigo().setEditable(true);
-                prestamoView.getBtnRegistrarPrestamo().setText("Registrar Prestamo");
-                registrandoPrestamo = false;
-
-                JOptionPane.showMessageDialog(prestamoView, "Préstamo registrado con éxito");
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(prestamoView, "Formato de fecha inválido. Usa dd/MM/aa");
-            }
-        }
+    if (usuarioSeleccionado == null || ejemplarSeleccionado == null) {
+        JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar un usuario y un ejemplar.");
+        return;
     }
+    try {
+        Validador.validarNoVacio(codigo, "Código");
+        Date fechaPrestamo = Validador.validarFecha(prestamoView.getTxtFechaPrestamo().getText(), "dd/MM/yy", "Fecha de préstamo");
+        Date fechaDevolucion = Validador.validarFecha(prestamoView.getTxtFechaDevolucion().getText(), "dd/MM/yy", "Fecha de devolución");
+        boolean estado = prestamoView.getCbxEstado().getSelectedItem().equals("Activo");
+
+        Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
+                fechaPrestamo, fechaDevolucion, estado);
+
+        registrarPrestamo(prestamo);
+
+        List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(ejemplarSeleccionado.getLibro().getCodigo());
+        prestamoView.cargarEjemplares(disponibles);
+
+        listarPrestamos();
+        prestamoView.limpiarCampos();
+        prestamoView.bloquearCampos();
+        prestamoView.getTxtCodigo().setEditable(true);
+        prestamoView.getBtnRegistrarPrestamo().setText("Registrar Prestamo");
+        registrandoPrestamo = false;
+
+        JOptionPane.showMessageDialog(prestamoView, "Préstamo registrado con éxito");
+    } catch (ValidacionException e) {
+        JOptionPane.showMessageDialog(prestamoView, e.getMessage());
+    }
+
+            
+    }
+}
     
     private void configurarEventosActualizarPrestamo() {
         prestamoView.getBtnActualizar().addActionListener(e -> actualizarPrestamo());
@@ -204,6 +205,7 @@ public class PrestamoController {
         prestamoView.limpiarCampos();
         prestamoView.bloquearCampos();
         prestamoView.getTxtCodigo().setEditable(true);
+        
     }
     
     private void configurarEventosListarPrestamo() {

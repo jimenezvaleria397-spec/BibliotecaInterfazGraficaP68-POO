@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.excepciones.ValidacionException;
+import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.Usuario;
 import ec.edu.ups.biblioteca.views.UsuarioView;
 import java.util.List;
@@ -46,29 +48,31 @@ public class UsuarioController {
             usuarioView.getTxtCedula().setEditable(true);
             usuarioView.getBtnCrear().setText("Guardar");
             creandoNuevo = true;
-        }else{
-            String cedula = usuarioView.getTxtCedula().getText();
-            String nombre = usuarioView.getTxtNombre().getText();
-            String correo = usuarioView.getTxtCorreo().getText();
+        } else {
+            try {
+                String cedula = usuarioView.getTxtCedula().getText();
+                String nombre = usuarioView.getTxtNombre().getText();
+                String correo = usuarioView.getTxtCorreo().getText();
 
-            if (cedula.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(usuarioView, "Cédula y nombre son obligatorios.");
-                return;
+                Validador.validarNoVacio(cedula, "Cédula");
+                Validador.validarNoVacio(nombre, "Nombre");
+
+                Usuario usuario = new Usuario();
+                usuario.setCedula(cedula);
+                usuario.setNombre(nombre);
+                usuario.setCorreo(correo);
+                agregar(usuario);
+
+                JOptionPane.showMessageDialog(usuarioView, "Usuario registrado con éxito.");
+                usuarioView.limpiar();
+                usuarioView.bloquear();
+                usuarioView.getTxtCedula().setEditable(true);
+                listarUsuarios();
+                usuarioView.getBtnCrear().setText("Crear");
+                creandoNuevo = false;
+            } catch (ValidacionException e) {
+                JOptionPane.showMessageDialog(usuarioView, e.getMessage());
             }
-
-            Usuario usuario = new Usuario();
-            usuario.setCedula(cedula);
-            usuario.setNombre(nombre);
-            usuario.setCorreo(correo);
-            agregar(usuario);
-
-            JOptionPane.showMessageDialog(usuarioView, "Usuario registrado con éxito.");
-            usuarioView.limpiar();
-            usuarioView.bloquear();
-            usuarioView.getTxtCedula().setEditable(true);
-            listarUsuarios();
-            usuarioView.getBtnCrear().setText("Crear");
-            creandoNuevo = false;
         }
     }
     

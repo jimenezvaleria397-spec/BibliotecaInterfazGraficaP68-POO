@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.excepciones.ValidacionException;
+import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.views.LibroView;
@@ -114,18 +116,24 @@ public class LibroController {
     }
     
     public void actualizarLibro(){
+        try {
+        int anio = Validador.validarEntero(libroView.getTxtAnio().getText(), "Año");
+
         Libro libro = new Libro();
         libro.setCodigo(libroView.getTxtCodigo().getText());
         libro.setTitulo(libroView.getTxtTitulo().getText());
         libro.setAutor((Autor) libroView.getCbxAutores().getSelectedItem());
         libro.setEditorial(libroView.getTxtEditorial().getText());
         libro.setGenero(libroView.getTxtGenero().getText());
-        libro.setAnio(Integer.parseInt(libroView.getTxtAnio().getText()));
+        libro.setAnio(anio);
 
         actualizar(libro);
         listarLibros();
         libroView.limpiar();
+    } catch (ValidacionException e) {
+        JOptionPane.showMessageDialog(libroView, e.getMessage());
     }
+}
     
     private void configurarEventosEliminarLibro(){
         libroView.getBtnEliminar().addActionListener(e -> eliminarLibro());

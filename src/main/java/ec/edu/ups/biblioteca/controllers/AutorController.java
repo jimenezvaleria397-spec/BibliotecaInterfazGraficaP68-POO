@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.AutorDAO;
+import ec.edu.ups.biblioteca.excepciones.ValidacionException;
+import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.views.AutorView;
 import java.time.LocalDate;
@@ -39,28 +41,28 @@ public class AutorController {
     }
 
     public void crearAutor(){
-        String codigoAutor = autorView.getTxtCodigoAutor().getText();
-        String nombre = autorView.getTxtNombre().getText();
-        String nacionalidad = autorView.getTxtNacionalidad().getText();
-        String fechaTexto = autorView.getTxtFechaNac().getText();
-
-        if (codigoAutor.isEmpty() || nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(autorView, "Código y nombre son obligatorios.");
-            return;
-        }
-        if (buscarPorCodigo(codigoAutor) != null) {
-            JOptionPane.showMessageDialog(autorView, "Ya existe un autor con ese código.");
-            return;
-        }
         try {
-            LocalDate fechaNac = LocalDate.parse(fechaTexto);
+            String codigoAutor = autorView.getTxtCodigoAutor().getText();
+            String nombre = autorView.getTxtNombre().getText();
+            String nacionalidad = autorView.getTxtNacionalidad().getText();
+            String fechaTexto = autorView.getTxtFechaNac().getText();
+
+            Validador.validarNoVacio(codigoAutor, "Código");
+            Validador.validarNoVacio(nombre, "Nombre");
+            LocalDate fechaNac = Validador.validarFecha(fechaTexto, "Fecha de nacimiento");
+
+            if (buscarPorCodigo(codigoAutor) != null) {
+                JOptionPane.showMessageDialog(autorView, "Ya existe un autor con ese código.");
+                return;
+            }
+
             Autor autorAc = new Autor(nombre, nacionalidad, codigoAutor, fechaNac, new ArrayList<>());
             agregar(autorAc);
             JOptionPane.showMessageDialog(autorView, "Autor registrado con éxito.");
             autorView.limpiarCampos();
             listarAutores();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(autorView, "Fecha inválida. Use el formato AAAA-MM-DD.");
+        } catch (ValidacionException e) {
+            JOptionPane.showMessageDialog(autorView, e.getMessage());
         }
     }
 
@@ -105,7 +107,7 @@ public class AutorController {
         }
     }
 
-    // ===== Antes estaba vacío: por eso Eliminar no hacía nada =====
+    
     private void configurarEventosEliminarAutor(){
         autorView.getBtnEliminarAutor().addActionListener(e -> eliminarAutor());
     }
@@ -128,7 +130,6 @@ public class AutorController {
         }
     }
 
-    // ===== Antes estaba vacío: por eso Listar no hacía nada =====
     private void configurarEventosListarAutor(){
         autorView.getBtnListarAutor().addActionListener(e -> listarAutores());
     }
