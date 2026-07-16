@@ -58,6 +58,7 @@ public class PrestamoController {
         configurarEventosEliminarPrestamo();
         configurarEventosListarPrestamo();
         configurarEventosLimpiar();
+        configurarEventosComboUsuariosYLibros();
         
     }
     
@@ -66,6 +67,29 @@ public class PrestamoController {
             usuarioSeleccionado = (Usuario) prestamoView.getCbxUsuarios().getSelectedItem();
         });
     }
+    private void configurarEventosComboUsuariosYLibros() {
+    prestamoView.getCbxUsuarios().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        @Override
+        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+            cargarUsuariosCombo();
+        }
+        @Override
+        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+        @Override
+        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+    });
+
+    prestamoView.getCbxLibros().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        @Override
+        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+            cargarLibrosCombo();
+        }
+        @Override
+        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+        @Override
+        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+    });
+}
     
     private void configurarEventosCambioLibro() {
         prestamoView.getCbxLibros().addActionListener(e -> {
@@ -196,7 +220,6 @@ public class PrestamoController {
             return;
         }
 
-        // esto faltaba: si se elimina el préstamo, el ejemplar debe volver a estar disponible
         EjemplarLibro ejemplar = existente.getEjemplar();
         ejemplar.setDisponible(true);
         ejemplarLibroController.actualizar(ejemplar);

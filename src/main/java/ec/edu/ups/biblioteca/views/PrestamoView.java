@@ -73,13 +73,19 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     }
 
     public void habilitarCampos() {
-        txtCodigo.setText("");
-        cbxUsuarios.setSelectedItem(null);
-        cbxLibros.setSelectedItem(null);
-        cbxEjemplares.setSelectedItem(null);
-        txtFechaPrestamo.setText("");
-        txtFechaDevolucion.setText("");
-    }
+    cbxUsuarios.setEnabled(true);
+    cbxLibros.setEnabled(true);
+    cbxEjemplares.setEnabled(true);
+    txtFechaPrestamo.setEditable(true);
+    txtFechaDevolucion.setEditable(true);
+
+    txtCodigo.setText("");
+    cbxUsuarios.setSelectedItem(null);
+    cbxLibros.setSelectedItem(null);
+    cbxEjemplares.setSelectedItem(null);
+    txtFechaPrestamo.setText("");
+    txtFechaDevolucion.setText("");
+}
 
     public void limpiarCampos() {
         txtCodigo.setText("");
