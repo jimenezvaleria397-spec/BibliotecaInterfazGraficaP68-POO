@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.models;
 
+import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,13 +19,13 @@ public class Prestamo {
     private EjemplarLibro ejemplar;
     private Date fechaPrestamo;
     private Date fechaDevolucion;
-    private boolean estado;
+    private EstadoPrestamo estado;
 
     public Prestamo() {
     }
 
     public Prestamo(String codigo, Usuario usuario, EjemplarLibro ejemplar, Date fechaPrestamo, 
-            Date fechaDevolucion, boolean estado) {
+            Date fechaDevolucion, EstadoPrestamo estado) {
         this.codigo = codigo;
         this.usuario = usuario;
         this.ejemplar = ejemplar;
@@ -72,23 +73,23 @@ public class Prestamo {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public boolean isEstado() {
+    public EstadoPrestamo getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(EstadoPrestamo estado) {
         this.estado = estado;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
         hash = 89 * hash + Objects.hashCode(this.codigo);
         hash = 89 * hash + Objects.hashCode(this.usuario);
         hash = 89 * hash + Objects.hashCode(this.ejemplar);
         hash = 89 * hash + Objects.hashCode(this.fechaPrestamo);
         hash = 89 * hash + Objects.hashCode(this.fechaDevolucion);
-        hash = 89 * hash + (this.estado ? 1 : 0);
+        hash = 89 * hash + Objects.hashCode(this.estado);
         return hash;
     }
 
@@ -104,9 +105,6 @@ public class Prestamo {
             return false;
         }
         final Prestamo other = (Prestamo) obj;
-        if (this.estado != other.estado) {
-            return false;
-        }
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
@@ -119,8 +117,13 @@ public class Prestamo {
         if (!Objects.equals(this.fechaPrestamo, other.fechaPrestamo)) {
             return false;
         }
-        return Objects.equals(this.fechaDevolucion, other.fechaDevolucion);
+        if (!Objects.equals(this.fechaDevolucion, other.fechaDevolucion)) {
+            return false;
+        }
+        return this.estado == other.estado;
     }
+
+    
 
     @Override
     public String toString() {

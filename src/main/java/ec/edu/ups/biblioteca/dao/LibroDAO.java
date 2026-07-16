@@ -52,7 +52,7 @@ public class LibroDAO implements DAO<Libro> {
             existente.setAutor(libroAc.getAutor());
             existente.setCodigo(libroAc.getCodigo());
             existente.setEditorial(libroAc.getEditorial());
-            existente.setGenero(libroAc.getGenero());
+            existente.setCategoria(libroAc.getCategoria());
             existente.setTitulo(libroAc.getTitulo());
         }
     }

@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.enumeraciones.CategoriaLibro;
 import ec.edu.ups.biblioteca.excepciones.ValidacionException;
 import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.Autor;
@@ -62,7 +63,7 @@ public class LibroController {
                 String titulo = libroView.getTxtTitulo().getText();
                 Autor autorSeleccionado = (Autor) libroView.getCbxAutores().getSelectedItem();
                 String editorial = libroView.getTxtEditorial().getText();
-                String genero = libroView.getTxtGenero().getText();
+                CategoriaLibro categoria = (CategoriaLibro)libroView.getCbxCategoria().getSelectedItem();
                 int anio = Integer.parseInt(libroView.getTxtAnio().getText());
                 int cantidadEjemplares = Integer.parseInt(libroView.getTxtEjemplares().getText());
 
@@ -76,7 +77,7 @@ public class LibroController {
                 libro.setTitulo(titulo);
                 libro.setAutor(autorSeleccionado);
                 libro.setEditorial(editorial);
-                libro.setGenero(genero);
+                libro.setCategoria(categoria);
                 libro.setAnio(anio);
 
                 registrarLibro(libro, cantidadEjemplares);
@@ -124,7 +125,7 @@ public class LibroController {
         libro.setTitulo(libroView.getTxtTitulo().getText());
         libro.setAutor((Autor) libroView.getCbxAutores().getSelectedItem());
         libro.setEditorial(libroView.getTxtEditorial().getText());
-        libro.setGenero(libroView.getTxtGenero().getText());
+        libro.setCategoria((CategoriaLibro) libroView.getCbxCategoria().getSelectedItem());
         libro.setAnio(anio);
 
         actualizar(libro);
@@ -157,7 +158,7 @@ public class LibroController {
             int disponibles = ejemplarLibroController.contarDisponibles(l.getCodigo());
             filas.add(new Object[]{
                 l.getCodigo(), l.getTitulo(), l.getAutor(),
-                l.getEditorial(), l.getGenero(), l.getAnio(), disponibles
+                l.getEditorial(), l.getCategoria(), l.getAnio(), disponibles
             });
         }
         libroView.listarLibros(filas);

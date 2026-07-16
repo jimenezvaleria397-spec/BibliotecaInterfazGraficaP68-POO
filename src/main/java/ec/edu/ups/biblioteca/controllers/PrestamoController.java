@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
+import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import ec.edu.ups.biblioteca.excepciones.ValidacionException;
 import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
@@ -112,7 +113,7 @@ public class PrestamoController {
         Validador.validarNoVacio(codigo, "Código");
         Date fechaPrestamo = Validador.validarFecha(prestamoView.getTxtFechaPrestamo().getText(), "dd/MM/yy", "Fecha de préstamo");
         Date fechaDevolucion = Validador.validarFecha(prestamoView.getTxtFechaDevolucion().getText(), "dd/MM/yy", "Fecha de devolución");
-        boolean estado = prestamoView.getCbxEstado().getSelectedItem().equals("Activo");
+        EstadoPrestamo estado = (EstadoPrestamo) prestamoView.getCbxEstado().getSelectedItem();
 
         Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
                 fechaPrestamo, fechaDevolucion, estado);
@@ -154,7 +155,7 @@ public class PrestamoController {
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yy");
             existente.setFechaPrestamo(formato.parse(prestamoView.getTxtFechaPrestamo().getText()));
             existente.setFechaDevolucion(formato.parse(prestamoView.getTxtFechaDevolucion().getText()));
-            existente.setEstado(prestamoView.getCbxEstado().getSelectedItem().equals("Activo"));
+            existente.setEstado((EstadoPrestamo)prestamoView.getCbxEstado().getSelectedItem());
 
             actualizar(existente);
             listarPrestamos();

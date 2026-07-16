@@ -55,7 +55,7 @@ public class PrestamoDAO implements DAO<Prestamo>{
         if (existente != null) {
             existente.setFechaPrestamo(prestamo.getFechaPrestamo());
             existente.setFechaDevolucion(prestamo.getFechaDevolucion());
-            existente.setEstado(prestamo.isEstado());
+            existente.setEstado(prestamo.getEstado());
         }
     }
 

@@ -5,6 +5,7 @@ import ec.edu.ups.biblioteca.controllers.AutorController;
 import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
 import ec.edu.ups.biblioteca.controllers.LibroController;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
+import ec.edu.ups.biblioteca.enumeraciones.CategoriaLibro;
 import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.utils.Idioma;
@@ -39,7 +40,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setEditable(false);
         cbxAutores.setEnabled(false);
         txtEditorial.setEditable(false);
-        txtGenero.setEditable(false);
+        cbxCategoria.setEnabled(false);
         txtAnio.setEditable(false);
         txtEjemplares.setEditable(false);
     }
@@ -48,7 +49,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setEditable(true);
         cbxAutores.setEnabled(true);
         txtEditorial.setEditable(true);
-        txtGenero.setEditable(true);
+        cbxCategoria.setEnabled(true);
         txtAnio.setEditable(true);
         txtEjemplares.setEditable(true);
     }
@@ -58,7 +59,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setText("");
         cbxAutores.setSelectedItem(null); 
         txtEditorial.setText("");
-        txtGenero.setText("");
+        cbxCategoria.setSelectedItem(null);
         txtAnio.setText("");
         txtEjemplares.setText("");
         autorSeleccionado = null; 
@@ -87,7 +88,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         jLabel3.setText(bundle.getString("lbl.titulo"));
         jLabel3.setText(bundle.getString("lbl.autor"));
         jLabel4.setText(bundle.getString("lbl.editorial"));
-        jLabel5.setText(bundle.getString("lbl.genero"));
+        lblCategoria.setText(bundle.getString("lbl.genero"));
         jLabel6.setText(bundle.getString("lbl.anio"));
         jLabel8.setText(bundle.getString("lbl.ejemplares"));
 
@@ -125,12 +126,11 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         lblTitulo = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblCategoria = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
         txtEditorial = new javax.swing.JTextField();
-        txtGenero = new javax.swing.JTextField();
         txtAnio = new javax.swing.JTextField();
         btnCrear = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -147,6 +147,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         lblDisponibles = new javax.swing.JLabel();
         txtDisponibles = new javax.swing.JTextField();
         cbxAutores = new javax.swing.JComboBox<>();
+        cbxCategoria = new javax.swing.JComboBox<>(ec.edu.ups.biblioteca.enumeraciones.CategoriaLibro.values());
 
         setClosable(true);
         setIconifiable(true);
@@ -164,7 +165,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
         jLabel4.setText("Editorial:");
 
-        jLabel5.setText("Género:");
+        lblCategoria.setText("Categoría:");
 
         jLabel6.setText("Año:");
 
@@ -174,9 +175,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setEditable(false);
 
         txtEditorial.setEditable(false);
-
-        txtGenero.setEditable(false);
-        txtGenero.addActionListener(this::txtGeneroActionPerformed);
 
         txtAnio.setEditable(false);
         txtAnio.setText("AAAA");
@@ -237,6 +235,8 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
         txtDisponibles.setText("0");
 
+        cbxCategoria.addActionListener(this::cbxCategoriaActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -280,15 +280,16 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(86, 86, 86)
-                                            .addComponent(jLabel5)))
+                                            .addComponent(lblCategoria)))
                                     .addGap(27, 27, 27)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                         .addComponent(txtEjemplares, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btnEliminar)
-                                            .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(txtDisponibles)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(90, 90, 90)
+                                            .addComponent(btnEliminar))
+                                        .addComponent(txtDisponibles)
+                                        .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(227, 227, 227)
                                     .addComponent(btnActualizar)
@@ -321,8 +322,8 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCodigo)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(lblCategoria)
+                    .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -391,16 +392,16 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
    
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void txtGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtGeneroActionPerformed
-
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void cbxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxCategoriaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -411,15 +412,16 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnListar;
     private javax.swing.JComboBox<Autor> cbxAutores;
+    private javax.swing.JComboBox<CategoriaLibro> cbxCategoria;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDisponibles;
     private javax.swing.JLabel lblTitulo;
@@ -429,7 +431,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JTextField txtDisponibles;
     private javax.swing.JTextField txtEditorial;
     private javax.swing.JTextField txtEjemplares;
-    private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 
@@ -493,8 +494,8 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         return txtEjemplares;
     }
 
-    public JTextField getTxtGenero() {
-        return txtGenero;
+    public JComboBox<CategoriaLibro> getCbxCategoria() {
+        return cbxCategoria;
     }
 
     public JTextField getTxtTitulo() {
@@ -530,7 +531,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setText(libro.getTitulo());
         cbxAutores.setSelectedItem(libro.getAutor());
         txtEditorial.setText(libro.getEditorial());
-        txtGenero.setText(libro.getGenero());
+        cbxCategoria.setSelectedItem(libro.getCategoria());
         txtAnio.setText(String.valueOf(libro.getAnio()));
     }
 }

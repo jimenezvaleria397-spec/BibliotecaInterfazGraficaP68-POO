@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.models;
 
+import ec.edu.ups.biblioteca.enumeraciones.CategoriaLibro;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ public class Libro {
     private String titulo;
     private Autor autor;
     private String editorial;
-    private String genero;
+    private CategoriaLibro categoria;
     private int anio;
     //private int ejemplares;
 
@@ -24,12 +25,12 @@ public class Libro {
     }
 
     public Libro(String codigo, String titulo, Autor autor, String editorial,
-                 String genero, int anio) {
+                CategoriaLibro categoria, int anio) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
-        this.genero = genero;
+        this.categoria = categoria;
         this.anio = anio;
         //this.ejemplares = ejemplares;
     }
@@ -66,12 +67,12 @@ public class Libro {
         this.editorial = editorial;
     }
 
-    public String getGenero() {
-        return genero;
+    public CategoriaLibro getCategoria() {
+        return categoria;
     }
 
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public void setCategoria(CategoriaLibro categoria) {
+        this.categoria = categoria;
     }
 
     public int getAnio() {
@@ -82,24 +83,15 @@ public class Libro {
         this.anio = anio;
     }
 
-    /*public int getEjemplares() {
-        return ejemplares;
-    }*/
-
-    /*public void setEjemplares(int ejemplares) {
-        this.ejemplares = ejemplares;
-    }*/
-
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.codigo);
-        hash = 97 * hash + Objects.hashCode(this.titulo);
-        hash = 97 * hash + Objects.hashCode(this.autor);
-        hash = 97 * hash + Objects.hashCode(this.editorial);
-        hash = 97 * hash + Objects.hashCode(this.genero);
-        hash = 97 * hash + this.anio;
-        //hash = 97 * hash + this.ejemplares;
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.codigo);
+        hash = 31 * hash + Objects.hashCode(this.titulo);
+        hash = 31 * hash + Objects.hashCode(this.autor);
+        hash = 31 * hash + Objects.hashCode(this.editorial);
+        hash = 31 * hash + Objects.hashCode(this.categoria);
+        hash = 31 * hash + this.anio;
         return hash;
     }
 
@@ -118,23 +110,23 @@ public class Libro {
         if (this.anio != other.anio) {
             return false;
         }
-        /*if (this.ejemplares != other.ejemplares) {
-            return false;
-        }*/
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
         if (!Objects.equals(this.titulo, other.titulo)) {
             return false;
         }
-        if (!Objects.equals(this.autor, other.autor)) {
-            return false;
-        }
         if (!Objects.equals(this.editorial, other.editorial)) {
             return false;
         }
-        return Objects.equals(this.genero, other.genero);
+        if (!Objects.equals(this.autor, other.autor)) {
+            return false;
+        }
+        return this.categoria == other.categoria;
     }
+    
+    
+
 
     @Override
     public String toString() {

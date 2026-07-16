@@ -69,7 +69,7 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
             prestamo.getEjemplar().getLibro(),
             prestamo.getFechaPrestamo(),
             prestamo.getFechaDevolucion(),
-            prestamo.isEstado() ? "Activo" : "Devuelto"
+            prestamo.getEstado()
         });
     }
 
@@ -260,6 +260,5 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
     public JTextField getTxtCodigoPrestamo() {
         return txtCodigoPrestamo;
     }
-
 
 }

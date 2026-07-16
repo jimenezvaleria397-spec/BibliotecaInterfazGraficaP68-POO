@@ -121,7 +121,7 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="txtFechaDevolucion" max="32767" attributes="0"/>
-                                      <Component id="CbxEstado" pref="149" max="32767" attributes="0"/>
+                                      <Component id="cbxEstado" pref="149" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -164,7 +164,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CbxEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxEstado" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbxLibros" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -297,17 +297,18 @@
             <Property name="text" type="java.lang.String" value="Los campos se habilitaran segun la accion"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="CbxEstado">
+        <Component class="javax.swing.JComboBox" name="cbxEstado">
           <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="Activo"/>
-                <StringItem index="1" value="Devoluci&#xf3;n"/>
-              </StringArray>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo.values())" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxEstadoActionPerformed"/>
+          </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;&gt;()"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;EstadoPrestamo&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnLimpiar">

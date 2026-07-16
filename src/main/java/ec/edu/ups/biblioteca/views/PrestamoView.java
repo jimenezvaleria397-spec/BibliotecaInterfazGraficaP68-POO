@@ -7,6 +7,7 @@ package ec.edu.ups.biblioteca.views;
 import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
 import ec.edu.ups.biblioteca.controllers.PrestamoController;
 import ec.edu.ups.biblioteca.controllers.UsuarioController;
+import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import ec.edu.ups.biblioteca.models.Prestamo;
@@ -35,7 +36,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     public PrestamoView() {
         initComponents();
         aplicarIdioma();
-        CbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Activo", "Devuelto"}));
         inicializarVista();
     }
     private void inicializarVista() {
@@ -164,7 +164,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
-        CbxEstado = new javax.swing.JComboBox<>();
+        cbxEstado = new javax.swing.JComboBox<>();
         btnLimpiar = new javax.swing.JButton();
         cbxUsuarios = new javax.swing.JComboBox<>();
         cbxLibros = new javax.swing.JComboBox<>();
@@ -231,7 +231,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
 
         jLabel8.setText("Los campos se habilitaran segun la accion");
 
-        CbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Devolución" }));
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo.values()));
+        cbxEstado.addActionListener(this::cbxEstadoActionPerformed);
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
@@ -298,7 +299,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtFechaDevolucion)
-                                    .addComponent(CbxEstado, 0, 149, Short.MAX_VALUE))))))
+                                    .addComponent(cbxEstado, 0, 149, Short.MAX_VALUE))))))
                 .addContainerGap(261, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -331,7 +332,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel6)
-                    .addComponent(CbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -392,9 +393,12 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private void txtFechaPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaPrestamoActionPerformed
     }//GEN-LAST:event_txtFechaPrestamoActionPerformed
 
+    private void cbxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxEstadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CbxEstado;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
@@ -402,6 +406,7 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnRegistrarPrestamo;
     private javax.swing.JComboBox<EjemplarLibro> cbxEjemplares;
+    private javax.swing.JComboBox<EstadoPrestamo> cbxEstado;
     private javax.swing.JComboBox<Libro> cbxLibros;
     private javax.swing.JComboBox<Usuario> cbxUsuarios;
     private javax.swing.JLabel jLabel1;
@@ -457,8 +462,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         return cbxUsuarios;
     }
 
-    public JComboBox<String> getCbxEstado() {
-        return CbxEstado;
+    public JComboBox<EstadoPrestamo> getCbxEstado() {
+        return cbxEstado;
     }
     
     public JTextField getTxtCodigo() {

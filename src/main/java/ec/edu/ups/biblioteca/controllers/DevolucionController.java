@@ -6,6 +6,7 @@ package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.LibroDAO;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
 import ec.edu.ups.biblioteca.dao.UsuarioDAO;
+import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.views.DevolucionView;
@@ -53,7 +54,7 @@ public class DevolucionController {
         // mostramos el préstamo encontrado en la tabla (esto es lo que faltaba)
         devolucionView.mostrarPrestamoEnTabla(prestamo);
 
-        if (!prestamo.isEstado()) {
+        if (prestamo.getEstado() != EstadoPrestamo.ACTIVO) {
             JOptionPane.showMessageDialog(devolucionView, "Este préstamo ya fue devuelto anteriormente.");
             prestamoSeleccionado = null;
         } else {
@@ -82,7 +83,7 @@ public class DevolucionController {
     }
 
     public void registrarDevolucion(Prestamo prestamo) {
-        prestamo.setEstado(false); // false cuando el préstamo ya se acabó (devolución)
+        prestamo.setEstado(EstadoPrestamo.DEVUELTO); // enum (devolución)
         prestamoDAO.actualizar(prestamo);
 
         // esto es lo que faltaba: liberar el ejemplar para que vuelva a estar disponible
