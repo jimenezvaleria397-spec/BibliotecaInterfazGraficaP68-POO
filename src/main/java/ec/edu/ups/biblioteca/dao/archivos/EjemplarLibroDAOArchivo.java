@@ -8,6 +8,7 @@ import ec.edu.ups.biblioteca.dao.DAO;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,7 +34,11 @@ public class EjemplarLibroDAOArchivo implements DAO<EjemplarLibro> {
     @Override
     public void agregar(EjemplarLibro objeto) {
         ejemplares.add(objeto);
-        guardarEnArchivo();
+        try {
+            guardarEnArchivo();
+        } catch (IOException ex) {
+            System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
     @Override
@@ -55,7 +60,11 @@ public class EjemplarLibroDAOArchivo implements DAO<EjemplarLibro> {
         EjemplarLibro existente = buscarPorCodigo(codigo);
         if (existente != null) {
             ejemplares.remove(existente);
-            guardarEnArchivo();
+            try {
+                guardarEnArchivo();
+            } catch (IOException ex) {
+                System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         }    
     }
 
@@ -78,9 +87,11 @@ public class EjemplarLibroDAOArchivo implements DAO<EjemplarLibro> {
         }
     }
 
-    private void guardarEnArchivo() {
+    private void guardarEnArchivo() throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
             oos.writeObject(ejemplares);
+        } catch (FileNotFoundException ex) {
+            System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }    
     }
     

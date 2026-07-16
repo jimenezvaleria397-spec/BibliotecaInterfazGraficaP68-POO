@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.dao.archivos;
 
+import ec.edu.ups.biblioteca.dao.DAO;
 import ec.edu.ups.biblioteca.models.Bibliotecario;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Lenovo
  */
-public class BibliotecarioDAOArchivo {
+public class BibliotecarioDAOArchivo implements DAO<Bibliotecario>{
     private static final String RUTA = "datos/bibliotecarios.ups";
     private static final int LONG_EMAIL = 40;
 
