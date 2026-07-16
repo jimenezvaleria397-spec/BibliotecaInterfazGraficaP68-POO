@@ -286,6 +286,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jDesktopPane1.add(autorView);
             autorView.setLocation(20, 20);
         }
+        autorView.aplicarIdioma();
         autorView.setVisible(true);
         try { autorView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarAutoresMenuItemActionPerformed
@@ -295,6 +296,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jDesktopPane1.add(libroView);
             libroView.setLocation(20, 20);
         }
+        libroView.aplicarIdioma();
         libroView.setVisible(true);
         try { libroView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarLibrosMenuItemActionPerformed
@@ -304,6 +306,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jDesktopPane1.add(usuarioView);
             usuarioView.setLocation(20, 20);
         }
+        usuarioView.aplicarIdioma();
         usuarioView.setVisible(true);
         try { usuarioView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarUsuariosMenuItemActionPerformed
@@ -313,6 +316,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jDesktopPane1.add(devolucionView);
             devolucionView.setLocation(20, 20);
         }
+        devolucionView.aplicarIdioma();
         devolucionView.setVisible(true);
         try { devolucionView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarDevolucionesMenuItemActionPerformed
@@ -322,6 +326,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
             jDesktopPane1.add(prestamoView);
             prestamoView.setLocation(20, 20);
         }
+        prestamoView.aplicarIdioma();
         prestamoView.setVisible(true);
         try { prestamoView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarPrestamosMenuItemActionPerformed
