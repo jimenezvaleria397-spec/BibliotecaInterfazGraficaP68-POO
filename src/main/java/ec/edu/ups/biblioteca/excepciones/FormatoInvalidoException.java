@@ -8,8 +8,9 @@ package ec.edu.ups.biblioteca.excepciones;
  *
  * @author jimen
  */
-public class FechaInvalidaException extends ValidacionException {
-    public FechaInvalidaException(String mensaje) {
+public class FormatoInvalidoException extends ValidacionException {
+    public FormatoInvalidoException(String mensaje) {
         super(mensaje);
     }
+    
 }

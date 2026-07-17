@@ -26,16 +26,16 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     /**
      * Creates new form AutorView
      */
-    
     public AutorView() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
 
     public void limpiarCampos() {
         txtCodigoAutor.setText("");
         txtNombre.setText("");
         txtNacionalidad.setText("");
-        txtFechaNac.setText("");
+        jDateChooser1.setDate(null);
     }
     
     @Override
@@ -90,9 +90,9 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         txtCodigoAutor = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtNacionalidad = new javax.swing.JTextField();
-        txtFechaNac = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDeAutores = new javax.swing.JTable();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
         setIconifiable(true);
@@ -138,9 +138,6 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
 
         txtNacionalidad.addActionListener(this::txtNacionalidadActionPerformed);
 
-        txtFechaNac.setText("AAAA-MM-DD");
-        txtFechaNac.addActionListener(this::txtFechaNacActionPerformed);
-
         tablaDeAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -162,6 +159,10 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
                 .addContainerGap(718, Short.MAX_VALUE)
                 .addComponent(btnLimpiarCampos)
                 .addGap(239, 239, 239))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addGap(31, 31, 31))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -191,16 +192,13 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
                                     .addComponent(jLabel3)))
                             .addComponent(jLabel6))
                         .addGap(111, 111, 111)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(275, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addGap(31, 31, 31))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                                .addComponent(txtCodigoAutor, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                                .addComponent(txtNacionalidad, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,9 +232,9 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
                     .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(48, 48, 48)
+                    .addComponent(jLabel6)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
                 .addComponent(btnLimpiarCampos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,15 +301,11 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private void txtNacionalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNacionalidadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNacionalidadActionPerformed
-
-    private void txtFechaNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaNacActionPerformed
     
     public void mostrarAutorEnCampos(Autor autor) {
         txtNombre.setText(autor.getNombre());
         txtNacionalidad.setText(autor.getNacionalidad());
-        txtFechaNac.setText(autor.getFechadeNac().toString());
+        jDateChooser1.setDate(java.sql.Date.valueOf(autor.getFechadeNac()));
     }
     
     public void actualizarTabla(List<Autor> autores){
@@ -337,6 +331,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JButton btnEliminarAutor;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnListarAutor;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -347,7 +342,6 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaDeAutores;
     private javax.swing.JTextField txtCodigoAutor;
-    private javax.swing.JTextField txtFechaNac;
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
@@ -379,8 +373,8 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         return txtCodigoAutor;
     }
 
-    public JTextField getTxtFechaNac() {
-        return txtFechaNac;
+    public com.toedter.calendar.JDateChooser getDateChooserFechaNac() {
+        return jDateChooser1;
     }
 
     public JTextField getTxtNacionalidad() {
@@ -390,6 +384,5 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     public JTextField getTxtNombre() {
         return txtNombre;
     }
-
-
 }
+

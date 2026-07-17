@@ -77,11 +77,14 @@ public class LibroController {
                 Autor autorSeleccionado = (Autor) libroView.getCbxAutores().getSelectedItem();
                 String editorial = libroView.getTxtEditorial().getText();
                 CategoriaLibro categoria = (CategoriaLibro)libroView.getCbxCategoria().getSelectedItem();
-                int anio = Integer.parseInt(libroView.getTxtAnio().getText());
-                int cantidadEjemplares = Integer.parseInt(libroView.getTxtEjemplares().getText());
+                int anio = libroView.getJYearChooser1().getYear();
+                int cantidadEjemplares = Validador.validarEntero(libroView.getTxtEjemplares().getText(), "Ejemplares");
 
-                if (codigo.isEmpty() || titulo.isEmpty() || autorSeleccionado == null) {
-                    JOptionPane.showMessageDialog(libroView, "Código, título y autor son obligatorios.");
+                Validador.validarNoVacio(codigo, "Código");
+                Validador.validarSoloNumeros(codigo, "Código");
+                Validador.validarNoVacio(titulo, "Título");
+                if (autorSeleccionado == null) {
+                    JOptionPane.showMessageDialog(libroView, "Debes seleccionar un autor.");
                     return;
                 }
 
@@ -101,8 +104,8 @@ public class LibroController {
                 libroView.bloquearCampos();
                 libroView.getBtnCrear().setText("Nuevo");
                 creandoNuevo = false;
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(libroView, "Año y ejemplares deben ser números válidos.");
+            } catch (ValidacionException e) {
+                JOptionPane.showMessageDialog(libroView, e.getMessage());
             }   
         }    
     }
@@ -130,8 +133,7 @@ public class LibroController {
     }
     
     public void actualizarLibro(){
-        try {
-        int anio = Validador.validarEntero(libroView.getTxtAnio().getText(), "Año");
+        int anio = libroView.getJYearChooser1().getYear();
 
         Libro libro = new Libro();
         libro.setCodigo(libroView.getTxtCodigo().getText());
@@ -144,10 +146,7 @@ public class LibroController {
         actualizar(libro);
         listarLibros();
         libroView.limpiar();
-    } catch (ValidacionException e) {
-        JOptionPane.showMessageDialog(libroView, e.getMessage());
     }
-}
     
     private void configurarEventosEliminarLibro(){
         libroView.getBtnEliminar().addActionListener(e -> eliminarLibro());

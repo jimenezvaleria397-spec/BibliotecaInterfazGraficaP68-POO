@@ -124,14 +124,11 @@ public class Libro {
         }
         return this.categoria == other.categoria;
     }
-    
-    
-
 
     @Override
     public String toString() {
-        return codigo +"-"  + titulo ;
+        return "ISBN - " + codigo + " - " + titulo ;
     }
-    
 }
+    
     

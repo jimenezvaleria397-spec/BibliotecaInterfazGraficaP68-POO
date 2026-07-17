@@ -27,6 +27,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
  
     public LibroView() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         aplicarIdioma();
         inicializarVista();
     }
@@ -41,7 +42,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         cbxAutores.setEnabled(false);
         txtEditorial.setEditable(false);
         cbxCategoria.setEnabled(false);
-        txtAnio.setEditable(false);
+        jYearChooser1.setEnabled(false);
         txtEjemplares.setEditable(false);
     }
 
@@ -50,7 +51,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         cbxAutores.setEnabled(true);
         txtEditorial.setEditable(true);
         cbxCategoria.setEnabled(true);
-        txtAnio.setEditable(true);
+        jYearChooser1.setEnabled(true);
         txtEjemplares.setEditable(true);
     }
 
@@ -60,7 +61,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         cbxAutores.setSelectedItem(null); 
         txtEditorial.setText("");
         cbxCategoria.setSelectedItem(null);
-        txtAnio.setText("");
+        jYearChooser1.setYear(java.time.Year.now().getValue());
         txtEjemplares.setText("");
         autorSeleccionado = null; 
     }
@@ -131,7 +132,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtCodigo = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
         txtEditorial = new javax.swing.JTextField();
-        txtAnio = new javax.swing.JTextField();
         btnCrear = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
@@ -148,6 +148,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtDisponibles = new javax.swing.JTextField();
         cbxAutores = new javax.swing.JComboBox<>();
         cbxCategoria = new javax.swing.JComboBox<>(ec.edu.ups.biblioteca.enumeraciones.CategoriaLibro.values());
+        jYearChooser1 = new com.toedter.calendar.JYearChooser();
 
         setClosable(true);
         setIconifiable(true);
@@ -175,10 +176,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         txtTitulo.setEditable(false);
 
         txtEditorial.setEditable(false);
-
-        txtAnio.setEditable(false);
-        txtAnio.setText("AAAA");
-        txtAnio.addActionListener(this::txtAnioActionPerformed);
 
         btnCrear.setText("Crear");
         btnCrear.addActionListener(this::btnCrearActionPerformed);
@@ -283,13 +280,13 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                                             .addComponent(lblCategoria)))
                                     .addGap(27, 27, 27)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                         .addComponent(txtEjemplares, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addGap(90, 90, 90)
                                             .addComponent(btnEliminar))
                                         .addComponent(txtDisponibles)
-                                        .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jYearChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(227, 227, 227)
                                     .addComponent(btnActualizar)
@@ -302,7 +299,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(22, 22, 22)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,32 +322,34 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
                     .addComponent(lblCategoria)
                     .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo)
-                    .addComponent(jLabel6)
-                    .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblDisponibles)
-                        .addComponent(txtDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(11, 11, 11)
-                .addComponent(btnLimpiar)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTitulo)
+                            .addComponent(jLabel6))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel3))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(txtEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbxAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblDisponibles)
+                                .addComponent(txtDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(11, 11, 11)
+                        .addComponent(btnLimpiar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(203, Short.MAX_VALUE))
         );
 
@@ -361,7 +360,7 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,10 +371,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtAnioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAnioActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
       
@@ -421,12 +416,12 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private com.toedter.calendar.JYearChooser jYearChooser1;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDisponibles;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblLibros;
-    private javax.swing.JTextField txtAnio;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDisponibles;
     private javax.swing.JTextField txtEditorial;
@@ -474,8 +469,8 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         lblDisponibles.setText("Disponibles: " + disponibles);
     }
 
-    public JTextField getTxtAnio() {
-        return txtAnio;
+    public com.toedter.calendar.JYearChooser getJYearChooser1() {
+        return jYearChooser1;
     }
 
     public JTextField getTxtCodigo() {
@@ -510,10 +505,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         this.lblTitulo = lblTitulo;
     }
 
-    public void setTxtAnio(JTextField txtAnio) {
-        this.txtAnio = txtAnio;
-    }
-
     public void setTxtCodigo(JTextField txtCodigo) {
         this.txtCodigo = txtCodigo;
     }
@@ -532,6 +523,6 @@ public class LibroView extends javax.swing.JInternalFrame implements Idiomatizab
         cbxAutores.setSelectedItem(libro.getAutor());
         txtEditorial.setText(libro.getEditorial());
         cbxCategoria.setSelectedItem(libro.getCategoria());
-        txtAnio.setText(String.valueOf(libro.getAnio()));
+        jYearChooser1.setYear(libro.getAnio());
     }
 }

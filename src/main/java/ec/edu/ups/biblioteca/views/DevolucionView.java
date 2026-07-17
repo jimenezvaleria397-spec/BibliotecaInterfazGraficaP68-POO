@@ -27,6 +27,7 @@ public class DevolucionView extends javax.swing.JInternalFrame implements Idioma
     
     public DevolucionView() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         inicializarVista();
         aplicarIdioma();
     }

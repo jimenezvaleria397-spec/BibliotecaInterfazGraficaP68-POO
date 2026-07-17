@@ -89,6 +89,21 @@ public class PrestamoController {
         @Override
         public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
     });
+
+    prestamoView.getCbxEjemplares().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        @Override
+        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+            Libro libroSeleccionado = (Libro) prestamoView.getCbxLibros().getSelectedItem();
+            if (libroSeleccionado != null) {
+                List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(libroSeleccionado.getCodigo());
+                prestamoView.cargarEjemplares(disponibles);
+            }
+        }
+        @Override
+        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+        @Override
+        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+    });
 }
     
     private void configurarEventosCambioLibro() {
@@ -133,10 +148,18 @@ public class PrestamoController {
         JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar un usuario y un ejemplar.");
         return;
     }
+
+    Date fechaPrestamo = prestamoView.getDateChooserFechaPrestamo().getDate();
+    Date fechaDevolucion = prestamoView.getDateChooserFechaDevolucion().getDate();
+
+    if (fechaPrestamo == null || fechaDevolucion == null) {
+        JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar ambas fechas.");
+        return;
+    }
+
     try {
         Validador.validarNoVacio(codigo, "Código");
-        Date fechaPrestamo = Validador.validarFecha(prestamoView.getTxtFechaPrestamo().getText(), "dd/MM/yy", "Fecha de préstamo");
-        Date fechaDevolucion = Validador.validarFecha(prestamoView.getTxtFechaDevolucion().getText(), "dd/MM/yy", "Fecha de devolución");
+        Validador.validarSoloNumeros(codigo, "Código");
         EstadoPrestamo estado = (EstadoPrestamo) prestamoView.getCbxEstado().getSelectedItem();
 
         Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
@@ -175,20 +198,24 @@ public class PrestamoController {
             JOptionPane.showMessageDialog(prestamoView, "No existe un préstamo con ese código.");
             return;
         }
-        try {
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yy");
-            existente.setFechaPrestamo(formato.parse(prestamoView.getTxtFechaPrestamo().getText()));
-            existente.setFechaDevolucion(formato.parse(prestamoView.getTxtFechaDevolucion().getText()));
-            existente.setEstado((EstadoPrestamo)prestamoView.getCbxEstado().getSelectedItem());
 
-            actualizar(existente);
-            listarPrestamos();
-            prestamoView.limpiarCampos();
-            prestamoView.bloquearCampos();
-            prestamoView.getTxtCodigo().setEditable(true);
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(prestamoView, "Formato de fecha inválido. Usa dd/MM/aa");
+        Date fechaPrestamo = prestamoView.getDateChooserFechaPrestamo().getDate();
+        Date fechaDevolucion = prestamoView.getDateChooserFechaDevolucion().getDate();
+
+        if (fechaPrestamo == null || fechaDevolucion == null) {
+            JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar ambas fechas.");
+            return;
         }
+
+        existente.setFechaPrestamo(fechaPrestamo);
+        existente.setFechaDevolucion(fechaDevolucion);
+        existente.setEstado((EstadoPrestamo) prestamoView.getCbxEstado().getSelectedItem());
+
+        actualizar(existente);
+        listarPrestamos();
+        prestamoView.limpiarCampos();
+        prestamoView.bloquearCampos();
+        prestamoView.getTxtCodigo().setEditable(true);
     }
     
     private void configurarEventosBuscarPrestamo() {

@@ -45,11 +45,19 @@ public class AutorController {
             String codigoAutor = autorView.getTxtCodigoAutor().getText();
             String nombre = autorView.getTxtNombre().getText();
             String nacionalidad = autorView.getTxtNacionalidad().getText();
-            String fechaTexto = autorView.getTxtFechaNac().getText();
+            java.util.Date fechaSeleccionada = autorView.getDateChooserFechaNac().getDate();
 
             Validador.validarNoVacio(codigoAutor, "Código");
+            Validador.validarSoloNumeros(codigoAutor, "Código");
             Validador.validarNoVacio(nombre, "Nombre");
-            LocalDate fechaNac = Validador.validarFecha(fechaTexto, "Fecha de nacimiento");
+            Validador.validarLongitud(nombre, 2, 50, "Nombre");
+
+            if (fechaSeleccionada == null) {
+                JOptionPane.showMessageDialog(autorView, "Debes seleccionar una fecha de nacimiento.");
+                return;
+            }
+            LocalDate fechaNac = fechaSeleccionada.toInstant()
+                    .atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
             if (buscarPorCodigo(codigoAutor) != null) {
                 JOptionPane.showMessageDialog(autorView, "Ya existe un autor con ese código.");
@@ -93,18 +101,22 @@ public class AutorController {
             JOptionPane.showMessageDialog(autorView, "No existe un autor con ese código.");
             return;
         }
-        try {
-            existente.setNombre(autorView.getTxtNombre().getText());
-            existente.setNacionalidad(autorView.getTxtNacionalidad().getText());
-            existente.setFechadeNac(LocalDate.parse(autorView.getTxtFechaNac().getText()));
-            actualizar(existente);
 
-            JOptionPane.showMessageDialog(autorView, "Autor actualizado con éxito.");
-            autorView.limpiarCampos();
-            listarAutores();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(autorView, "Fecha inválida. Use el formato AAAA-MM-DD.");
+        java.util.Date fechaSeleccionada = autorView.getDateChooserFechaNac().getDate();
+        if (fechaSeleccionada == null) {
+            JOptionPane.showMessageDialog(autorView, "Debes seleccionar una fecha de nacimiento.");
+            return;
         }
+
+        existente.setNombre(autorView.getTxtNombre().getText());
+        existente.setNacionalidad(autorView.getTxtNacionalidad().getText());
+        existente.setFechadeNac(fechaSeleccionada.toInstant()
+                .atZone(java.time.ZoneId.systemDefault()).toLocalDate());
+        actualizar(existente);
+
+        JOptionPane.showMessageDialog(autorView, "Autor actualizado con éxito.");
+        autorView.limpiarCampos();
+        listarAutores();
     }
 
     
