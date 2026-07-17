@@ -26,6 +26,7 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
     */
     public UsuarioView() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         inicializar();
     }
    
@@ -256,7 +257,7 @@ public class UsuarioView extends javax.swing.JInternalFrame implements Idiomatiz
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(411, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

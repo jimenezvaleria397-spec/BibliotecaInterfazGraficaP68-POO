@@ -18,27 +18,30 @@ import java.util.List;
  * @author Lenovo
  */
 public class AutorDAOArchivo implements DAO<Autor> {
-    private static final String RUTA = "autores.ups";
+    private static final String RUTA = "c:/carpeta1/autores.ups";
     private static final int LONG_CODIGO = 10;
     private static final int LONG_NOMBRE = 30;
     private static final int LONG_NACIONALIDAD = 20;
-    
-    private static final int TAMANIO_REGISTRO
-            = (LONG_CODIGO * 2) + (LONG_NOMBRE * 2) + (LONG_NACIONALIDAD * 2) + 12;
-    
+    private static final int TAMANIO_REGISTRO =
+            (LONG_CODIGO * 2) + (LONG_NOMBRE * 2) + (LONG_NACIONALIDAD * 2) + 12;
+
     private void escribirString(RandomAccessFile archivo, String valor, int longitud) throws IOException {
         if (valor == null) valor = "";
         if (valor.length() > longitud) {
             valor = valor.substring(0, longitud);
         } else {
-            while (valor.length() < longitud) valor += " ";
+            while (valor.length() < longitud) {
+                valor += " ";
+            }
         }
         archivo.writeChars(valor);
     }
 
     private String leerString(RandomAccessFile archivo, int longitud) throws IOException {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < longitud; i++) sb.append(archivo.readChar());
+        for (int i = 0; i < longitud; i++) {
+            sb.append(archivo.readChar());
+        }
         return sb.toString().trim();
     }
 
@@ -99,6 +102,7 @@ public class AutorDAOArchivo implements DAO<Autor> {
 
     @Override
     public void actualizar(String codigo) {
+        // Requerido por la interfaz DAO; lógica real en actualizar(Autor autor)
     }
 
     public void actualizar(Autor autor) {
@@ -188,6 +192,4 @@ public class AutorDAOArchivo implements DAO<Autor> {
         }
         return lista;
     }
-    
-    
 }

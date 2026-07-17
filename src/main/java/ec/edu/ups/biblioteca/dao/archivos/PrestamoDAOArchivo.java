@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class PrestamoDAOArchivo implements DAO<Prestamo>{
 
-    private final String RUTA = "c:/carpeta1/prestamosRandomico.dat";
+    private final String RUTA = "c:/carpeta1/prestamosRandomico.ups";
     private final int TAMANO_REGISTRO = 142; // Tamaño calculado: 6 Strings = 142 bytes
 
     @Override

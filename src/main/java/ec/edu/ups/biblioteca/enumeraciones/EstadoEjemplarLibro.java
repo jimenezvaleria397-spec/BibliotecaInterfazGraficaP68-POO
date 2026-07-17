@@ -8,9 +8,9 @@ package ec.edu.ups.biblioteca.enumeraciones;
  *
  * @author Lenovo
  */
+
 public enum EstadoEjemplarLibro {
     DISPONIBLE,
     PRESTADO,
     PERDIDO,
-    
 }

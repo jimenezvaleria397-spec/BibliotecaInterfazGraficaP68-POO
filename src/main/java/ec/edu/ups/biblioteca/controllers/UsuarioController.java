@@ -35,6 +35,7 @@ public class UsuarioController {
         configurarEventosEliminarUsuario();
         configurarEventosListarUsuario(); 
         configurarEventosLimpiarUsuario(); 
+       
     }
     
     private void configurarEventosCrearUsuario(){
@@ -58,6 +59,7 @@ public class UsuarioController {
                 Validador.validarSoloNumeros(cedula, "Cédula");
                 Validador.validarNoVacio(nombre, "Nombre");
                 Validador.validarCorreo(correo, "Correo");
+                Validador.validarCedula(cedula);
 
                 Usuario usuario = new Usuario();
                 usuario.setCedula(cedula);

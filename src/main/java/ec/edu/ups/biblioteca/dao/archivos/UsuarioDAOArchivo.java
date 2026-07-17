@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class UsuarioDAOArchivo implements DAO<Usuario> {
 
-    private String ruta = "c:/carpeta1/usuariosRandomico.dat";
+    private String ruta = "c:/carpeta1/usuariosRandomico.ups";
     private final int TAMANO_REGISTRO = 126; 
 
     @Override

@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class EjemplarLibroDAOArchivo implements DAO<EjemplarLibro> {
     
-    private final String RUTA = "c:/carpeta1/ejemplaresRandomico.dat";
+    private final String RUTA = "c:/carpeta1/ejemplaresRandomico.ups";
     private final int TAMANO_REGISTRO = 128; // Tamaño calculado: 4 Strings = 128 bytes
 
     @Override

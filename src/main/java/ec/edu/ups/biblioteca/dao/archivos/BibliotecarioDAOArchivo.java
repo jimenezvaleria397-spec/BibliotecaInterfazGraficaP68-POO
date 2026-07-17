@@ -17,7 +17,7 @@ import java.util.List;
  * @author Lenovo
  */
 public class BibliotecarioDAOArchivo implements DAO<Bibliotecario>{
-    private final String RUTA = "c:/carpeta1/bibliotecariosRandomico.dat";
+    private final String RUTA = "c:/carpeta1/bibliotecariosRandomico.ups";
     private final int TAMANO_REGISTRO = 56; // Tamaño calculado: 1 int (4) + 1 String (52) = 56 bytes
 
     @Override
@@ -97,7 +97,7 @@ public class BibliotecarioDAOArchivo implements DAO<Bibliotecario>{
                 
                 if (id == idBuscado) {
                     archivo.seek(i * TAMANO_REGISTRO);
-                    archivo.writeInt(0); // Borrado lógico (seteamos el ID a 0 para indicar que está vacío)
+                    archivo.writeInt(0); 
                     return;
                 }
             }

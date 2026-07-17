@@ -348,7 +348,9 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         }
         usuarioView.aplicarIdioma();
         usuarioView.setVisible(true);
-        try { usuarioView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
+        try { usuarioView.setSelected(true); 
+        } catch (java.beans.PropertyVetoException ex) { 
+        }
     }//GEN-LAST:event_gestionarUsuariosMenuItemActionPerformed
 
     private void gestionarDevolucionesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarDevolucionesMenuItemActionPerformed
@@ -368,7 +370,9 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         }
         prestamoView.aplicarIdioma();
         prestamoView.setVisible(true);
-        try { prestamoView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
+        try { prestamoView.setSelected(true); 
+        
+        } catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarPrestamosMenuItemActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed

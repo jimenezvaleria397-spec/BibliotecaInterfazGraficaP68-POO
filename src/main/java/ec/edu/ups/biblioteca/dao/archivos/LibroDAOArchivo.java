@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class LibroDAOArchivo implements DAO<Libro>{
 
-    private final String RUTA = "c:/carpeta1/usuariosRandomico.dat";
+    private final String RUTA = "c:/carpeta1/librosRandomico.ups";
     private final int TAMANO_REGISTRO = 184; 
 
     @Override
@@ -29,10 +29,8 @@ public class LibroDAOArchivo implements DAO<Libro>{
             
             archivo.writeUTF(completarEspacios(objeto.getCodigo(), 10));
             archivo.writeUTF(completarEspacios(objeto.getTitulo(), 30));
-            // Guardamos el código/cédula del autor vinculado
             archivo.writeUTF(completarEspacios(objeto.getAutor().getCodigoAutor(), 10)); 
             archivo.writeUTF(completarEspacios(objeto.getEditorial(), 20));
-            // Guardamos el nombre o string del enum de la categoría
             archivo.writeUTF(completarEspacios(objeto.getCategoria().toString(), 15));
             archivo.writeInt(objeto.getAnio());
             
