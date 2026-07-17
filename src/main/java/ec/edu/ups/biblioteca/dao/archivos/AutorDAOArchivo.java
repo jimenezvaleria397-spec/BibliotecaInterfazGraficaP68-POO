@@ -6,6 +6,7 @@ package ec.edu.ups.biblioteca.dao.archivos;
 
 import ec.edu.ups.biblioteca.dao.DAO;
 import ec.edu.ups.biblioteca.models.Autor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.LocalDate;
@@ -25,121 +26,146 @@ public class AutorDAOArchivo implements DAO<Autor> {
     private static final int TAMANIO_REGISTRO
             = (LONG_CODIGO * 2) + (LONG_NOMBRE * 2) + (LONG_NACIONALIDAD * 2) + 12;
     
-    private void escribirString(RandomAccessFile raf, String valor, int longitud) throws IOException {
+    private void escribirString(RandomAccessFile archivo, String valor, int longitud) throws IOException {
         if (valor == null) valor = "";
         if (valor.length() > longitud) {
             valor = valor.substring(0, longitud);
         } else {
-            while (valor.length() < longitud) {
-                valor += " ";
-            }
+            while (valor.length() < longitud) valor += " ";
         }
-        raf.writeChars(valor);
+        archivo.writeChars(valor);
     }
 
-    private String leerString(RandomAccessFile raf, int longitud) throws IOException {
+    private String leerString(RandomAccessFile archivo, int longitud) throws IOException {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < longitud; i++) {
-            sb.append(raf.readChar());
-        }
+        for (int i = 0; i < longitud; i++) sb.append(archivo.readChar());
         return sb.toString().trim();
     }
 
     @Override
     public void agregar(Autor autor) {
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "rw")) {
-            archivoLectura.seek(archivoLectura.length());
-            escribirString(archivoLectura, autor.getCodigoAutor(), LONG_CODIGO);
-            escribirString(archivoLectura, autor.getNombre(), LONG_NOMBRE);
-            escribirString(archivoLectura, autor.getNacionalidad(), LONG_NACIONALIDAD);
-            archivoLectura.writeInt(autor.getFechadeNac().getYear());
-            archivoLectura.writeInt(autor.getFechadeNac().getMonthValue());
-            archivoLectura.writeInt(autor.getFechadeNac().getDayOfMonth());
-        } catch (IOException e) {
-            e.printStackTrace();
+        try {
+            RandomAccessFile archivoEscritura;
+            archivoEscritura = new RandomAccessFile(RUTA, "rw");
+            archivoEscritura.seek(archivoEscritura.length());
+            escribirString(archivoEscritura, autor.getCodigoAutor(), LONG_CODIGO);
+            escribirString(archivoEscritura, autor.getNombre(), LONG_NOMBRE);
+            escribirString(archivoEscritura, autor.getNacionalidad(), LONG_NACIONALIDAD);
+            archivoEscritura.writeInt(autor.getFechadeNac().getYear());
+            archivoEscritura.writeInt(autor.getFechadeNac().getMonthValue());
+            archivoEscritura.writeInt(autor.getFechadeNac().getDayOfMonth());
+            archivoEscritura.close();
+        } catch (FileNotFoundException e1) {
+            System.out.println("Ruta de archivo no encontrada");
+        } catch (IOException e1) {
+            System.out.println("Error de escritura");
+        } catch (Exception e1) {
+            System.out.println("Error General");
         }
-
     }
 
     @Override
     public Autor buscarPorCodigo(String codigo) {
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "r")) {
+        Autor encontrado = null;
+        try {
+            RandomAccessFile archivoLectura;
+            archivoLectura = new RandomAccessFile(RUTA, "r");
             long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
 
             for (int i = 0; i < totalRegistros; i++) {
                 archivoLectura.seek(i * TAMANIO_REGISTRO);
                 String codigoLeido = leerString(archivoLectura, LONG_CODIGO);
+                String nombre = leerString(archivoLectura, LONG_NOMBRE);
+                String nacionalidad = leerString(archivoLectura, LONG_NACIONALIDAD);
+                int anio = archivoLectura.readInt();
+                int mes = archivoLectura.readInt();
+                int dia = archivoLectura.readInt();
 
                 if (codigoLeido.equals(codigo)) {
-                    String nombre = leerString(archivoLectura, LONG_NOMBRE);
-                    String nacionalidad = leerString(archivoLectura, LONG_NACIONALIDAD);
-                    int anio = archivoLectura.readInt();
-                    int mes = archivoLectura.readInt();
-                    int dia = archivoLectura.readInt();
-                    LocalDate fechaNac = LocalDate.of(anio, mes, dia);
-                    return new Autor(nombre, nacionalidad, codigoLeido, fechaNac, new ArrayList<>());
+                    encontrado = new Autor(nombre, nacionalidad, codigoLeido,
+                            LocalDate.of(anio, mes, dia), new ArrayList<>());
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            archivoLectura.close();
+        } catch (FileNotFoundException e1) {
+            System.out.println("Ruta de archivo no encontrada");
+        } catch (IOException e1) {
+            System.out.println("Error de lectura");
+        } catch (Exception e1) {
+            System.out.println("Error General");
         }
-        return null;
+        return encontrado;
     }
 
     @Override
     public void actualizar(String codigo) {
+        // Requerido por la interfaz DAO
     }
-    
+
     public void actualizar(Autor autor) {
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "rw")) {
-            long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
+        try {
+            RandomAccessFile archivo;
+            archivo = new RandomAccessFile(RUTA, "rw");
+            long totalRegistros = archivo.length() / TAMANIO_REGISTRO;
 
             for (int i = 0; i < totalRegistros; i++) {
-                archivoLectura.seek(i * TAMANIO_REGISTRO);
-                String codigoLeido = leerString(archivoLectura, LONG_CODIGO);
+                archivo.seek(i * TAMANIO_REGISTRO);
+                String codigoLeido = leerString(archivo, LONG_CODIGO);
 
                 if (codigoLeido.equals(autor.getCodigoAutor())) {
-                    // Volvemos al inicio del registro para sobrescribirlo completo
-                    archivoLectura.seek(i * TAMANIO_REGISTRO);
-                    escribirString(archivoLectura, autor.getCodigoAutor(), LONG_CODIGO);
-                    escribirString(archivoLectura, autor.getNombre(), LONG_NOMBRE);
-                    escribirString(archivoLectura, autor.getNacionalidad(), LONG_NACIONALIDAD);
-                    archivoLectura.writeInt(autor.getFechadeNac().getYear());
-                    archivoLectura.writeInt(autor.getFechadeNac().getMonthValue());
-                    archivoLectura.writeInt(autor.getFechadeNac().getDayOfMonth());
-                    return;
+                    archivo.seek(i * TAMANIO_REGISTRO);
+                    escribirString(archivo, autor.getCodigoAutor(), LONG_CODIGO);
+                    escribirString(archivo, autor.getNombre(), LONG_NOMBRE);
+                    escribirString(archivo, autor.getNacionalidad(), LONG_NACIONALIDAD);
+                    archivo.writeInt(autor.getFechadeNac().getYear());
+                    archivo.writeInt(autor.getFechadeNac().getMonthValue());
+                    archivo.writeInt(autor.getFechadeNac().getDayOfMonth());
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            archivo.close();
+        } catch (FileNotFoundException e1) {
+            System.out.println("Ruta de archivo no encontrada");
+        } catch (IOException e1) {
+            System.out.println("Error de escritura");
+        } catch (Exception e1) {
+            System.out.println("Error General");
         }
-}
+    }
 
     @Override
     public void eliminar(String codigo) {
         List<Autor> todos = listar();
         todos.removeIf(a -> a.getCodigoAutor().equals(codigo));
 
-        try (RandomAccessFile archivoEscritura = new RandomAccessFile(RUTA, "rw")) {
-            archivoEscritura.setLength(0); // vaciamos el archivo
-            for (Autor autor : todos) {
-                archivoEscritura.seek(archivoEscritura.length());
-                escribirString(archivoEscritura, autor.getCodigoAutor(), LONG_CODIGO);
-                escribirString(archivoEscritura, autor.getNombre(), LONG_NOMBRE);
-                escribirString(archivoEscritura, autor.getNacionalidad(), LONG_NACIONALIDAD);
-                archivoEscritura.writeInt(autor.getFechadeNac().getYear());
-                archivoEscritura.writeInt(autor.getFechadeNac().getMonthValue());
-                archivoEscritura.writeInt(autor.getFechadeNac().getDayOfMonth());
+        try {
+            RandomAccessFile archivo;
+            archivo = new RandomAccessFile(RUTA, "rw");
+            archivo.setLength(0);
+            for (Autor a : todos) {
+                archivo.seek(archivo.length());
+                escribirString(archivo, a.getCodigoAutor(), LONG_CODIGO);
+                escribirString(archivo, a.getNombre(), LONG_NOMBRE);
+                escribirString(archivo, a.getNacionalidad(), LONG_NACIONALIDAD);
+                archivo.writeInt(a.getFechadeNac().getYear());
+                archivo.writeInt(a.getFechadeNac().getMonthValue());
+                archivo.writeInt(a.getFechadeNac().getDayOfMonth());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            archivo.close();
+        } catch (FileNotFoundException e1) {
+            System.out.println("Ruta de archivo no encontrada");
+        } catch (IOException e1) {
+            System.out.println("Error de escritura");
+        } catch (Exception e1) {
+            System.out.println("Error General");
         }
     }
 
     @Override
     public List<Autor> listar() {
         List<Autor> lista = new ArrayList<>();
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "r")) {
+        try {
+            RandomAccessFile archivoLectura;
+            archivoLectura = new RandomAccessFile(RUTA, "r");
             long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
 
             for (int i = 0; i < totalRegistros; i++) {
@@ -150,12 +176,16 @@ public class AutorDAOArchivo implements DAO<Autor> {
                 int anio = archivoLectura.readInt();
                 int mes = archivoLectura.readInt();
                 int dia = archivoLectura.readInt();
-                LocalDate fechaNac = LocalDate.of(anio, mes, dia);
-
-                lista.add(new Autor(nombre, nacionalidad, codigo, fechaNac, new ArrayList<>()));
+                lista.add(new Autor(nombre, nacionalidad, codigo,
+                        LocalDate.of(anio, mes, dia), new ArrayList<>()));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            archivoLectura.close();
+        } catch (FileNotFoundException e1) {
+            System.out.println("Ruta de archivo no encontrada");
+        } catch (IOException e1) {
+            System.out.println("Error de lectura");
+        } catch (Exception e1) {
+            System.out.println("Error General");
         }
         return lista;
     }

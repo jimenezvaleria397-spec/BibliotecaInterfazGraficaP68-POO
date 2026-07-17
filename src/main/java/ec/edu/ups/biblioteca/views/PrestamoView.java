@@ -4,9 +4,6 @@
  */
 package ec.edu.ups.biblioteca.views;
 
-import ec.edu.ups.biblioteca.controllers.EjemplarLibroController;
-import ec.edu.ups.biblioteca.controllers.PrestamoController;
-import ec.edu.ups.biblioteca.controllers.UsuarioController;
 import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;

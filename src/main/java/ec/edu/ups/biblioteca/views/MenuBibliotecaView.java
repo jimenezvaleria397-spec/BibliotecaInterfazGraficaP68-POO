@@ -33,6 +33,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private UsuarioController usuarioController;
     private EjemplarLibroController ejemplarLibroController;
     private PrestamoController prestamoController;
+    private DevolucionController devolucionController;
 
     // Guardamos las vistas ya conectadas a sus Controllers en main().
     // Antes el menú creaba vistas NUEVAS (sin Controller) en cada click,
@@ -46,12 +47,28 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     /**
      * Creates new form MenuBibliotecarioView
      */
-    public MenuBibliotecaView(AutorController autorController, LibroController libroController,
-        UsuarioController usuarioController, EjemplarLibroController ejemplarLibroController,
-        PrestamoController prestamoController,
-        AutorView autorView, LibroView libroView, UsuarioView usuarioView,
-        PrestamoView prestamoView, DevolucionView devolucionView) {
+    public MenuBibliotecaView() {
         initComponents();
+        
+        AutorDAO autorDAO = AutorDAO.getAutorDAO();
+        UsuarioDAO usuarioDAO = UsuarioDAO.getUsuarioDAO();
+        LibroDAO libroDAO = LibroDAO.getLibroDAO();
+        EjemplarLibroDAO ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
+        PrestamoDAO prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
+        
+        autorView = new AutorView();
+        usuarioView = new UsuarioView();
+        libroView = new LibroView();
+        prestamoView = new PrestamoView();
+        devolucionView = new DevolucionView();
+        
+        autorController = new AutorController(autorDAO, autorView);
+        usuarioController = new UsuarioController(usuarioDAO, usuarioView);
+        ejemplarLibroController = new EjemplarLibroController(ejemplarLibroDAO);
+        libroController = new LibroController(libroDAO, libroView, autorController, ejemplarLibroController);
+        prestamoController = new PrestamoController(prestamoDAO, usuarioController, libroController, ejemplarLibroController, prestamoView);
+        devolucionController = new DevolucionController(prestamoDAO, devolucionView, ejemplarLibroController);
+        
         this.autorController = autorController;
         this.libroController = libroController;
         this.usuarioController = usuarioController;
@@ -129,6 +146,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menú de la Biblioteca");
@@ -252,6 +270,9 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
         jMenuBar1.add(btnIdioma);
 
+        jMenu1.setText("jMenu1");
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -298,7 +319,10 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         }
         libroView.aplicarIdioma();
         libroView.setVisible(true);
-        try { libroView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
+        
+        try { libroView.setSelected(true); 
+        } 
+        catch (java.beans.PropertyVetoException ex) { }
     }//GEN-LAST:event_gestionarLibrosMenuItemActionPerformed
 
     private void gestionarUsuariosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarUsuariosMenuItemActionPerformed
@@ -367,33 +391,11 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-         AutorDAO autorDAO = AutorDAO.getAutorDAO();
-        UsuarioDAO usuarioDAO = UsuarioDAO.getUsuarioDAO();
-        LibroDAO libroDAO = LibroDAO.getLibroDAO();
-        EjemplarLibroDAO ejemplarLibroDAO = EjemplarLibroDAO.getEjemplarLibroDAO();
-        PrestamoDAO prestamoDAO = PrestamoDAO.getPrestamoDAO(libroDAO, usuarioDAO);
-
-        // Creamos CADA vista UNA sola vez aquí y las conectamos a su Controller.
-        // El menú ya NO debe crear vistas nuevas: debe reutilizar estas mismas instancias.
-        AutorView autorView = new AutorView();
-        UsuarioView usuarioView = new UsuarioView();
-        LibroView libroView = new LibroView();
-        PrestamoView prestamoView = new PrestamoView();
-        DevolucionView devolucionView = new DevolucionView();
-
-        AutorController autorController = new AutorController(autorDAO, autorView);
-        UsuarioController usuarioController = new UsuarioController(usuarioDAO, usuarioView);
-        EjemplarLibroController ejemplarLibroController = new EjemplarLibroController(ejemplarLibroDAO);
-        LibroController libroController = new LibroController(libroDAO, libroView, autorController, ejemplarLibroController);
-        PrestamoController prestamoController = new PrestamoController(prestamoDAO, usuarioController, libroController, 
-                ejemplarLibroController, prestamoView);
-        DevolucionController devolucionController = new DevolucionController(prestamoDAO, devolucionView, ejemplarLibroController);
+         
         
         java.awt.EventQueue.invokeLater(() -> {
             MenuBibliotecaView menu = new MenuBibliotecaView(
-            autorController, libroController, usuarioController, 
-                    ejemplarLibroController, prestamoController,
-                    autorView, libroView, usuarioView, prestamoView, devolucionView);
+            );
             menu.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
             menu.setVisible(true);
         });
@@ -416,6 +418,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;

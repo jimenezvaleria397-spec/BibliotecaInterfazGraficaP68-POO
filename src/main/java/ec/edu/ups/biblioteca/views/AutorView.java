@@ -351,6 +351,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+    
     public JButton getBtnActualizarAutor() {
         return btnActualizarAutor;
     }
