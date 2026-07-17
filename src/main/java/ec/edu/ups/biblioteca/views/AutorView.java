@@ -1,14 +1,10 @@
 package ec.edu.ups.biblioteca.views;
 
-import ec.edu.ups.biblioteca.controllers.AutorController;
 import ec.edu.ups.biblioteca.models.Autor;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 

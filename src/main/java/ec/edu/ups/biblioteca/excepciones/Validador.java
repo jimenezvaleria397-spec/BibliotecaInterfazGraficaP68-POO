@@ -55,4 +55,9 @@ public class Validador {
             throw new FormatoInvalidoException(nombreCampo + " " + bundle.getString("error.correoInvalido"));
         }
     }
+    public static void validarCedula(String cedula)throws CedulaInvalidaException{
+        if(cedula == null|| cedula.length() !=10){
+            throw new CedulaInvalidaException("La cedula debe contener exactamente 10 numeros");
+        }
+    }
 }

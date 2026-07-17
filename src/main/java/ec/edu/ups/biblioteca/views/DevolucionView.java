@@ -1,6 +1,5 @@
 package ec.edu.ups.biblioteca.views;
 
-import ec.edu.ups.biblioteca.controllers.DevolucionController; 
 import ec.edu.ups.biblioteca.models.Prestamo;
 import ec.edu.ups.biblioteca.utils.Idioma;
 import ec.edu.ups.biblioteca.utils.Idiomatizable;
