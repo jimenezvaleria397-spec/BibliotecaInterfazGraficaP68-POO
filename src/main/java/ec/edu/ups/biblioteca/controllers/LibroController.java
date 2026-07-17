@@ -205,23 +205,43 @@ public class LibroController {
     }
     
     public void agregar(Libro libro) {
-        libroDAO.agregar(libro);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.LibroDAOArchivo().agregar(libro);
+        } else {
+            libroDAO.agregar(libro);
+        }
     }
 
     public Libro buscarPorCodigo(String codigo) {
-        return libroDAO.buscarPorCodigo(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.LibroDAOArchivo().buscarPorCodigo(codigo);
+        } else {
+            return libroDAO.buscarPorCodigo(codigo);
+        }
     }
 
     public void actualizar(Libro libro) {
-        libroDAO.actualizar(libro);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.LibroDAOArchivo().actualizar(libro.getCodigo());
+        } else {
+            libroDAO.actualizar(libro);
+        }
     }
 
     public void eliminar(String codigo) {
-        libroDAO.eliminar(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.LibroDAOArchivo().eliminar(codigo);
+        } else {
+            libroDAO.eliminar(codigo);
+        }
     }
 
     public List<Libro> listar() {
-        return libroDAO.listar();
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.LibroDAOArchivo().listar();
+        } else {
+            return libroDAO.listar();
+        }
     }
     
     public void registrarLibro(Libro libro, int cantidadEjemplares) {

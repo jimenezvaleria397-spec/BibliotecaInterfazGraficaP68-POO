@@ -80,16 +80,24 @@ public class DevolucionController {
     }
 
     public Prestamo buscarPorCodigo(String codigo) {
-        return prestamoDAO.buscarPorCodigo(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.PrestamoDAOArchivo().buscarPorCodigo(codigo);
+        } else {
+            return prestamoDAO.buscarPorCodigo(codigo);
+        }
     }
 
     public void registrarDevolucion(Prestamo prestamo) {
-        prestamo.setEstado(EstadoPrestamo.DEVUELTO); // enum (devolución)
-        prestamoDAO.actualizar(prestamo);
-
-        // esto es lo que faltaba: liberar el ejemplar para que vuelva a estar disponible
+        prestamo.setEstado(ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo.DEVUELTO);
+        
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.PrestamoDAOArchivo().actualizar(prestamo.getCodigo()); 
+        } else {
+            prestamoDAO.actualizar(prestamo);
+        }
+        
         EjemplarLibro ejemplar = prestamo.getEjemplar();
-        ejemplar.setEstadoEjemplar(EstadoEjemplarLibro.DISPONIBLE);
+        ejemplar.setEstadoEjemplar(ec.edu.ups.biblioteca.enumeraciones.EstadoEjemplarLibro.DISPONIBLE);
         ejemplarLibroController.actualizar(ejemplar);
     }
 }

@@ -71,7 +71,13 @@ public class AutorController {
             }
 
             Autor autorAc = new Autor(nombre, nacionalidad, codigoAutor, fechaNac, new ArrayList<>());
-            agregar(autorAc);
+           
+            if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+                new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().agregar(autorAc);
+            } else {
+                agregar(autorAc);
+            }
+
             JOptionPane.showMessageDialog(autorView, "Autor registrado con éxito.");
             autorView.limpiarCampos();
             listarAutores();
@@ -118,7 +124,7 @@ public class AutorController {
         existente.setNacionalidad(autorView.getTxtNacionalidad().getText());
         existente.setFechadeNac(fechaSeleccionada.toInstant()
                 .atZone(java.time.ZoneId.systemDefault()).toLocalDate());
-        actualizar(existente);
+        actualizar(existente.getCodigoAutor());
 
         JOptionPane.showMessageDialog(autorView, "Autor actualizado con éxito.");
         autorView.limpiarCampos();
@@ -157,27 +163,52 @@ public class AutorController {
     }
 
     private void listarAutores(){
-        List<Autor> autores = listar();
+        List<Autor> autores;
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            autores = new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().listar();
+        } else {
+            autores = listar(); 
+        }
         autorView.actualizarTabla(autores);
     }
 
     public void agregar(Autor autor) { // métodos wrapper
-        autorDAO.agregar(autor);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().agregar(autor);
+        } else {
+            autorDAO.agregar(autor);
+        }
     }
 
     public Autor buscarPorCodigo(String codigo) {
-        return autorDAO.buscarPorCodigo(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().buscarPorCodigo(codigo);
+        } else {
+            return autorDAO.buscarPorCodigo(codigo);
+        }
     }
 
-    public void actualizar(Autor autor) {
-        autorDAO.actualizar(autor);
+    public void actualizar(String codigo) {
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().actualizar(codigo);
+        } else {
+            autorDAO.actualizar(codigo);
+        }
     }
 
     public void eliminar(String codigo) {
-        autorDAO.eliminar(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().eliminar(codigo);
+        } else {
+            autorDAO.eliminar(codigo);
+        }
     }
 
     public List<Autor> listar() {
-        return autorDAO.listar();
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.AutorDAOArchivo().listar();
+        } else {
+            return autorDAO.listar();
+        }
     }
 }

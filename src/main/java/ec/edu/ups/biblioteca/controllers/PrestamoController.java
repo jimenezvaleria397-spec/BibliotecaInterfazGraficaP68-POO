@@ -69,42 +69,54 @@ public class PrestamoController {
         });
     }
     private void configurarEventosComboUsuariosYLibros() {
-    prestamoView.getCbxUsuarios().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-        @Override
-        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
-            cargarUsuariosCombo();
-        }
-        @Override
-        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
-        @Override
-        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
-    });
-
-    prestamoView.getCbxLibros().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-        @Override
-        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
-            cargarLibrosCombo();
-        }
-        @Override
-        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
-        @Override
-        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
-    });
-
-    prestamoView.getCbxEjemplares().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-        @Override
-        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
-            Libro libroSeleccionado = (Libro) prestamoView.getCbxLibros().getSelectedItem();
-            if (libroSeleccionado != null) {
-                List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(libroSeleccionado.getCodigo());
-                prestamoView.cargarEjemplares(disponibles);
+        prestamoView.getCbxUsuarios().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+                cargarUsuariosCombo();
             }
-        }
-        @Override
-        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
-        @Override
-        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
-    });
+
+            @Override
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+            }
+        });
+
+        prestamoView.getCbxLibros().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+                cargarLibrosCombo();
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+            }
+        });
+
+        prestamoView.getCbxEjemplares().addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+                Libro libroSeleccionado = (Libro) prestamoView.getCbxLibros().getSelectedItem();
+                if (libroSeleccionado != null) {
+                    List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(libroSeleccionado.getCodigo());
+                    prestamoView.cargarEjemplares(disponibles);
+                }
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+            }
+        });
 }
     
     private void configurarEventosCambioLibro() {
@@ -277,15 +289,27 @@ public class PrestamoController {
     }
 
     public Prestamo buscarPorCodigo(String codigo) {
-        return prestamoDAO.buscarPorCodigo(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.PrestamoDAOArchivo().buscarPorCodigo(codigo);
+        } else {
+            return prestamoDAO.buscarPorCodigo(codigo);
+        }
     }
 
     public void actualizar(Prestamo prestamo) {
-        prestamoDAO.actualizar(prestamo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.PrestamoDAOArchivo().actualizar(prestamo.getCodigo());
+        } else {
+            prestamoDAO.actualizar(prestamo);
+        }
     }
 
     public void eliminar(String codigo) {
-        prestamoDAO.eliminar(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.PrestamoDAOArchivo().eliminar(codigo);
+        } else {
+            prestamoDAO.eliminar(codigo);
+        }
     }
 
     public List<Prestamo> listar() {

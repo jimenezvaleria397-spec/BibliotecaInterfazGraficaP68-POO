@@ -174,22 +174,42 @@ public class UsuarioController {
     }
     
     public void agregar(Usuario usuario) {
-        usuarioDAO.agregar(usuario);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.UsuarioDAOArchivo().agregar(usuario);
+        } else {
+            usuarioDAO.agregar(usuario);
+        }
     }
 
     public Usuario buscarPorCodigo(String codigo) {
-        return usuarioDAO.buscarPorCodigo(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.UsuarioDAOArchivo().buscarPorCodigo(codigo);
+        } else {
+            return usuarioDAO.buscarPorCodigo(codigo);
+        }
     }
 
     public void actualizar(Usuario usuario) {
-        usuarioDAO.actualizar(usuario);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.UsuarioDAOArchivo().actualizar(usuario.getCedula());
+        } else {
+            usuarioDAO.actualizar(usuario);
+        }
     }
 
     public void eliminar(String codigo) {
-        usuarioDAO.eliminar(codigo);
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            new ec.edu.ups.biblioteca.dao.archivos.UsuarioDAOArchivo().eliminar(codigo);
+        } else {
+            usuarioDAO.eliminar(codigo);
+        }   
     }
 
     public List<Usuario> listar() {
-        return usuarioDAO.listar();
+        if (ec.edu.ups.biblioteca.views.MenuBibliotecaView.USAR_ARCHIVOS) {
+            return new ec.edu.ups.biblioteca.dao.archivos.UsuarioDAOArchivo().listar();
+        } else {
+            return usuarioDAO.listar();
+        }
     }
 }

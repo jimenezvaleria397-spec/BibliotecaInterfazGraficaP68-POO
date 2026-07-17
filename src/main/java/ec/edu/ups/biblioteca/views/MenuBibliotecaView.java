@@ -388,19 +388,13 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private void menuItemDAOSMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDAOSMemoriaActionPerformed
         menuItemDAOSMemoria.setSelected(true);
         menuItemDAOSArchivo.setSelected(false);
-        
-        
-
-        MenuBibliotecaView.USAR_ARCHIVOS = false; 
-        System.out.println("Persistencia global: Memoria");
+        USAR_ARCHIVOS = false;
     }//GEN-LAST:event_menuItemDAOSMemoriaActionPerformed
 
     private void menuItemDAOSArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDAOSArchivoActionPerformed
-        menuItemDAOSMemoria.setSelected(true);
-        menuItemDAOSArchivo.setSelected(false);
-
-        MenuBibliotecaView.USAR_ARCHIVOS = true; 
-        System.out.println("Persistencia global: Archivos Binarios");
+        menuItemDAOSArchivo.setSelected(true);
+        menuItemDAOSMemoria.setSelected(false);
+        USAR_ARCHIVOS = true;
     }//GEN-LAST:event_menuItemDAOSArchivoActionPerformed
 
     /**
