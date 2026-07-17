@@ -92,7 +92,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
         txtNacionalidad = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDeAutores = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new org.netbeans.modules.form.InvalidComponent();
 
         setClosable(true);
         setIconifiable(true);
@@ -331,7 +331,7 @@ public class AutorView extends javax.swing.JInternalFrame implements Idiomatizab
     private javax.swing.JButton btnEliminarAutor;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnListarAutor;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private org.netbeans.modules.form.InvalidComponent jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -17,123 +17,125 @@ import java.util.List;
  * @author Lenovo
  */
 public class BibliotecarioDAOArchivo implements DAO<Bibliotecario>{
-    private static final String RUTA = "datos/bibliotecarios.ups";
-    private static final int LONG_EMAIL = 40;
-
-    private static final int TAMANIO_REGISTRO = 4 + (LONG_EMAIL * 2);
-    static {
-        File carpeta = new File("datos");
-        if (!carpeta.exists()) {
-            carpeta.mkdir();
-        }
-    }
-
-    private void escribirString(RandomAccessFile raf, String valor, int longitud) throws IOException {
-        if (valor == null) valor = "";
-        if (valor.length() > longitud) {
-            valor = valor.substring(0, longitud);
-        } else {
-            while (valor.length() < longitud) {
-                valor += " ";
-            }
-        }
-        raf.writeChars(valor);
-    }
-
-    private String leerString(RandomAccessFile raf, int longitud) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < longitud; i++) {
-            sb.append(raf.readChar());
-        }
-        return sb.toString().trim();
-    }
+    private final String RUTA = "c:/carpeta1/bibliotecariosRandomico.dat";
+    private final int TAMANO_REGISTRO = 56; // Tamaño calculado: 1 int (4) + 1 String (52) = 56 bytes
 
     @Override
-    public void agregar(Bibliotecario bibliotecario) {
-        try (RandomAccessFile archivoEscritura = new RandomAccessFile(RUTA, "rw")) {
-            archivoEscritura.seek(archivoEscritura.length());
-            archivoEscritura.writeInt(bibliotecario.getIdBibliotecario());
-            escribirString(archivoEscritura, bibliotecario.getEmail(), LONG_EMAIL);
+    public void agregar(Bibliotecario objeto) {
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            archivo.seek(archivo.length());
+            
+            archivo.writeInt(objeto.getIdBibliotecario());
+            archivo.writeUTF(completarEspacios(objeto.getEmail(), 25));
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error de escritura en bibliotecario");
         }
     }
 
     @Override
     public Bibliotecario buscarPorCodigo(String codigo) {
-        int idBuscado = Integer.parseInt(codigo);
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "r")) {
-            long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "r")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            int idBuscado = Integer.parseInt(codigo.trim()); // Convertimos el String a int
+            
             for (int i = 0; i < totalRegistros; i++) {
-                archivoLectura.seek(i * TAMANIO_REGISTRO);
-                int id = archivoLectura.readInt();
-                String email = leerString(archivoLectura, LONG_EMAIL);
+                archivo.seek(i * TAMANO_REGISTRO);
+                
+                int id = archivo.readInt();
+                String email = archivo.readUTF().trim();
+                
                 if (id == idBuscado) {
                     return new Bibliotecario(id, email);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error de lectura en bibliotecario");
+        } catch (NumberFormatException e) {
+            System.out.println("El código ingresado no es un número válido");
         }
         return null;
     }
 
     @Override
     public void actualizar(String codigo) {
-        // Requerido por la interfaz DAO; la lógica real está en actualizar(Bibliotecario)
-    }
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            int idBuscado = Integer.parseInt(codigo.trim());
+            
+            // Objeto temporal respetando tu constructor (id, email)
+            Bibliotecario nuevoObjeto = new Bibliotecario(idBuscado, "temporal@correo.com");
 
-    public void actualizar(Bibliotecario bibliotecario) {
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "rw")) {
-            long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
             for (int i = 0; i < totalRegistros; i++) {
-                archivoLectura.seek(i * TAMANIO_REGISTRO);
-                int id = archivoLectura.readInt();
-                if (id == bibliotecario.getIdBibliotecario()) {
-                    archivoLectura.seek(i * TAMANIO_REGISTRO);
-                    archivoLectura.writeInt(bibliotecario.getIdBibliotecario());
-                    escribirString(archivoLectura, bibliotecario.getEmail(), LONG_EMAIL);
+                archivo.seek(i * TAMANO_REGISTRO);
+                int id = archivo.readInt();
+                
+                if (id == idBuscado) {
+                    archivo.seek(i * TAMANO_REGISTRO); // Regresar al inicio del registro
+                    
+                    archivo.writeInt(nuevoObjeto.getIdBibliotecario());
+                    archivo.writeUTF(completarEspacios(nuevoObjeto.getEmail(), 25));
                     return;
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error al actualizar bibliotecario");
+        } catch (NumberFormatException e) {
+            System.out.println("Código no válido para actualizar");
         }
     }
 
     @Override
     public void eliminar(String codigo) {
-        int idBuscado = Integer.parseInt(codigo);
-        List<Bibliotecario> todos = listar();
-        todos.removeIf(b -> b.getIdBibliotecario() == idBuscado);
-
-        try (RandomAccessFile archivoEscritura = new RandomAccessFile(RUTA, "rw")) {
-            archivoEscritura.setLength(0);
-            for (Bibliotecario b : todos) {
-                archivoEscritura.seek(archivoEscritura.length());
-                archivoEscritura.writeInt(b.getIdBibliotecario());
-                escribirString(archivoEscritura, b.getEmail(), LONG_EMAIL);
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            int idBuscado = Integer.parseInt(codigo.trim());
+            
+            for (int i = 0; i < totalRegistros; i++) {
+                archivo.seek(i * TAMANO_REGISTRO);
+                int id = archivo.readInt();
+                
+                if (id == idBuscado) {
+                    archivo.seek(i * TAMANO_REGISTRO);
+                    archivo.writeInt(0); // Borrado lógico (seteamos el ID a 0 para indicar que está vacío)
+                    return;
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error al eliminar bibliotecario");
+        } catch (NumberFormatException e) {
+            System.out.println("Código no válido para eliminar");
         }
     }
 
     @Override
     public List<Bibliotecario> listar() {
         List<Bibliotecario> lista = new ArrayList<>();
-        try (RandomAccessFile archivoLectura = new RandomAccessFile(RUTA, "r")) {
-            long totalRegistros = archivoLectura.length() / TAMANIO_REGISTRO;
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "r")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            
             for (int i = 0; i < totalRegistros; i++) {
-                archivoLectura.seek(i * TAMANIO_REGISTRO);
-                int id = archivoLectura.readInt();
-                String email = leerString(archivoLectura, LONG_EMAIL);
-                lista.add(new Bibliotecario(id, email));
+                archivo.seek(i * TAMANO_REGISTRO);
+                
+                int id = archivo.readInt();
+                String email = archivo.readUTF().trim();
+                
+                // Si el id no es 0, significa que es un registro activo (no eliminado)
+                if (id != 0) {
+                    lista.add(new Bibliotecario(id, email));
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error al listar bibliotecarios");
         }
         return lista;
+    }
+
+    private String completarEspacios(String texto, int longitudMax) {
+        if (texto.length() > longitudMax) {
+            return texto.substring(0, longitudMax);
+        }
+        return String.format("%-" + longitudMax + "s", texto);
     }
     
 }

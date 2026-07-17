@@ -5,6 +5,7 @@
 package ec.edu.ups.biblioteca.controllers;
 
 import ec.edu.ups.biblioteca.dao.EjemplarLibroDAO;
+import ec.edu.ups.biblioteca.enumeraciones.EstadoEjemplarLibro;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import ec.edu.ups.biblioteca.models.Libro;
 import java.util.List;
@@ -51,7 +52,7 @@ public class EjemplarLibroController {
     public void crearEjemplares(Libro libro, int cantidad) {
         for (int i = 1; i <= cantidad; i++) {
             String codigoBarras = libro.getCodigo() + "-" + i;
-            EjemplarLibro ejemplar = new EjemplarLibro(codigoBarras, "Estante A", libro, true);
+            EjemplarLibro ejemplar = new EjemplarLibro(codigoBarras, "Estante A", libro, EstadoEjemplarLibro.DISPONIBLE);
             ejemplarDAO.agregar(ejemplar);
         }
     }

@@ -99,7 +99,6 @@ public class AutorDAOArchivo implements DAO<Autor> {
 
     @Override
     public void actualizar(String codigo) {
-        // Requerido por la interfaz DAO
     }
 
     public void actualizar(Autor autor) {

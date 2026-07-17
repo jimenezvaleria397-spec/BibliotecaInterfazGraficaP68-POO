@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,77 +23,124 @@ import java.util.List;
  */
 public class EjemplarLibroDAOArchivo implements DAO<EjemplarLibro> {
     
-    private static final String ARCHIVO = "ejemplares.ups";
-    private List<EjemplarLibro> ejemplares;
-
-    public EjemplarLibroDAOArchivo(List<EjemplarLibro> ejemplares) {
-        this.ejemplares = ejemplares;
-    }
-    
-    
+    private final String RUTA = "c:/carpeta1/ejemplaresRandomico.dat";
+    private final int TAMANO_REGISTRO = 128; // Tamaño calculado: 4 Strings = 128 bytes
 
     @Override
     public void agregar(EjemplarLibro objeto) {
-        ejemplares.add(objeto);
-        try {
-            guardarEnArchivo();
-        } catch (IOException ex) {
-            System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            archivo.seek(archivo.length());
+            
+            archivo.writeUTF(completarEspacios(objeto.getCodigoBarras(), 15));
+            archivo.writeUTF(completarEspacios(objeto.getUbicacion(), 20));
+            archivo.writeUTF(completarEspacios("", 10)); // Espacio reservado para libro
+            archivo.writeUTF(completarEspacios("", 15)); // Espacio reservado para estadoEjemplar
+            
+        } catch (IOException e) {
+            System.out.println("Error de escritura en ejemplar");
         }
     }
 
     @Override
     public EjemplarLibro buscarPorCodigo(String codigo) {
-        for (EjemplarLibro e : ejemplares) {
-            if (e.getCodigoBarras().equals(codigo)) {
-                return e;
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "r")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            
+            for (int i = 0; i < totalRegistros; i++) {
+                archivo.seek(i * TAMANO_REGISTRO);
+                
+                String codBarras = archivo.readUTF().trim();
+                String ubicacion = archivo.readUTF().trim();
+                String libroPlaceholder = archivo.readUTF().trim();
+                String estadoPlaceholder = archivo.readUTF().trim();
+                
+                if (codBarras.equals(codigo.trim())) {
+                    // Usamos tu constructor pasando null en libro y estadoEjemplar
+                    return new EjemplarLibro(codBarras, ubicacion, null, null);
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Error de lectura en ejemplar");
         }
         return null;
     }
 
     @Override
     public void actualizar(String codigo) {
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            
+            // Objeto temporal respetando tu constructor para que no dé error de compilación
+            EjemplarLibro nuevoObjeto = new EjemplarLibro(codigo, "Ubicacion Temp", null, null);
+
+            for (int i = 0; i < totalRegistros; i++) {
+                archivo.seek(i * TAMANO_REGISTRO);
+                String codBarras = archivo.readUTF().trim();
+                
+                if (codBarras.equals(codigo.trim())) {
+                    archivo.seek(i * TAMANO_REGISTRO); // Regresar al inicio del registro
+                    
+                    archivo.writeUTF(completarEspacios(nuevoObjeto.getCodigoBarras(), 15));
+                    archivo.writeUTF(completarEspacios(nuevoObjeto.getUbicacion(), 20));
+                    archivo.writeUTF(completarEspacios("", 10)); 
+                    archivo.writeUTF(completarEspacios("", 15)); 
+                    return;
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Error al actualizar ejemplar");
+        }
+    }
 
     @Override
     public void eliminar(String codigo) {
-        EjemplarLibro existente = buscarPorCodigo(codigo);
-        if (existente != null) {
-            ejemplares.remove(existente);
-            try {
-                guardarEnArchivo();
-            } catch (IOException ex) {
-                System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "rw")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            
+            for (int i = 0; i < totalRegistros; i++) {
+                archivo.seek(i * TAMANO_REGISTRO);
+                String codBarras = archivo.readUTF().trim();
+                
+                if (codBarras.equals(codigo.trim())) {
+                    archivo.seek(i * TAMANO_REGISTRO);
+                    archivo.writeUTF(completarEspacios("", 15)); // Borrado lógico (vaciamos el código)
+                    return;
+                }
             }
-        }    
+        } catch (IOException e) {
+            System.out.println("Error al eliminar ejemplar");
+        }
     }
 
     @Override
     public List<EjemplarLibro> listar() {
-        return ejemplares;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private List<EjemplarLibro> cargarDesdeArchivo() {
-        File archivo = new File(ARCHIVO);
-        if (!archivo.exists()) {
-            return new ArrayList<>();
+        List<EjemplarLibro> lista = new ArrayList<>();
+        try (RandomAccessFile archivo = new RandomAccessFile(RUTA, "r")) {
+            long totalRegistros = archivo.length() / TAMANO_REGISTRO;
+            
+            for (int i = 0; i < totalRegistros; i++) {
+                archivo.seek(i * TAMANO_REGISTRO);
+                
+                String codBarras = archivo.readUTF().trim();
+                String ubicacion = archivo.readUTF().trim();
+                String libroPlaceholder = archivo.readUTF().trim();
+                String estadoPlaceholder = archivo.readUTF().trim();
+                
+                if (!codBarras.isEmpty()) {
+                    lista.add(new EjemplarLibro(codBarras, ubicacion, null, null));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al listar ejemplares");
         }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-            return (List<EjemplarLibro>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error al leer el archivo binario: " + e.getMessage());
-            return new ArrayList<>();
-        }
+        return lista;
     }
 
-    private void guardarEnArchivo() throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
-            oos.writeObject(ejemplares);
-        } catch (FileNotFoundException ex) {
-            System.getLogger(EjemplarLibroDAOArchivo.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }    
+    private String completarEspacios(String texto, int longitudMax) {
+        if (texto.length() > longitudMax) {
+            return texto.substring(0, longitudMax);
+        }
+        return String.format("%-" + longitudMax + "s", texto);
     }
     
     

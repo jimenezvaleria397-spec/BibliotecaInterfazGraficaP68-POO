@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.PrestamoDAO;
+import ec.edu.ups.biblioteca.enumeraciones.EstadoEjemplarLibro;
 import ec.edu.ups.biblioteca.enumeraciones.EstadoPrestamo;
 import ec.edu.ups.biblioteca.excepciones.ValidacionException;
 import ec.edu.ups.biblioteca.excepciones.Validador;
@@ -142,40 +143,40 @@ public class PrestamoController {
             prestamoView.getBtnRegistrarPrestamo().setText("Guardar");
             registrandoPrestamo = true;
         } else {
-    String codigo = prestamoView.getTxtCodigo().getText();
+            String codigo = prestamoView.getTxtCodigo().getText();
 
-    if (usuarioSeleccionado == null || ejemplarSeleccionado == null) {
-        JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar un usuario y un ejemplar.");
-        return;
-    }
+            if (usuarioSeleccionado == null || ejemplarSeleccionado == null) {
+                JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar un usuario y un ejemplar.");
+                return;
+            }
 
-    Date fechaPrestamo = prestamoView.getDateChooserFechaPrestamo().getDate();
-    Date fechaDevolucion = prestamoView.getDateChooserFechaDevolucion().getDate();
+            Date fechaPrestamo = prestamoView.getDateChooserFechaPrestamo().getDate();
+            Date fechaDevolucion = prestamoView.getDateChooserFechaDevolucion().getDate();
 
-    if (fechaPrestamo == null || fechaDevolucion == null) {
-        JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar ambas fechas.");
-        return;
-    }
+            if (fechaPrestamo == null || fechaDevolucion == null) {
+                JOptionPane.showMessageDialog(prestamoView, "Debes seleccionar ambas fechas.");
+                return;
+            }
 
-    try {
-        Validador.validarNoVacio(codigo, "Código");
-        Validador.validarSoloNumeros(codigo, "Código");
-        EstadoPrestamo estado = (EstadoPrestamo) prestamoView.getCbxEstado().getSelectedItem();
+            try {
+                Validador.validarNoVacio(codigo, "Código");
+                Validador.validarSoloNumeros(codigo, "Código");
+                EstadoPrestamo estado = (EstadoPrestamo) prestamoView.getCbxEstado().getSelectedItem();
 
-        Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
-                fechaPrestamo, fechaDevolucion, estado);
+                Prestamo prestamo = new Prestamo(codigo, usuarioSeleccionado, ejemplarSeleccionado,
+                        fechaPrestamo, fechaDevolucion, estado);
 
-        registrarPrestamo(prestamo);
+                registrarPrestamo(prestamo);
 
-        List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(ejemplarSeleccionado.getLibro().getCodigo());
-        prestamoView.cargarEjemplares(disponibles);
+                List<EjemplarLibro> disponibles = ejemplarLibroController.listarDisponiblesPorLibro(ejemplarSeleccionado.getLibro().getCodigo());
+                prestamoView.cargarEjemplares(disponibles);
 
-        listarPrestamos();
-        prestamoView.limpiarCampos();
-        prestamoView.bloquearCampos();
-        prestamoView.getTxtCodigo().setEditable(true);
-        prestamoView.getBtnRegistrarPrestamo().setText("Registrar Prestamo");
-        registrandoPrestamo = false;
+                listarPrestamos();
+                prestamoView.limpiarCampos();
+                prestamoView.bloquearCampos();
+                prestamoView.getTxtCodigo().setEditable(true);
+                prestamoView.getBtnRegistrarPrestamo().setText("Registrar Prestamo");
+                registrandoPrestamo = false;
 
         JOptionPane.showMessageDialog(prestamoView, "Préstamo registrado con éxito");
     } catch (ValidacionException e) {
@@ -248,7 +249,7 @@ public class PrestamoController {
         }
 
         EjemplarLibro ejemplar = existente.getEjemplar();
-        ejemplar.setDisponible(true);
+        ejemplar.setEstadoEjemplar(EstadoEjemplarLibro.DISPONIBLE);
         ejemplarLibroController.actualizar(ejemplar);
 
         eliminar(codigo);
@@ -293,7 +294,7 @@ public class PrestamoController {
     
     public void registrarPrestamo(Prestamo prestamo) {
         EjemplarLibro ejemplar = prestamo.getEjemplar();
-        ejemplar.setDisponible(false); // se marca como prestado
+        ejemplar.setEstadoEjemplar(EstadoEjemplarLibro.PRESTADO); // se marca como prestado
         ejemplarLibroController.actualizar(ejemplar);
         agregar(prestamo);
     }

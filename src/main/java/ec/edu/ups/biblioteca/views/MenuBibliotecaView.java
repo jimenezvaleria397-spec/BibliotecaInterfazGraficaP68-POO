@@ -24,8 +24,8 @@ import ec.edu.ups.biblioteca.utils.Idiomatizable;
  * @author jimen
  */
 public class MenuBibliotecaView extends javax.swing.JFrame {
-    //verdadero:
-    /////
+    public static boolean USAR_ARCHIVOS = false;
+    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuBibliotecaView.class.getName());
     private AutorController autorController;
@@ -126,6 +126,7 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel3 = new javax.swing.JLabel();
@@ -146,7 +147,9 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        btnDatos = new javax.swing.JMenu();
+        menuItemDAOSMemoria = new javax.swing.JMenuItem();
+        menuItemDAOSArchivo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menú de la Biblioteca");
@@ -270,8 +273,17 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
         jMenuBar1.add(btnIdioma);
 
-        jMenu1.setText("jMenu1");
-        jMenuBar1.add(jMenu1);
+        btnDatos.setText("Daos");
+
+        menuItemDAOSMemoria.setText("Daos Memoria");
+        menuItemDAOSMemoria.addActionListener(this::menuItemDAOSMemoriaActionPerformed);
+        btnDatos.add(menuItemDAOSMemoria);
+
+        menuItemDAOSArchivo.setText("Daos Archivos");
+        menuItemDAOSArchivo.addActionListener(this::menuItemDAOSArchivoActionPerformed);
+        btnDatos.add(menuItemDAOSArchivo);
+
+        jMenuBar1.add(btnDatos);
 
         setJMenuBar(jMenuBar1);
 
@@ -309,7 +321,10 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         }
         autorView.aplicarIdioma();
         autorView.setVisible(true);
-        try { autorView.setSelected(true); } catch (java.beans.PropertyVetoException ex) { }
+        try {
+            autorView.setSelected(true);
+        } catch (java.beans.PropertyVetoException ex) {
+        }
     }//GEN-LAST:event_gestionarAutoresMenuItemActionPerformed
 
     private void gestionarLibrosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarLibrosMenuItemActionPerformed
@@ -322,7 +337,8 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         
         try { libroView.setSelected(true); 
         } 
-        catch (java.beans.PropertyVetoException ex) { }
+        catch (java.beans.PropertyVetoException ex) { 
+        }
     }//GEN-LAST:event_gestionarLibrosMenuItemActionPerformed
 
     private void gestionarUsuariosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionarUsuariosMenuItemActionPerformed
@@ -369,6 +385,24 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
         actualizarIdiomaVentanasAbiertas();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
+    private void menuItemDAOSMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDAOSMemoriaActionPerformed
+        menuItemDAOSMemoria.setSelected(true);
+        menuItemDAOSArchivo.setSelected(false);
+        
+        
+
+        MenuBibliotecaView.USAR_ARCHIVOS = false; 
+        System.out.println("Persistencia global: Memoria");
+    }//GEN-LAST:event_menuItemDAOSMemoriaActionPerformed
+
+    private void menuItemDAOSArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDAOSArchivoActionPerformed
+        menuItemDAOSMemoria.setSelected(true);
+        menuItemDAOSArchivo.setSelected(false);
+
+        MenuBibliotecaView.USAR_ARCHIVOS = true; 
+        System.out.println("Persistencia global: Archivos Binarios");
+    }//GEN-LAST:event_menuItemDAOSArchivoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -404,11 +438,13 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu btnAutores;
+    private javax.swing.JMenu btnDatos;
     private javax.swing.JMenu btnDevoluciones;
     private javax.swing.JMenu btnIdioma;
     private javax.swing.JMenu btnLibro;
     private javax.swing.JMenu btnPrestamos;
     private javax.swing.JMenu btnUsuario;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JMenuItem gestionarAutoresMenuItem;
     private javax.swing.JMenuItem gestionarDevolucionesMenuItem;
     private javax.swing.JMenuItem gestionarLibrosMenuItem;
@@ -418,11 +454,12 @@ public class MenuBibliotecaView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JMenuItem menuItemDAOSArchivo;
+    private javax.swing.JMenuItem menuItemDAOSMemoria;
     // End of variables declaration//GEN-END:variables
 }

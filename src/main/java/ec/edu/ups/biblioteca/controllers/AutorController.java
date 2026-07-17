@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.controllers;
 import ec.edu.ups.biblioteca.dao.AutorDAO;
+import ec.edu.ups.biblioteca.dao.DAO;
 import ec.edu.ups.biblioteca.excepciones.ValidacionException;
 import ec.edu.ups.biblioteca.excepciones.Validador;
 import ec.edu.ups.biblioteca.models.Autor;
@@ -17,14 +18,19 @@ import javax.swing.JOptionPane;
  * @author jimen
  */
 public class AutorController {
-    private AutorDAO autorDAO;
+    private DAO<Autor> autorDAO;
     private AutorView autorView;
 
-    public AutorController(AutorDAO autorDAO, AutorView autorView) {
+    public AutorController(DAO<Autor> autorDAO, AutorView autorView) {
         this.autorDAO = autorDAO;
         this.autorView = autorView;
         configurarEventos();
         listarAutores();
+    }
+    
+    public void setDAO(DAO<Autor> nuevoDAO) {
+        this.autorDAO = nuevoDAO;
+        listarAutores(); 
     }
 
     public void configurarEventos(){

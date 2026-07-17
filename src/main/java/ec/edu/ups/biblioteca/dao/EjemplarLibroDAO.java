@@ -4,6 +4,7 @@
  */
 package ec.edu.ups.biblioteca.dao;
 
+import ec.edu.ups.biblioteca.enumeraciones.EstadoEjemplarLibro;
 import ec.edu.ups.biblioteca.models.EjemplarLibro;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,18 +77,19 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
     
     public List<EjemplarLibro> listarDisponibles() {
     List<EjemplarLibro> resultado = new ArrayList<>();
-    for (EjemplarLibro e : listar()) {
-        if (e.isDisponible()) {
-            resultado.add(e);
+        for (EjemplarLibro e : listar()) {
+            if (e.getEstadoEjemplar() == EstadoEjemplarLibro.DISPONIBLE) {
+                resultado.add(e);
+            }
         }
+        return resultado;
     }
-    return resultado;
-}
 
     public List<EjemplarLibro> listarDisponiblesPorLibro(String codigoLibro) {
         List<EjemplarLibro> resultado = new ArrayList<>();
         for (EjemplarLibro e : listar()) {
-            if (e.getLibro().getCodigo().equals(codigoLibro) && e.isDisponible()) {
+            if (e.getLibro().getCodigo().equals(codigoLibro) 
+                    && e.getEstadoEjemplar() == EstadoEjemplarLibro.DISPONIBLE) {
                 resultado.add(e);
             }
         }
@@ -97,7 +99,8 @@ public class EjemplarLibroDAO implements DAO<EjemplarLibro>{
     public int contarDisponibles(String codigoLibro) {
         int contador = 0;
         for (EjemplarLibro e : listar()) {
-            if (e.getLibro().getCodigo().equals(codigoLibro) && e.isDisponible()) {
+            if (e.getLibro().getCodigo().equals(codigoLibro) 
+                    && e.getEstadoEjemplar() == EstadoEjemplarLibro.DISPONIBLE) {
                 contador++;
             }
         }
