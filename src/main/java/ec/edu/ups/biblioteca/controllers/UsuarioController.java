@@ -55,7 +55,9 @@ public class UsuarioController {
                 String correo = usuarioView.getTxtCorreo().getText();
 
                 Validador.validarNoVacio(cedula, "Cédula");
+                Validador.validarSoloNumeros(cedula, "Cédula");
                 Validador.validarNoVacio(nombre, "Nombre");
+                Validador.validarCorreo(correo, "Correo");
 
                 Usuario usuario = new Usuario();
                 usuario.setCedula(cedula);
@@ -106,15 +108,22 @@ public class UsuarioController {
             return;
         }
 
-        existente.setNombre(usuarioView.getTxtNombre().getText());
-        existente.setCorreo(usuarioView.getTxtCorreo().getText());
-        actualizar(existente);
+        try {
+            String correo = usuarioView.getTxtCorreo().getText();
+            Validador.validarCorreo(correo, "Correo");
 
-        JOptionPane.showMessageDialog(usuarioView, "Usuario actualizado.");
-        usuarioView.limpiar();
-        usuarioView.bloquear();
-        usuarioView.getTxtCedula().setEditable(true);
-        listarUsuarios();
+            existente.setNombre(usuarioView.getTxtNombre().getText());
+            existente.setCorreo(correo);
+            actualizar(existente);
+
+            JOptionPane.showMessageDialog(usuarioView, "Usuario actualizado.");
+            usuarioView.limpiar();
+            usuarioView.bloquear();
+            usuarioView.getTxtCedula().setEditable(true);
+            listarUsuarios();
+        } catch (ValidacionException e) {
+            JOptionPane.showMessageDialog(usuarioView, e.getMessage());
+        }
     }
     
     private void configurarEventosEliminarUsuario(){

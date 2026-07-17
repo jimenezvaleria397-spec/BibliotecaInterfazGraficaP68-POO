@@ -30,8 +30,9 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     /**
      * Creates new form RealizarPrestamoView
      */
-    public PrestamoView() {
+   public PrestamoView() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         aplicarIdioma();
         inicializarVista();
     }
@@ -58,8 +59,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         cbxUsuarios.setEnabled(false);
         cbxLibros.setEnabled(false);
         cbxEjemplares.setEnabled(false);
-        txtFechaPrestamo.setEditable(false);
-        txtFechaDevolucion.setEditable(false);
+        jDateChooser1.setEnabled(false);
+        jDateChooser2.setEnabled(false);
     }
 
     public void modoActualizar() {
@@ -73,15 +74,15 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     cbxUsuarios.setEnabled(true);
     cbxLibros.setEnabled(true);
     cbxEjemplares.setEnabled(true);
-    txtFechaPrestamo.setEditable(true);
-    txtFechaDevolucion.setEditable(true);
+    jDateChooser1.setEnabled(true);
+    jDateChooser2.setEnabled(true);
 
     txtCodigo.setText("");
     cbxUsuarios.setSelectedItem(null);
     cbxLibros.setSelectedItem(null);
     cbxEjemplares.setSelectedItem(null);
-    txtFechaPrestamo.setText("");
-    txtFechaDevolucion.setText("");
+    jDateChooser1.setDate(null);
+    jDateChooser2.setDate(null);
 }
 
     public void limpiarCampos() {
@@ -89,8 +90,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         cbxUsuarios.setSelectedItem(null);
         cbxLibros.setSelectedItem(null);
         cbxEjemplares.setSelectedItem(null);
-        txtFechaPrestamo.setText("");
-        txtFechaDevolucion.setText("");
+        jDateChooser1.setDate(null);
+        jDateChooser2.setDate(null);
         ejemplarSeleccionado = null;
         usuarioSeleccionado = null;
     }
@@ -98,8 +99,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     public void mostrarPrestamoEnCampos(Prestamo p) {
         cbxUsuarios.setSelectedItem(p.getUsuario());
         cbxLibros.setSelectedItem(p.getEjemplar().getLibro());
-        txtFechaPrestamo.setText(String.valueOf(p.getFechaPrestamo()));
-        txtFechaDevolucion.setText(String.valueOf(p.getFechaDevolucion()));
+        jDateChooser1.setDate(p.getFechaPrestamo());
+        jDateChooser2.setDate(p.getFechaDevolucion());
     }
 
     public void listarPrestamos(List<Prestamo> prestamos) {
@@ -156,8 +157,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        txtFechaPrestamo = new javax.swing.JTextField();
-        txtFechaDevolucion = new javax.swing.JTextField();
         btnRegistrarPrestamo = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
@@ -173,6 +172,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         cbxLibros = new javax.swing.JComboBox<>();
         cbxEjemplares = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
 
         setBackground(new java.awt.Color(114, 114, 82));
         setClosable(true);
@@ -196,11 +197,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         jLabel6.setText("Estado:");
 
         txtCodigo.addActionListener(this::txtCodigoActionPerformed);
-
-        txtFechaPrestamo.setText("DD/MM/AA");
-        txtFechaPrestamo.addActionListener(this::txtFechaPrestamoActionPerformed);
-
-        txtFechaDevolucion.setText("DD/MM/AA");
 
         btnRegistrarPrestamo.setText("Registrar Prestamo");
         btnRegistrarPrestamo.addActionListener(this::btnRegistrarPrestamoActionPerformed);
@@ -285,24 +281,26 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                                         .addComponent(btnActualizar)
                                         .addGap(62, 62, 62)
                                         .addComponent(btnEliminar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtFechaPrestamo)
-                                        .addGap(67, 67, 67))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(67, 67, 67)))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cbxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbxLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbxEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(63, 63, 63)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtFechaDevolucion)
-                                    .addComponent(cbxEstado, 0, 149, Short.MAX_VALUE))))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cbxUsuarios, 0, 156, Short.MAX_VALUE)
+                                            .addComponent(cbxLibros, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cbxEjemplares, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(53, 53, 53)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(261, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -320,32 +318,35 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtFechaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel6)
-                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLimpiar)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(367, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cbxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxEjemplares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLimpiar)
+                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -361,7 +362,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(44, 44, 44))
         );
 
         pack();
@@ -393,9 +395,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
 
     }//GEN-LAST:event_cbxEjemplaresActionPerformed
 
-    private void txtFechaPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaPrestamoActionPerformed
-    }//GEN-LAST:event_txtFechaPrestamoActionPerformed
-
     private void cbxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxEstadoActionPerformed
@@ -412,6 +411,8 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private javax.swing.JComboBox<EstadoPrestamo> cbxEstado;
     private javax.swing.JComboBox<Libro> cbxLibros;
     private javax.swing.JComboBox<Usuario> cbxUsuarios;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -425,8 +426,6 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtFechaDevolucion;
-    private javax.swing.JTextField txtFechaPrestamo;
     // End of variables declaration//GEN-END:variables
 
     public JButton getBtnActualizar() {
@@ -473,12 +472,12 @@ public class PrestamoView extends javax.swing.JInternalFrame implements Idiomati
         return txtCodigo;
     }
 
-    public JTextField getTxtFechaDevolucion() {
-        return txtFechaDevolucion;
+    public com.toedter.calendar.JDateChooser getDateChooserFechaPrestamo() {
+        return jDateChooser1;
     }
 
-    public JTextField getTxtFechaPrestamo() {
-        return txtFechaPrestamo;
+    public com.toedter.calendar.JDateChooser getDateChooserFechaDevolucion() {
+        return jDateChooser2;
     }
 
 

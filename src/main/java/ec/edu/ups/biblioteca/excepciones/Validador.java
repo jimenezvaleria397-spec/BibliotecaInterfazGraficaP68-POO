@@ -42,22 +42,17 @@ public class Validador {
         }
     }
 
-    public static LocalDate validarFecha(String texto, String nombreCampo) throws FechaInvalidaException {
-        try {
-            return LocalDate.parse(texto.trim());
-        } catch (DateTimeParseException e) {
+    public static void validarSoloNumeros(String texto, String nombreCampo) throws FormatoInvalidoException {
+        if (texto == null || !texto.trim().matches("\\d+")) {
             ResourceBundle bundle = Idioma.getBundle();
-            throw new FechaInvalidaException(nombreCampo + " " + bundle.getString("error.fechaInvalida"));
+            throw new FormatoInvalidoException(nombreCampo + " " + bundle.getString("error.soloNumeros"));
         }
     }
-    public static Date validarFecha(String texto, String patron, String nombreCampo) throws FechaInvalidaException {
-        try {
-            SimpleDateFormat formato = new SimpleDateFormat(patron);
-            formato.setLenient(false);
-            return formato.parse(texto.trim());
-        } catch (ParseException e) {
+
+    public static void validarCorreo(String correo, String nombreCampo) throws FormatoInvalidoException {
+        if (correo == null || !correo.trim().matches("^[\\w.-]+@[\\w.-]+\\.com$")) {
             ResourceBundle bundle = Idioma.getBundle();
-            throw new FechaInvalidaException(nombreCampo + " " + bundle.getString("error.fechaInvalida"));
-        }  
+            throw new FormatoInvalidoException(nombreCampo + " " + bundle.getString("error.correoInvalido"));
+        }
     }
 }
